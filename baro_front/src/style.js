@@ -15,8 +15,11 @@ ${reset}
     }
     body{
         font-family: 'Noto Sans KR', 'Roboto';
+        font-weight: 700;
+        color: #666666;
     }
     a{
         text-decoration: none;
+        color: inherit;
     }
 `;

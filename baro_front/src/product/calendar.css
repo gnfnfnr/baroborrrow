@@ -1,0 +1,62 @@
+.rdrCalendarWrapper {
+  font-size: 16px;
+  width: 100%;
+  max-width: 900px;
+}
+
+.rdrMonth {
+  width: auto;
+}
+.rdrDay {
+  height: 6rem;
+}
+
+.rdrDay:not(.rdrDayDisabled) .rdrInRange {
+  background: #e9f6fd;
+}
+
+.rdrDay:not(.rdrDayPassive, .rdrDayDisabled) .rdrSelected ~ .rdrDayNumber span,
+.rdrDay:not(.rdrDayPassive, .rdrDayDisabled) .rdrInRange ~ .rdrDayNumber span,
+.rdrDay:not(.rdrDayPassive, .rdrDayDisabled) .rdrStartEdge ~ .rdrDayNumber span,
+.rdrDay:not(.rdrDayPassive, .rdrDayDisabled) .rdrEndEdge ~ .rdrDayNumber span {
+  color: black;
+}
+
+.rdrDayDisabled > .rdrDayNumber {
+  text-decoration: line-through;
+  color: #aeb9bf;
+}
+
+.rdrStartEdge:after,
+.rdrEndEdge:after {
+  content: "";
+  width: 5.5rem;
+  height: 5.5rem;
+  background: #56aedf;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.rdrStartEdge {
+  background: linear-gradient(to right, white, #e9f6fd);
+}
+
+.rdrEndEdge {
+  background: linear-gradient(to left, white, #e9f6fd);
+}
+
+@media only screen and (max-width: 500px) {
+  .rdrDay {
+    height: 3.2rem;
+  }
+
+  .rdrEndEdge:after,
+  .rdrStartEdge:after {
+    border-radius: 50%;
+    width: 100%;
+    height: 100%;
+  }
+}

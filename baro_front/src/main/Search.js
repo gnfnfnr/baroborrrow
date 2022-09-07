@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ProductList from "./ProductList";
 import styled from "styled-components";
 import SearchDetail from "./SearchDetail";
+import axios from "axios";
 
 const PdSearchContainer = styled.div`
   margin-top: 52px;
@@ -10,10 +11,13 @@ const PdSearchContainer = styled.div`
 `;
 
 function Search() {
-  const [pdData, setPdData] = useState([
-    { id: 1, productName: "df", address: "dkdf", deposit: 34, rentalFee: 34 },
-    { id: 2, productName: "df", address: "dkdf", deposit: 34, rentalFee: 34 },
-  ]);
+  const [pdData, setPdData] = useState([]);
+  useEffect(() => {
+    axios.get(`http://127.0.0.1:8000/search/products`).then((response) => {
+      setPdData(response.data);
+      console.log(response);
+    });
+  }, []);
   return (
     <PdSearchContainer>
       <SearchDetail setPdData={setPdData} />

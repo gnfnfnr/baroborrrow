@@ -73,3 +73,25 @@ export const ProductBorrow = styled.div`
     font-size: 12px;
   }
 `;
+export const ProductDes = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+`;
+export const ProductText = styled.p``;
+export const ProductCheck = styled.div``;
+export const ProductCheckDate = styled.div`
+  padding: 6px 16px;
+  background: #888888;
+  border-radius: 5px;
+  margin-bottom: 20px;
+  color: white;
+  text-align: center;
+`;
+export const ProductCheckBtn = styled.div`
+  padding: 6px 16px;
+  background: #56aedf;
+  border-radius: 5px;
+  color: white;
+  cursor: pointer;
+`;

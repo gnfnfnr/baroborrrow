@@ -8,7 +8,7 @@ import {
   InfoMoney,
   InfoWon,
   PdBtn,
-} from "./procuct-style";
+} from "./product-style";
 import InfoBar from "./InfoBar";
 import CalendarEnroll from "./CalendarEnroll";
 import style from "styled-components";

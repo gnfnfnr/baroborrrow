@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import styled from "styled-components";
 import axios from "axios";
 import ProductList from "./ProductList";
@@ -42,9 +42,15 @@ const ProductText = styled.p`
 `;
 
 function Home() {
-  const [pdData, setpdData] = useState([]);
+  const [pdData, setPdData] = useState([]);
   const [inputSearch, setInputSearch] = useState("");
   const clickRef = useRef();
+  useEffect(() => {
+    axios.get(`http://127.0.0.1:8000/search/products`).then((response) => {
+      setPdData(response.data);
+      console.log(response);
+    });
+  }, []);
   return (
     <HomeBox>
       <SearchBox>
@@ -65,7 +71,7 @@ function Home() {
               )
               .then((response) => {
                 console.log(response);
-                setpdData(response.data);
+                setPdData(response.data);
               });
           }}
         />

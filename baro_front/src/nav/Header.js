@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import { Link } from "react-router-dom";
 const HeaderBox = styled.header`
   background: #56aedf;
   height: 52px;
@@ -10,7 +11,11 @@ const HeaderBox = styled.header`
   left: 0;
 `;
 function Header() {
-  return <HeaderBox></HeaderBox>;
+  return (
+    <HeaderBox>
+      <Link to={"/login"}>로그인하기</Link>
+    </HeaderBox>
+  );
 }
 
 export default Header;

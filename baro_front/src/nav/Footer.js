@@ -5,7 +5,6 @@ import { NavLink } from "react-router-dom";
 const FooterBox = styled.footer`
   position: fixed;
   width: 100%;
-  left: 0px;
   bottom: 0px;
   background: #f5f5f5;
   height: 80px;

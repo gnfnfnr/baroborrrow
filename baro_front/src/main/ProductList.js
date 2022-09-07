@@ -7,7 +7,7 @@ import {
   ProductName,
   ProductLocal,
   ProductFee,
-} from "./product-style";
+} from "./list-style";
 
 function ProductList({ pdData }) {
   const navigate = useNavigate();

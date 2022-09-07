@@ -47,6 +47,9 @@ width: 100%;
     height: 16px;
     margin-top: -3px;
   }
+  &:focus::-webkit-slider-runnable-track { 
+    background: red; 
+  }
 }
 `;
 

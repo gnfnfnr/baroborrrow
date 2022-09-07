@@ -9,7 +9,7 @@ import {
   ProductFee,
   ProductCart,
   ProductBorrow,
-} from "./product-style";
+} from "./list-style";
 
 function Basket() {
   const navigate = useNavigate();

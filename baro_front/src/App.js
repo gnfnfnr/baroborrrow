@@ -13,6 +13,8 @@ import Mypage from "./personal/Mypage";
 import Profile from "./personal/Profile";
 import ProfileEdit from "./personal/ProfileEdit";
 import ContentList from "./personal/ContentList";
+import Login from "./start/Login";
+import SignUp from "./start/SignUp";
 function App() {
   return (
     <BrowserRouter>
@@ -26,9 +28,12 @@ function App() {
           <Route path="/enroll" element={<ProductEnroll />} />
           <Route path="/basket" element={<Basket />} />
           <Route path="/mypage" element={<Mypage />} />
-          <Route path={"/mypage/profile"} element={<Profile />} />
-          <Route path={"/mypage/profileedit"} element={<ProfileEdit />} />
-          <Route path={"/mypage/content"} element={<ContentList />} />
+          <Route path="/mypage/profile" element={<Profile />} />
+          <Route path="/mypage/profileedit" element={<ProfileEdit />} />
+          <Route path="/mypage/content" element={<ContentList />} />
+          {/* 로그인 */}
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<SignUp />} />
         </Route>
       </Routes>
       <Footer />

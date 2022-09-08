@@ -1,145 +1,74 @@
-import React from "react";
-import { useState } from "react";
-import styled from "styled-components";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import {
+  LoginBox,
+  LoginLogo,
+  LoginForm,
+  LoginInput,
+  LoginInputLabel,
+  LoginInputText,
+  LoginButton,
+  LoginToReg,
+} from "./login-style";
 
-const LoginLogo = styled.img`
-  position: absolute;
-  width: 165px;
-  height: 132px;
-  left: 100px;
-  top: 126px;
-`;
-
-const SignInDiv = styled.div`
-  position: relative;
-  width: 327px;
-  height: 48px;
-  top: 278px;
-  left: 24px;
-  background: #f7f7f7;
-  border-radius: 5px;
-
-  margin-bottom: 10px;
-`;
-
-const LoginIcon = styled.img`
-  position: absolute;
-  width: 24px;
-  height: 20px;
-  left: 12px;
-  top: 14px;
-  object-fit: contain;
-`;
-
-const LoginButton = styled.button`
-  position: relative;
-  width: 327px;
-  height: 48px;
-  top: 300px;
-  left: 24px;
-  background: #56aedf;
-  border-radius: 5px;
-  border: none;
-
-  font-style: normal;
-  font-weight: 700;
-  font-size: 16px;
-  line-height: 22px;
-
-  cursor: pointer;
-  text-align: center;
-
-  color: #ffffff;
-`;
-
-export const InputText = styled.input`
-  all: unset;
-  position: relative;
-  width: 259px;
-  height: 22px;
-  left: 44px;
-  top: 13px;
-  margin-left: 3px;
-  font-style: normal;
-  font-weight: 700;
-  font-size: 16px;
-  line-height: 22px;
-
-  overflow: hidden;
-  color: rgba(136, 136, 136, 1);
-`;
-
-const Login = () => {
+function Login() {
   const [inputId, setInputId] = useState("");
-  const [inputPw, setInputPw] = useState("");
-
-  const handleInputId = (e) => {
-    setInputId(e.target.value);
-  };
-
-  const handleInputPw = (e) => {
-    setInputPw(e.target.value);
-  };
-
-  const data = {
-    username: inputId,
-    password: inputPw,
-  };
-  console.log(data);
+  const [inputPassword, setInputPassword] = useState("");
   const navigate = useNavigate();
-
+  const onSubmit = (e) => {
+    axios.post("http://127.0.0.1:8000/user/login/", {
+      username: inputId,
+      password: inputPassword,
+    });
+    //   오류 처리하기
+    // e.preventDefault();
+    navigate("/main");
+    console.log(inputId, inputPassword);
+  };
   return (
-    <>
-      <LoginLogo src="img/로그인로고 1.png" />
-      <SignInDiv>
-        <LoginIcon src="img/LoginIcon.png" />
-        <label htmlFor="input_id"></label>
-        <InputText
-          type="text"
-          name="input_id"
-          placeholder="아이디"
-          value={inputId}
-          onChange={handleInputId}
-        />
-      </SignInDiv>
-
-      <SignInDiv>
-        <LoginIcon src="img/PassWordIcon.png" />
-        <label htmlFor="input_pw"></label>
-        <InputText
-          type="password"
-          name="input_pw"
-          placeholder="비밀번호"
-          value={inputPw}
-          onChange={handleInputPw}
-        />
-      </SignInDiv>
-
-      <div>
-        <LoginButton
-          onClick={() => {
-            axios
-              .post("http://127.0.0.1:8000/user/login/", { data })
-              .then((res) => {
-                // setUser(res.data);
-              });
-            navigate("/user/main");
-          }}
-        >
-          로그인
-        </LoginButton>
-        <LoginButton
-          onClick={() => {
-            navigate("/signup");
-          }}
-        >
-          회원가입하기
-        </LoginButton>
-      </div>
-    </>
+    <LoginBox>
+      <LoginLogo src={require("../img/loginLogo.png")} />
+      <LoginForm onSubmit={onSubmit}>
+        <LoginInput>
+          <LoginInputLabel htmlFor="loginId">
+            <img src={require("../img/id.png")} />
+          </LoginInputLabel>
+          <LoginInputText
+            placeholder="아이디"
+            id="loginId"
+            value={inputId}
+            onChange={(event) => {
+              setInputId(event.target.value);
+            }}
+            required
+          />
+        </LoginInput>
+        <LoginInput>
+          <LoginInputLabel htmlFor="loginPassword">
+            <img src={require("../img/password.png")} />
+          </LoginInputLabel>
+          <LoginInputText
+            placeholder="비밀번호"
+            id="loginPassword"
+            value={inputPassword}
+            onChange={(event) => {
+              setInputPassword(event.target.value);
+            }}
+            required
+          />
+        </LoginInput>
+        <LoginButton>로그인하기</LoginButton>
+      </LoginForm>
+      <LoginToReg
+        onClick={() => {
+          navigate("/join");
+        }}
+      >
+        회원가입
+      </LoginToReg>
+    </LoginBox>
   );
-};
+}
 
 export default Login;

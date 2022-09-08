@@ -109,6 +109,7 @@ export const ProductCheckBtn = styled.div`
   cursor: pointer;
   @media only screen and (max-width: 500px) {
     padding: 4px 14px;
+    font-size: 12px;
   }
 `;
 
@@ -117,4 +118,8 @@ export const ProductComBtn = styled.div`
   background: #d9d9d9;
   border-radius: 5px;
   color: #666666;
+  @media only screen and (max-width: 500px) {
+    padding: 4px 14px;
+    font-size: 12px;
+  }
 `;

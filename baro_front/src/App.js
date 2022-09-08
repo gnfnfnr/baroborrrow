@@ -17,6 +17,7 @@ import Login from "./start/Login";
 import SignUp from "./start/SignUp";
 import Borrow from "./personal/Borrow";
 import Lend from "./personal/Lend";
+import Join from "./start/Join";
 function App() {
   return (
     <BrowserRouter>
@@ -38,7 +39,7 @@ function App() {
           </Route>
           {/* 로그인 */}
           <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<SignUp />} />
+          <Route path="/join" element={<Join />} />
         </Route>
       </Routes>
       <Footer />

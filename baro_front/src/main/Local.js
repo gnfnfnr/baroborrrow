@@ -484,6 +484,7 @@ function Local({ setLocal, setLocalName }) {
             <SearchDes>구/군</SearchDes>
             {selectState.map((li) => (
               <DetailContent
+                key={li}
                 ref={(gu) => (guRef.current[li] = gu)}
                 onClick={() => {
                   if (guRef.current[infoGu]) {

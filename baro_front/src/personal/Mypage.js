@@ -46,7 +46,7 @@ function Mypage() {
             <DetailTitle>내 프로필</DetailTitle>
           </MypageDetail>
         </Link>
-        <Link to="/mypage/content">
+        <Link to="/mypage/content/borrow">
           <MypageDetail>
             <DetailIcon src={require("../img/list.png")} />
             <DetailTitle>내 바로 내역</DetailTitle>

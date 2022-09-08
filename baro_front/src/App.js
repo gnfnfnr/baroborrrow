@@ -15,6 +15,8 @@ import ProfileEdit from "./personal/ProfileEdit";
 import ContentList from "./personal/ContentList";
 import Login from "./start/Login";
 import SignUp from "./start/SignUp";
+import Borrow from "./personal/Borrow";
+import Lend from "./personal/Lend";
 function App() {
   return (
     <BrowserRouter>
@@ -30,7 +32,10 @@ function App() {
           <Route path="/mypage" element={<Mypage />} />
           <Route path="/mypage/profile" element={<Profile />} />
           <Route path="/mypage/profileedit" element={<ProfileEdit />} />
-          <Route path="/mypage/content" element={<ContentList />} />
+          <Route path="/mypage/content" element={<ContentList />}>
+            <Route path="/mypage/content/borrow" element={<Borrow />} />
+            <Route path="/mypage/content/lend" element={<Lend />} />
+          </Route>
           {/* 로그인 */}
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<SignUp />} />

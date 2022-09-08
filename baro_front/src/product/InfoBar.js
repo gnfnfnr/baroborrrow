@@ -18,6 +18,7 @@ const SSizeImg = style.img`
 const ConBarinput = style.input`
 height: 34px;
 -webkit-appearance: none;
+background: inherit;
 width: 100%;
 &:focus {
   outline: none;

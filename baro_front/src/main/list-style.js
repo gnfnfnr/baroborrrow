@@ -52,6 +52,14 @@ export const ProductInfo = styled.div`
   position: relative;
 `;
 
+export const ProductRentalInfo = styled.div`
+  padding-left: 12px;
+  width: calc(100% - 100px);
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+`;
+
 export const ProductCart = styled.img`
   position: absolute;
   bottom: 0;
@@ -79,7 +87,12 @@ export const ProductDes = styled.div`
   align-items: flex-end;
 `;
 export const ProductText = styled.p``;
-export const ProductCheck = styled.div``;
+export const ProductCheck = styled.div`
+  // align-self: flex-end;
+  @media only screen and (max-width: 500px) {
+    padding: 4px 14px;
+  }
+`;
 export const ProductCheckDate = styled.div`
   padding: 6px 16px;
   background: #888888;
@@ -94,4 +107,14 @@ export const ProductCheckBtn = styled.div`
   border-radius: 5px;
   color: white;
   cursor: pointer;
+  @media only screen and (max-width: 500px) {
+    padding: 4px 14px;
+  }
+`;
+
+export const ProductComBtn = styled.div`
+  padding: 6px 16px;
+  background: #d9d9d9;
+  border-radius: 5px;
+  color: #666666;
 `;

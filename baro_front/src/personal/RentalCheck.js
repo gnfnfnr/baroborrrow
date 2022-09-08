@@ -6,7 +6,7 @@ const RentalCheckModal = styled.section`
   position: absolute;
   background: rgb(0 0 0 / 10%);
   width: 100%;
-  height: 100%;
+  min-height: 100%;
   top: 0;
   left: 0;
   z-index: 99;
@@ -18,18 +18,71 @@ const RentalCheckModal = styled.section`
 const RentalCheckBox = styled.div`
   width: 320px;
   background: #f7f7f7;
+  padding: 16px 12px;
 `;
 
-const RentalCheckClose = styled.img``;
+const RentalQuest = styled.div`
+  padding: 24px 0;
+  border-bottom: 1px solid #d9d9d9;
+`;
+
 const RentalCheckBtn = styled.div`
   background: #56aedf;
   border-radius: 5px;
-  margin: 10px 0;
   padding: 13px 92px;
   cursor: pointer;
+  text-align: center;
+  color: white;
 `;
 
-function RentalCheck({ setRental }) {
+const RentalImg = styled.div`
+  width: 200px;
+  height: 200px;
+  margin: 24px auto;
+  @media only screen and (max-width: 700px) {
+    width: 100px;
+    height: 100px;
+    margin: 12px auto;
+  }
+`;
+
+const RentalName = styled.div`
+  text-align: center;
+  margin-top: 12px;
+  color: #888888;
+  @media only screen and (min-width: 700px) {
+    font-size: 20px;
+  }
+`;
+
+const RentalEnsure = styled.div`
+  text-align: center;
+  padding: 24px 60px;
+  @media only screen and (min-width: 700px) {
+    font-size: 20px;
+  }
+`;
+
+const RentalReport = styled.p`
+  text-align: center;
+  font-weight: normal;
+  padding-bottom: 12px;
+  @media only screen and (min-width: 700px) {
+    font-size: 20px;
+  }
+`;
+
+const RentalSurvey = styled.div`
+  margin: 40px auto 32px;
+  text-align: center;
+  color: #888888;
+
+  @media only screen and (min-width: 700px) {
+    font-size: 20px;
+  }
+`;
+
+function RentalCheck({ setRental, setComplete, list }) {
   const [rate, setRate] = useState();
   const ownerDes = [
     "1.약속한 날짜에 대여가 잘 이루어졌나요?",
@@ -38,11 +91,11 @@ function RentalCheck({ setRental }) {
     "4.구성품이 빠짐없이 잘 있었나요?",
     "5.대여비와 보증금은 적절했나요?",
   ];
-  const [quest, setQuest] = useState({});
-  const QuestList = ({ Index, title, setQuest }) => {
+
+  const an = {};
+  const QuestList = ({ Index, title }) => {
     const [condition, setCondition] = useState(0);
-    const an = { title: condition };
-    console.log(an);
+    an[title] = condition;
     return (
       <InfoBar
         key={Index}
@@ -53,11 +106,12 @@ function RentalCheck({ setRental }) {
       />
     );
   };
-  console.log(quest);
+
   return (
     <RentalCheckModal>
       <RentalCheckBox>
         <img
+          style={{ float: "right" }}
           src={require("../img/close.png")}
           onClick={() => {
             setRental(false);
@@ -65,18 +119,36 @@ function RentalCheck({ setRental }) {
         />
         {rate ? (
           <>
-            <div>설문을 진행해주세요</div>
+            <RentalSurvey>설문을 진행해주세요</RentalSurvey>
             {ownerDes.map((li, Index) => (
-              <QuestList title={li} Index={Index} setQuest={setQuest} />
+              <RentalQuest key={Index}>
+                <QuestList title={li} Index={Index} />
+              </RentalQuest>
             ))}
-            <RentalCheckBtn>설문 제출</RentalCheckBtn>
+            <RentalCheckBtn
+              onClick={() => {
+                setRental(false);
+                setComplete(true);
+              }}
+            >
+              설문 제출
+            </RentalCheckBtn>
           </>
         ) : (
           <>
-            <img />
-            <div>이름</div>
-            <div>해당 물품을 반납 장소에 반납하셨습니까?</div>
-            <p>(허위 반납시 신고 조치됩니다.)</p>
+            <RentalImg>
+              <img
+                src={list.productPhoto}
+                style={{
+                  width: "100%",
+                  height: "100%",
+                  objectFit: "cover",
+                }}
+              />
+            </RentalImg>
+            <RentalName>{list.productName}</RentalName>
+            <RentalEnsure>해당 물품을 반납 장소에 반납하셨습니까?</RentalEnsure>
+            <RentalReport>(허위 반납시 신고 조치됩니다.)</RentalReport>
             <RentalCheckBtn
               onClick={() => {
                 setRate(true);

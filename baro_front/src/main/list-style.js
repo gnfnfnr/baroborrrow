@@ -88,7 +88,6 @@ export const ProductDes = styled.div`
 `;
 export const ProductText = styled.p``;
 export const ProductCheck = styled.div`
-  // align-self: flex-end;
   @media only screen and (max-width: 500px) {
     padding: 4px 14px;
   }
@@ -108,7 +107,7 @@ export const ProductCheckBtn = styled.div`
   color: white;
   cursor: pointer;
   @media only screen and (max-width: 500px) {
-    padding: 4px 14px;
+    width: 45px;
     font-size: 12px;
   }
 `;

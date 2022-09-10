@@ -17,14 +17,20 @@ function Login() {
   const [inputPassword, setInputPassword] = useState("");
   const navigate = useNavigate();
   const onSubmit = (e) => {
-    axios.post("http://127.0.0.1:8000/user/login/", {
-      username: inputId,
-      password: inputPassword,
-    });
+    axios
+      .post("http://127.0.0.1:8000/user/login/", {
+        username: inputId,
+        password: inputPassword,
+      })
+      .then(
+        (response) => {
+          console.log(response.data);
+        }
+        // localStorage.setItem(("user", response.data))
+      );
+    navigate("/main");
     //   오류 처리하기
     // e.preventDefault();
-    navigate("/main");
-    console.log(inputId, inputPassword);
   };
   return (
     <LoginBox>
@@ -58,7 +64,21 @@ function Login() {
             required
           />
         </LoginInput>
-        <LoginButton>로그인하기</LoginButton>
+        <LoginButton
+          onClick={() => {
+            const data = {
+              username: inputId,
+              password: inputPassword,
+            };
+            axios
+              .post("http://127.0.0.1:8000/user/login/", { data })
+              .then((res) => {
+                console.log(res.data);
+              });
+          }}
+        >
+          로그인
+        </LoginButton>
       </LoginForm>
       <LoginToReg
         onClick={() => {

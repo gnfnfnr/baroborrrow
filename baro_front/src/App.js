@@ -14,7 +14,6 @@ import Profile from "./personal/Profile";
 import ProfileEdit from "./personal/ProfileEdit";
 import ContentList from "./personal/ContentList";
 import Login from "./start/Login";
-import SignUp from "./start/SignUp";
 import Borrow from "./personal/Borrow";
 import Lend from "./personal/Lend";
 import Join from "./start/Join";

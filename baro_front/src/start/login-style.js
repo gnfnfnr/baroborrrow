@@ -13,7 +13,7 @@ export const LoginLogo = styled.img`
   transform: translateX(-50%);
 `;
 
-export const LoginForm = styled.form``;
+export const LoginForm = styled.div``;
 
 export const LoginInput = styled.div`
   width: 100%;

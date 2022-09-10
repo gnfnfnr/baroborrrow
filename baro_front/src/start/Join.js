@@ -20,22 +20,27 @@ function Join() {
   const [inputNick, setInputNick] = useState("");
   const [pwCompare, setPwCompare] = useState({ cp: false, password: "" });
   const navigate = useNavigate();
-  const joinData = {
-    username: inputId,
-    name: inputName,
-    password: pwCompare.password,
-    nickname: inputNick,
-  };
-  console.log(joinData);
   const onSubmit = (e) => {
+    const joinData = {
+      username: inputId,
+      name: inputName,
+      password: pwCompare.password,
+      nickname: inputNick,
+    };
     axios
-      .post("http://127.0.0.1:8000/user/accounts/", { joinData })
+      .post("http://127.0.0.1:8000/user/accounts/", {
+        username: inputId,
+        name: inputName,
+        password: pwCompare.password,
+        nickname: inputNick,
+      })
       .then(function (response) {
         console.log(response);
       });
     //   오류 처리하기
     // e.preventDefault();
     navigate("/login");
+    console.log(joinData);
   };
   useEffect(() => {
     if (inputPw === inputPwCheck && inputPw !== "" && inputPwCheck !== "") {
@@ -50,7 +55,7 @@ function Join() {
     <LoginBox>
       <JoinWelcome>welcome!</JoinWelcome>
       <JoinText>회원 정보를 입력하여 가입을 완료해주세요.</JoinText>
-      <LoginForm onSubmit={onSubmit}>
+      <LoginForm>
         <LoginInput>
           <LoginInputLabel htmlFor="loginName">
             <img src={require("../img/name.png")} />
@@ -130,7 +135,7 @@ function Join() {
             />
           </LoginInput>
         </div>
-        <LoginButton>회원가입</LoginButton>
+        <LoginButton onClick={onSubmit}>회원가입</LoginButton>
       </LoginForm>
     </LoginBox>
   );

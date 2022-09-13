@@ -47,7 +47,7 @@ function Home() {
   const clickRef = useRef();
   useEffect(() => {
     axios.get(`http://127.0.0.1:8000/search/products`).then((response) => {
-      setPdData(response.data);
+      setPdData(response.data.reverse());
       console.log(response);
     });
   }, []);

@@ -98,7 +98,6 @@ function ProductEnroll() {
   const [showSelect, setShowSelect] = useState(false);
   const [condition, setCondition] = useState(0);
   const [fileImg, setFileImg] = useState();
-  console.log(fileImg);
   const [price, setPrice] = useState("");
   const [rental, setRental] = useState({
     pr: "",

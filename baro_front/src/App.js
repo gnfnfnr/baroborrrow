@@ -17,6 +17,8 @@ import Login from "./start/Login";
 import Borrow from "./personal/Borrow";
 import Lend from "./personal/Lend";
 import Join from "./start/Join";
+import ProductDetail from "./product/ProductDetail";
+import ProductResult from "./product/ProductResult";
 function App() {
   return (
     <BrowserRouter>
@@ -25,10 +27,14 @@ function App() {
       <Routes>
         <Route path="/" element={<RouteMain />}>
           <Route path="/main" element={<Home />} />
+          <Route element={<ProductDetail />} path={"/detail:id"} />
           <Route path="/search" element={<Search />} />
           <Route path="/filtersearch" element={<Option />} />
           <Route path="/enroll" element={<ProductEnroll />} />
           <Route path="/basket" element={<Basket />} />
+          <Route path={`/detail:id/result`} element={<ProductResult />} />
+
+          {/* 마이페이지 */}
           <Route path="/mypage" element={<Mypage />} />
           <Route path="/mypage/profile" element={<Profile />} />
           <Route path="/mypage/profileedit" element={<ProfileEdit />} />

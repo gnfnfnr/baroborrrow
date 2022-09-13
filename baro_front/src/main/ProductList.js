@@ -29,7 +29,7 @@ function ProductList({ pdData }) {
           <ProductInfo>
             <ProductName
               onClick={() => {
-                navigate(`/user/detail${list.id}`);
+                navigate(`/detail${list.id}`);
               }}
             >
               {list.productName}

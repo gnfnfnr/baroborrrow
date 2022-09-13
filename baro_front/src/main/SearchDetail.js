@@ -98,7 +98,7 @@ function SearchDetail({ setPdData }) {
               )
               .then((response) => {
                 console.log(response);
-                setPdData(response.data);
+                setPdData(response.data.reverse());
               });
           }}
         />

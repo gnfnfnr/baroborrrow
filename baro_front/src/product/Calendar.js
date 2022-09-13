@@ -4,10 +4,9 @@ import { DateRange } from "react-date-range";
 import "react-date-range/dist/styles.css"; // main css file
 import "react-date-range/dist/theme/default.css"; // theme css file
 import ko from "date-fns/locale/ko";
-import axios from "axios";
+import { Link } from "react-router-dom";
 import moment from "moment";
 import "./calendar.css";
-import { useNavigate } from "react-router-dom";
 
 const CalendarSection = style.section`
   width: 100%;
@@ -60,7 +59,7 @@ const CalendarBtn = style.div`
   background-color: #DADADA;
 `;
 
-const CalendarBtnLink = style.button`
+const CalendarBtnLink = style(Link)`
   background: #56AEDF;
   border-radius: 5px;
   padding: 13px 45px;
@@ -69,89 +68,64 @@ const CalendarBtnLink = style.button`
   margin-top: 20px;
 `;
 
-function CalendarEnroll({ borrowInfo }) {
-  const naviagte = useNavigate();
-  const today = new Date();
+function Calendar({ item, ban }) {
+  let compare = new Date();
+  if (compare <= new Date(item.barrowAvailableStart)) {
+    compare = new Date(item.barrowAvailableStart);
+  }
   const [state, setState] = useState([
     {
-      startDate: today,
-      endDate: today,
+      startDate: null,
+      endDate: null,
       key: "selection",
       color: "#56AEDF",
     },
   ]);
   const start = moment(state[0].startDate).format("YYYY-MM-DD");
   const end = moment(state[0].endDate).format("YYYY-MM-DD");
-  console.log(borrowInfo);
-  const user = JSON.parse(localStorage.getItem("user"));
+  const lender = JSON.parse(localStorage.getItem("user"));
   return (
     <CalendarSection>
       <CalendarInside>
         <CalendarInfo>
           {start !== "Invalid date" && end !== "Invalid date" ? (
             <>
-              <InfoTitle>대여 가능일 날짜</InfoTitle>
+              <InfoTitle>대여날짜</InfoTitle>
               <InfoCnt>{start}</InfoCnt>
               <InfoCnt>-</InfoCnt>
               <InfoCnt>{end}</InfoCnt>
             </>
           ) : (
-            "대여 가능 시작일과 반납일을 선택해주세요"
+            "대여 시작일과 반납일을 선택해주세요"
           )}
         </CalendarInfo>
-
         <DateRange
           editableDateInputs={false}
           onChange={(item) => setState([item.selection])}
-          minDate={today} // 과거 날짜 disable
+          minDate={compare} // 과거 날짜 disable
+          maxDate={new Date(item.barrowAvailableEnd)}
           locale={ko}
           showDateDisplay={false}
+          disabledDates={ban} // 빌리는 거 금지 날짜
           color={"#aeb9bf"}
           showMonthAndYearPickers={false}
           ranges={state}
           monthDisplayFormat={"yyyy-mmm"}
         />
         {start !== "Invalid date" && end !== "Invalid date" ? (
-          <form
-            enctype="multipart/form-data"
-            onSubmit={() => {
-              const formData = new FormData();
-              formData.append("owner", user);
-              formData.append("productName", borrowInfo.productName);
-              formData.append("listPrice", borrowInfo.listPrice);
-              formData.append("deposit", borrowInfo.deposit);
-              formData.append("rentalFee", borrowInfo.rentalFee);
-              formData.append("explanation", borrowInfo.explanation);
-              formData.append("condition", borrowInfo.condition);
-              formData.append("address", borrowInfo.address);
-              formData.append("detailAddress", borrowInfo.detailAddress);
-              formData.append("productPhoto", borrowInfo.productPhoto);
-              formData.append("barrowAvailableStart", start);
-              formData.append("barrowAvailableEnd", end);
-              axios({
-                method: "POST",
-                url: "http://127.0.0.1:8000/product/",
-                headers: {
-                  "Content-Type": "multipart/form-data", // Content-Type을 반드시 이렇게 하여야 한다.
-                },
-                data: formData, // data 전송시에 반드시 생성되어 있는 formData 객체만 전송 하여야 한다.
-              }).catch((err) => console.log(err));
-              /* key 확인하기 */
-
-              for (let key of formData.keys()) {
-                console.log(key, ":", formData.get(key));
-              }
-              // axios.post("http://127.0.0.1:8000/product/", {
-              //   owner: user,
-              //   ...borrowInfo,
-              //   barrowAvailableStart: start,
-              //   barrowAvailableEnd: end,
-              // });
-              naviagte("/main");
+          <CalendarBtnLink
+            to={`/detail${item.id}/result`}
+            state={{
+              borrow: item,
+              borrower: {
+                user: lender,
+                borrowDate: start,
+                borrowEndDate: end,
+              },
             }}
           >
-            <CalendarBtnLink type="submit">바로</CalendarBtnLink>
-          </form>
+            바로
+          </CalendarBtnLink>
         ) : (
           <CalendarBtn>바로</CalendarBtn>
         )}
@@ -160,4 +134,4 @@ function CalendarEnroll({ borrowInfo }) {
   );
 }
 
-export default CalendarEnroll;
+export default Calendar;

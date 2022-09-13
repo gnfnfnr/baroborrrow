@@ -16,26 +16,11 @@ function Login() {
   const [inputId, setInputId] = useState("");
   const [inputPassword, setInputPassword] = useState("");
   const navigate = useNavigate();
-  const onSubmit = (e) => {
-    axios
-      .post("http://127.0.0.1:8000/user/login/", {
-        username: inputId,
-        password: inputPassword,
-      })
-      .then(
-        (response) => {
-          console.log(response.data);
-        }
-        // localStorage.setItem(("user", response.data))
-      );
-    navigate("/main");
-    //   오류 처리하기
-    // e.preventDefault();
-  };
+
   return (
     <LoginBox>
       <LoginLogo src={require("../img/loginLogo.png")} />
-      <LoginForm onSubmit={onSubmit}>
+      <LoginForm>
         <LoginInput>
           <LoginInputLabel htmlFor="loginId">
             <img src={require("../img/id.png")} />
@@ -55,6 +40,7 @@ function Login() {
             <img src={require("../img/password.png")} />
           </LoginInputLabel>
           <LoginInputText
+            type="password"
             placeholder="비밀번호"
             id="loginPassword"
             value={inputPassword}
@@ -74,7 +60,13 @@ function Login() {
               .post("http://127.0.0.1:8000/user/login/", { data })
               .then((res) => {
                 console.log(res.data);
-              });
+                const userObj = JSON.stringify(res.data);
+                localStorage.setItem("user", userObj);
+                navigate("/main");
+              })
+              .catch((error) =>
+                alert("아이디 또는 비밀번호를 다시 확인해주세요")
+              );
           }}
         >
           로그인

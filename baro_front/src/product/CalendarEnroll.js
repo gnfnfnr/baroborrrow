@@ -115,38 +115,36 @@ function CalendarEnroll({ borrowInfo }) {
           <form
             enctype="multipart/form-data"
             onSubmit={() => {
-              const formData = new FormData();
-              formData.append("owner", user);
-              formData.append("productName", borrowInfo.productName);
-              formData.append("listPrice", borrowInfo.listPrice);
-              formData.append("deposit", borrowInfo.deposit);
-              formData.append("rentalFee", borrowInfo.rentalFee);
-              formData.append("explanation", borrowInfo.explanation);
-              formData.append("condition", borrowInfo.condition);
-              formData.append("address", borrowInfo.address);
-              formData.append("detailAddress", borrowInfo.detailAddress);
-              formData.append("productPhoto", borrowInfo.productPhoto);
-              formData.append("barrowAvailableStart", start);
-              formData.append("barrowAvailableEnd", end);
-              axios({
-                method: "POST",
-                url: "http://127.0.0.1:8000/product/",
-                headers: {
-                  "Content-Type": "multipart/form-data", // Content-Type을 반드시 이렇게 하여야 한다.
-                },
-                data: formData, // data 전송시에 반드시 생성되어 있는 formData 객체만 전송 하여야 한다.
-              }).catch((err) => console.log(err));
-              /* key 확인하기 */
+              // const formData = new FormData();
+              // formData.append("owner", user);
+              // formData.append("productName", borrowInfo.productName);
+              // formData.append("listPrice", borrowInfo.listPrice);
+              // formData.append("deposit", borrowInfo.deposit);
+              // formData.append("rentalFee", borrowInfo.rentalFee);
+              // formData.append("explanation", borrowInfo.explanation);
+              // formData.append("condition", borrowInfo.condition);
+              // formData.append("address", borrowInfo.address);
+              // formData.append("detailAddress", borrowInfo.detailAddress);
+              // formData.append("productPhoto", borrowInfo.productPhoto);
+              // formData.append("barrowAvailableStart", start);
+              // formData.append("barrowAvailableEnd", end);
+              // axios({
+              //   method: "POST",
+              //   url: "http://127.0.0.1:8000/product/",
+              //   headers: {
+              //     "Content-Type": "multipart/form-data", // Content-Type을 반드시 이렇게 하여야 한다.
+              //   },
+              //   data: formData, // data 전송시에 반드시 생성되어 있는 formData 객체만 전송 하여야 한다.
+              // }).catch((error) => console.log(error));
 
-              for (let key of formData.keys()) {
-                console.log(key, ":", formData.get(key));
-              }
-              // axios.post("http://127.0.0.1:8000/product/", {
-              //   owner: user,
-              //   ...borrowInfo,
-              //   barrowAvailableStart: start,
-              //   barrowAvailableEnd: end,
-              // });
+              axios
+                .post("http://127.0.0.1:8000/product/", {
+                  owner: user,
+                  ...borrowInfo,
+                  barrowAvailableStart: start,
+                  barrowAvailableEnd: end,
+                })
+                .catch((error) => console.log(error));
               naviagte("/main");
             }}
           >

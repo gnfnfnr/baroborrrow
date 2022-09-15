@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { useUserContext } from "../Context.js";
 
 const PdSearchHeader = styled.div`
   background: #f7f7f7;
@@ -61,27 +62,39 @@ const SearchImg = styled.img`
   }
 `;
 
-function SearchDetail({ setPdData }) {
-  const navigate = useNavigate();
+function SearchDetail({ setPdData, setShowOp, showOp }) {
   const [inputSearch, setInputSearch] = useState("");
-
   const handleInputSearch = (e) => {
     setInputSearch(e.target.value);
+    axios
+      .get(`http://127.0.0.1:8000/search/products?search=${e.target.value}`)
+      .then((response) => {
+        console.log(response);
+        setPdData(response.data.reverse());
+      });
   };
+  const { user } = useUserContext();
 
   return (
     <PdSearchHeader>
       <PdSearchInfo>
-        <PdSearchUser>김바로</PdSearchUser>
-        <span>님이 검색하신 결과</span>
-        <PdSearchKeyWord>LP판</PdSearchKeyWord>
-        <span>관련 검색 결과</span>
+        {user ? (
+          <>
+            <PdSearchUser>{user.nickname}</PdSearchUser>
+            <span>님이 검색하신 결과</span>
+            <PdSearchKeyWord>{inputSearch}</PdSearchKeyWord>
+            <span>관련 검색 결과</span>
+          </>
+        ) : (
+          "로그인이 필요합니다"
+        )}
       </PdSearchInfo>
       <PdSearchInput>
         <SearchImg
           src={require("../img/filter.png")}
           onClick={() => {
-            navigate("/filtersearch");
+            setShowOp(!showOp);
+            console.log(showOp);
           }}
         />
         <SearchInput
@@ -89,19 +102,7 @@ function SearchDetail({ setPdData }) {
           value={inputSearch}
           onChange={handleInputSearch}
         />
-        <SearchImg
-          src={require("../img/searchIcon.png")}
-          onClick={() => {
-            axios
-              .get(
-                `http://127.0.0.1:8000/search/products?search=${inputSearch}`
-              )
-              .then((response) => {
-                console.log(response);
-                setPdData(response.data.reverse());
-              });
-          }}
-        />
+        <SearchImg src={require("../img/searchIcon.png")} onClick={() => {}} />
       </PdSearchInput>
     </PdSearchHeader>
   );

@@ -136,6 +136,7 @@ function ProductEnroll() {
     productPhoto: "",
   });
   const [files, setFiles] = useState();
+  console.log(files);
   return (
     <>
       <PdContainer style={{ display: showSelect ? "none" : "" }}>
@@ -164,8 +165,7 @@ function ProductEnroll() {
                   accept="image/*"
                   onChange={(event) => {
                     setFileImg(URL.createObjectURL(event.target.files[0]));
-                    const file = event.target.files[0];
-                    setFiles({ file, uploadedFile: file });
+                    setFiles(event.target.files[0]);
                   }}
                   style={{ width: "0", height: "0" }}
                 />
@@ -439,7 +439,7 @@ function ProductEnroll() {
               condition: condition,
               address: address,
               detailAddress: dtAddress,
-              productPhoto: null,
+              productPhoto: files,
               barrowMethod: way,
             });
           }}

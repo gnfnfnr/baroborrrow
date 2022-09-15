@@ -7,6 +7,7 @@ import ko from "date-fns/locale/ko";
 import { Link } from "react-router-dom";
 import moment from "moment";
 import "./calendar.css";
+import axios from "axios";
 
 const CalendarSection = style.section`
   width: 100%;
@@ -122,6 +123,23 @@ function Calendar({ item, ban }) {
                 borrowDate: start,
                 borrowEndDate: end,
               },
+            }}
+            onClick={() => {
+              axios({
+                method: "POST",
+                url: `http://127.0.0.1:8000/product/${item.id}/borrow/`,
+                data: {
+                  user: lender,
+                  product: item.id,
+                  barrowStart: start,
+                  barrowEnd: end,
+                  isReturn: false,
+                },
+              })
+                .then((res) => {
+                  console.log(res);
+                })
+                .catch((error) => console.log(error));
             }}
           >
             바로

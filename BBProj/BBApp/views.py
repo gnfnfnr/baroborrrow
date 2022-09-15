@@ -49,7 +49,7 @@ class ProductList(APIView):
         return Response(serializers.data)
     
     def post(self, request): #빌려주기 작성
-        print(request.data['owner']['username'])
+        # print(request.data['owner']['username'])
         obj  = User.objects.get(username=request.data['owner']['username'])
         serializer = ProductSerializer(data=request.data)
         if serializer.is_valid():

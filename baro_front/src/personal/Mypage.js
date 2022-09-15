@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
+import { useUserContext } from "../Context";
 
 const MypageBox = styled.div``;
 const MypageTitle = styled.div`
@@ -33,31 +34,39 @@ const DetailIcon = styled.img`
 const DetailTitle = styled.div``;
 
 function Mypage() {
+  const { user } = useUserContext();
+  console.log(user);
   return (
-    <MypageBox>
-      <MypageTitle>
-        <NickName>닉네임</NickName>
-        <NickNameText>님</NickNameText>
-      </MypageTitle>
-      <MypageList>
-        <Link to="/mypage/profile">
-          <MypageDetail>
-            <DetailIcon src={require("../img/profile.png")} />
-            <DetailTitle>내 프로필</DetailTitle>
-          </MypageDetail>
-        </Link>
-        <Link to="/mypage/content/borrow">
-          <MypageDetail>
-            <DetailIcon src={require("../img/list.png")} />
-            <DetailTitle>내 바로 내역</DetailTitle>
-          </MypageDetail>
-        </Link>
-        <MypageDetail>
-          <DetailIcon src={require("../img/center.png")} />
-          <DetailTitle>고객센터</DetailTitle>
-        </MypageDetail>
-      </MypageList>
-    </MypageBox>
+    <>
+      {user ? (
+        <MypageBox>
+          <MypageTitle>
+            <NickName>{user.nickname}</NickName>
+            <NickNameText>님</NickNameText>
+          </MypageTitle>
+          <MypageList>
+            <Link to="/mypage/profile">
+              <MypageDetail>
+                <DetailIcon src={require("../img/profile.png")} />
+                <DetailTitle>내 프로필</DetailTitle>
+              </MypageDetail>
+            </Link>
+            <Link to="/mypage/content/borrow">
+              <MypageDetail>
+                <DetailIcon src={require("../img/list.png")} />
+                <DetailTitle>내 바로 내역</DetailTitle>
+              </MypageDetail>
+            </Link>
+            <MypageDetail>
+              <DetailIcon src={require("../img/center.png")} />
+              <DetailTitle>고객센터</DetailTitle>
+            </MypageDetail>
+          </MypageList>
+        </MypageBox>
+      ) : (
+        "로그인이 필요한 서비스입니다"
+      )}
+    </>
   );
 }
 

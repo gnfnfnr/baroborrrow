@@ -19,35 +19,38 @@ import Lend from "./personal/Lend";
 import Join from "./start/Join";
 import ProductDetail from "./product/ProductDetail";
 import ProductResult from "./product/ProductResult";
+import { UserContextProvider } from "./Context";
 function App() {
   return (
     <BrowserRouter>
       <GlobalStyle />
-      <Header />
-      <Routes>
-        <Route path="/" element={<RouteMain />}>
-          <Route path="/main" element={<Home />} />
-          <Route element={<ProductDetail />} path={"/detail:id"} />
-          <Route path="/search" element={<Search />} />
-          <Route path="/filtersearch" element={<Option />} />
-          <Route path="/enroll" element={<ProductEnroll />} />
-          <Route path="/basket" element={<Basket />} />
-          <Route path={`/detail:id/result`} element={<ProductResult />} />
+      <UserContextProvider>
+        <Header />
+        <Routes>
+          <Route path="/" element={<RouteMain />}>
+            <Route path="/main" element={<Home />} />
+            <Route element={<ProductDetail />} path={"/detail:id"} />
+            <Route path="/search" element={<Search />} />
 
-          {/* 마이페이지 */}
-          <Route path="/mypage" element={<Mypage />} />
-          <Route path="/mypage/profile" element={<Profile />} />
-          <Route path="/mypage/profileedit" element={<ProfileEdit />} />
-          <Route path="/mypage/content" element={<ContentList />}>
-            <Route path="/mypage/content/borrow" element={<Borrow />} />
-            <Route path="/mypage/content/lend" element={<Lend />} />
+            <Route path="/enroll" element={<ProductEnroll />} />
+            <Route path="/basket" element={<Basket />} />
+            <Route path={`/detail:id/result`} element={<ProductResult />} />
+
+            {/* 마이페이지 */}
+            <Route path="/mypage" element={<Mypage />} />
+            <Route path="/mypage/profile" element={<Profile />} />
+            <Route path="/mypage/profileedit" element={<ProfileEdit />} />
+            <Route path="/mypage/content" element={<ContentList />}>
+              <Route path="/mypage/content/borrow" element={<Borrow />} />
+              <Route path="/mypage/content/lend" element={<Lend />} />
+            </Route>
+            {/* 로그인 */}
+            <Route path="/login" element={<Login />} />
+            <Route path="/join" element={<Join />} />
           </Route>
-          {/* 로그인 */}
-          <Route path="/login" element={<Login />} />
-          <Route path="/join" element={<Join />} />
-        </Route>
-      </Routes>
-      <Footer />
+        </Routes>
+        <Footer />
+      </UserContextProvider>
     </BrowserRouter>
   );
 }

@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import InfoBar from "../product/InfoBar";
 import { Link } from "react-router-dom";
+import { useUserContext } from "../Context";
 
 const OwnerContainer = styled.div`
   color: #666666;
@@ -52,12 +53,13 @@ const ownerDes = [
 ];
 
 function Profile() {
+  const { user } = useUserContext();
   return (
     <OwnerContainer>
       <OwnerHead>
         <NickNameLink to={"/mypage/profileEdit"}>
           <OwnerName>
-            <OwnerNameText>닉네임</OwnerNameText>
+            <OwnerNameText>{user.nickname}</OwnerNameText>
             <span>님</span>
           </OwnerName>
           <img src={require("../img/side.png")} />

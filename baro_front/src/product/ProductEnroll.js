@@ -134,9 +134,9 @@ function ProductEnroll() {
     address: "",
     detailAddress: "",
     productPhoto: "",
+    barrowMethod: "",
   });
   const [files, setFiles] = useState();
-  console.log(files);
   return (
     <>
       <PdContainer style={{ display: showSelect ? "none" : "" }}>

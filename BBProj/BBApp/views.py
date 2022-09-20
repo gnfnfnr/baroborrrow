@@ -1,3 +1,4 @@
+from ast import For
 from datetime import datetime, date, timedelta
 from django.utils.dateformat import DateFormat
 from django.shortcuts import render, redirect
@@ -49,8 +50,7 @@ class ProductList(APIView):
         return Response(serializers.data)
     
     def post(self, request): #빌려주기 작성
-        # print(request.data['owner']['username'])
-        obj  = User.objects.get(username=request.data['owner']['username'])
+        obj  = User.objects.get(username=eval(request.data['owner'])['username'])
         serializer = ProductSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save(owner=obj)

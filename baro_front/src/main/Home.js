@@ -3,11 +3,11 @@ import styled from "styled-components";
 import axios from "axios";
 import ProductList from "./ProductList";
 
-const HomeBox = styled.div`
+const Header = styled.div`
   padding: 20px 20px 0;
 `;
 
-const SearchBox = styled.div`
+const SearchForm = styled.form`
   display: flex;
   align-items: center;
   background: #f7f7f7;
@@ -30,7 +30,11 @@ const Input = styled.input`
     font-size: 12px;
   }
 `;
-const InputImg = styled.img`
+const InputBtn = styled.button`
+  all: unset;
+  cursor: pointer;
+`;
+const BtnImg = styled.img`
   width: 20px;
   padding-right: 12px;
   @media only screen and (max-width: 400px) {
@@ -52,19 +56,11 @@ function Home() {
     });
   }, []);
   return (
-    <HomeBox>
-      <SearchBox>
-        <Input
-          placeholder="물품 카테고리 , 물품 명을 검색해주세요."
-          value={inputSearch}
-          onChange={(event) => {
-            setInputSearch(event.target.value);
-          }}
-        />
-        <InputImg
-          src={require("../img/searchIcon.png")}
-          ref={clickRef}
-          onClick={() => {
+    <>
+      <Header>
+        <SearchForm
+          onSubmit={(event) => {
+            event.preventDefault();
             axios
               .get(
                 `http://127.0.0.1:8000/search/products?search=${inputSearch}`
@@ -74,11 +70,22 @@ function Home() {
                 setPdData(response.data);
               });
           }}
-        />
-      </SearchBox>
-      <ProductText>전체물품</ProductText>
+        >
+          <Input
+            placeholder="물품 카테고리 , 물품 명을 검색해주세요."
+            value={inputSearch}
+            onChange={(event) => {
+              setInputSearch(event.target.value);
+            }}
+          />
+          <InputBtn>
+            <BtnImg src={require("../img/searchIcon.png")} ref={clickRef} />
+          </InputBtn>
+        </SearchForm>
+        <ProductText>전체물품</ProductText>
+      </Header>
       <ProductList pdData={pdData} />
-    </HomeBox>
+    </>
   );
 }
 

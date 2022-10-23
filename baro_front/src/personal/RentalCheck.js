@@ -3,7 +3,7 @@ import styled from "styled-components";
 import InfoBar from "../product/InfoBar";
 
 const RentalCheckModal = styled.section`
-  position: absolute;
+  position: fixed;
   background: rgb(0 0 0 / 10%);
   width: 100%;
   min-height: 100%;

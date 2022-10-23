@@ -6,7 +6,6 @@ import Footer from "./nav/Footer";
 import Header from "./nav/Header";
 import RouteMain from "./RouteMain";
 import Search from "./main/Search";
-import Option from "./main/Option";
 import ProductEnroll from "./product/ProductEnroll";
 import Basket from "./main/Basket";
 import Mypage from "./personal/Mypage";
@@ -34,7 +33,6 @@ function App() {
             <Route path="/enroll" element={<ProductEnroll />} />
             <Route path="/basket" element={<Basket />} />
             <Route path={`/detail:id/result`} element={<ProductResult />} />
-
             {/* 마이페이지 */}
             <Route path="/mypage" element={<Mypage />} />
             <Route path="/mypage/profile" element={<Profile />} />

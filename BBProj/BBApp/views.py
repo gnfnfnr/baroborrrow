@@ -159,7 +159,14 @@ class ReturnProduct(APIView):
             return Response(serializer.data)
         return Response(status=status.HTTP_400_BAD_REQUEST)
         
-
+#장바구니
+class ProductLikeList(APIView):
+    def get(self, request):
+        username = request.GET.get('username', None)
+        obj  = User.objects.get(username=username)
+        products = obj.like_products.all()
+        serializers = ProductSerializer(products, many=True)
+        return Response(serializers.data)
 
 
 

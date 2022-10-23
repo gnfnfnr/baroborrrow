@@ -25,6 +25,7 @@ urlpatterns = [
     path('search/', include(product_router.urls)),
     path('return/<int:pk>/', views.ReturnProduct.as_view()),
     path('mypage/myproduct/', views.MyProductList.as_view()),
+    path('mypage/likeproducts/', views.ProductLikeList.as_view()),
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)

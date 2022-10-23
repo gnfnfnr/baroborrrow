@@ -13,47 +13,54 @@ import {
   ProductBorrow,
 } from "./list-style";
 
-function Basket() {
+const BasketItem = function ({ user }) {
   const navigate = useNavigate();
   const [bkData, setBkData] = useState([]);
+  useEffect(() => {
+    axios
+      .get(
+        `http://127.0.0.1:8000/mypage/likeproducts/?username=${user.username}`
+      )
+      .then((res) => {
+        setBkData(res.data);
+      });
+  }, []);
+  return bkData.map((list) => (
+    <ProductBox key={list.id}>
+      <ProductImg>
+        <img
+          src={`http://127.0.0.1:8000${list.productPhoto}`}
+          style={{
+            width: "100%",
+            height: "100%",
+            objectFit: "cover",
+          }}
+        />
+        <ProductBorrow>대여중</ProductBorrow>
+      </ProductImg>
+      <ProductInfo>
+        <ProductName
+          onClick={() => {
+            navigate(`/detail${list.id}`);
+          }}
+        >
+          {list.productName}
+        </ProductName>
+        <ProductLocal>{list.address}</ProductLocal>
+        <ProductFee>{list.deposit}</ProductFee>
+        <ProductFee>{list.rentalFee}</ProductFee>
+        <ProductCart src={require("../img/cart.png")} />
+      </ProductInfo>
+    </ProductBox>
+  ));
+};
+
+function Basket() {
   const { user } = useUserContext();
-  console.log(user);
-  useEffect(() => {}, []);
-  return (
-    <>
-      {user ? (
-        bkData.map((list) => (
-          <ProductBox key={list.id}>
-            <ProductImg>
-              <img
-                src={list.productPhoto}
-                style={{
-                  width: "100%",
-                  height: "100%",
-                  objectFit: "cover",
-                }}
-              />
-              <ProductBorrow>대여중</ProductBorrow>
-            </ProductImg>
-            <ProductInfo>
-              <ProductName
-                onClick={() => {
-                  navigate(`/user/detail${list.id}`);
-                }}
-              >
-                {list.productName}
-              </ProductName>
-              <ProductLocal>{list.address}</ProductLocal>
-              <ProductFee>{list.deposit}</ProductFee>
-              <ProductFee>{list.rentalFee}</ProductFee>
-              <ProductCart src={require("../img/cart.png")} />
-            </ProductInfo>
-          </ProductBox>
-        ))
-      ) : (
-        <div>로그인이 필요한 서비스 입니다.</div>
-      )}
-    </>
+  return user ? (
+    <BasketItem user={user} />
+  ) : (
+    <div>로그인이 필요한 서비스 입니다.</div>
   );
 }
 

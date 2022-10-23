@@ -1,4 +1,4 @@
-import React, { createContext, useState, useContext, useEffect } from "react";
+import React, { createContext, useState, useContext } from "react";
 
 //createContext를 사용하여 상태값을 담을 박스 생성 -> 그 박스의 이름을 지정(Context)
 const Context = createContext();

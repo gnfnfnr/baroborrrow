@@ -1,6 +1,8 @@
 import React from "react";
 import styled from "styled-components";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useUserContext } from "../Context";
+
 const HeaderBox = styled.header`
   background: #56aedf;
   height: 52px;
@@ -10,10 +12,32 @@ const HeaderBox = styled.header`
   top: 0;
   left: 0;
 `;
+
 function Header() {
+  const { user } = useUserContext();
+  const { pathname } = useLocation();
+  const nav = useNavigate();
+  console.log(pathname);
   return (
     <HeaderBox>
-      <Link to={"/login"}>로그인하기</Link>
+      {user ? (
+        <div
+          onClick={() => {
+            localStorage.removeItem("user");
+            window.location.reload();
+          }}
+        >
+          로그아웃
+        </div>
+      ) : (
+        <div
+          onClick={() => {
+            nav("/login");
+          }}
+        >
+          로그인하기
+        </div>
+      )}
     </HeaderBox>
   );
 }

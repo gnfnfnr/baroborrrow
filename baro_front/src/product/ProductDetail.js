@@ -68,6 +68,7 @@ function ProductDetail() {
   const params = useParams();
   const navigate = useNavigate();
   const [dt, setDt] = useState({});
+  const user = JSON.parse(localStorage.getItem("user"));
   useEffect(() => {
     axios.get(`http://127.0.0.1:8000/product/${params.id}`).then((response) => {
       const dtt = response.data;
@@ -78,14 +79,29 @@ function ProductDetail() {
   const [showSelect, setShowSelect] = useState(false);
   // 여기 수정 필요: 대여자들의 물품 대여 날짜 필요
   const ban = [];
+
+  const desRef = useRef();
+  const [showDes, setShowDes] = useState(false);
+  const [showDesBtn, setShowDesBtn] = useState(false);
+  useEffect(() => {
+    window.addEventListener("resize", function () {
+      if (window.innerWidth < 800 && desRef.current.clientHeight > 171) {
+        setShowDesBtn(true);
+        console.log(desRef.current.clientHeight);
+      } else {
+        setShowDesBtn(false);
+      }
+    });
+  }, []);
   return (
     <>
       <>
         <PdContainer style={{ display: showSelect ? "none" : "" }}>
           <PdImgDiv>
-            <PdImg src={dt.productPhoto} />
+            <PdImg src={`http://127.0.0.1:8000${dt.productPhoto}`} />
           </PdImgDiv>
           <PdTitle>{dt.productName}</PdTitle>
+
           <PdInfo>
             <InfoBox>
               <InfoTitle>대여자 정보</InfoTitle>
@@ -98,6 +114,30 @@ function ProductDetail() {
                 <InfoNim>님</InfoNim>
                 <img src={require("../img/side.png")} />
               </InfoOwner>
+            </InfoBox>
+            <InfoBox>
+              <InfoBar
+                title={"상품 상태"}
+                percentage={dt.condition / 2}
+                inputMode={false}
+              />
+            </InfoBox>
+            <InfoBox>
+              <InfoTitle>물품 설명</InfoTitle>
+              <InfoDes style={{ maxHeight: showDes ? "initial" : "171px" }}>
+                <p ref={desRef}>{dt.explanation}</p>
+              </InfoDes>
+              {showDesBtn ? (
+                <InfoOpen
+                  onClick={() => {
+                    setShowDes(!showDes);
+                  }}
+                >
+                  {showDes ? "접기" : "더보기"}
+                </InfoOpen>
+              ) : (
+                ""
+              )}
             </InfoBox>
             {dt.listPrice && dt.rentalFee && dt.deposit ? (
               <>

@@ -25,12 +25,18 @@ const Detail = ({ list }) => {
   const diff = Math.floor(
     (today - new Date(list.barrowEnd)) / (1000 * 60 * 60 * 24)
   );
+  const [productDt, setProductDt] = useState([]);
+  useEffect(() => {
+    axios
+      .get(`http://127.0.0.1:8000/product/${list.product}`)
+      .then((response) => setProductDt(response.data));
+  }, []);
   return (
     <>
       <ProductBox>
         <ProductImg>
           <img
-            src={list.productPhoto}
+            src={`http://127.0.0.1:8000${productDt.productPhoto}`}
             style={{
               width: "100%",
               height: "100%",
@@ -45,9 +51,9 @@ const Detail = ({ list }) => {
                 navigate(`/user/detail${list.id}`);
               }}
             >
-              {list.productName}
+              {productDt.productName}
             </ProductName>
-            <ProductLocal>{list.address}</ProductLocal>
+            <ProductLocal>{productDt.address}</ProductLocal>
             <ProductText>약속된 장소에 반납하셨나요?</ProductText>
           </div>
           <ProductDes>
@@ -86,47 +92,18 @@ const Detail = ({ list }) => {
 function Borrow() {
   const [borData, setBorData] = useState([]);
   const { user } = useUserContext();
-  console.log(user);
-  let cnt = 1;
   useEffect(() => {
-    let clear = [];
-    while (cnt < 11) {
-      axios
-        .get(`http://127.0.0.1:8000/barrow/${cnt}/`)
-        .then((response) => {
-          if (response.data.user.nickname === user.nickname) {
-            clear.push(response.data);
-            borData.push(response.data);
-          }
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-      cnt++;
-    }
+    axios
+      .get(`http://127.0.0.1:8000/mypage/borrow/?username=${user.username}`)
+      .then((res) => {
+        setBorData(res.data);
+      });
   }, []);
-  console.log(borData);
-  // useEffect(() => {
-  //   while (cnt < 10) {
-  //     //   axios
-  //     //     .get(`http://127.0.0.1:8000/barrow/${cnt}/`)
-  //     //     .then((response) => {
-  //     //       cnt += 1;
-  //     //       console.log(response);
-  //     //     })
-  //     //     .catch((err) => {
-  //     //       console.log(err);
-  //     //       return;
-  //     //     });
-  //     cnt++;
-  //     console.log(cnt);
-  //   }
-  // }, []);
 
   return (
     <>
       {borData
-        ? borData.map((list) => <Detail list={list} key={list.id} />)
+        ? borData.map((list, index) => <Detail list={list} key={index} />)
         : ""}
     </>
   );

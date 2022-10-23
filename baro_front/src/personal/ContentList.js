@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { NavLink, Outlet } from "react-router-dom";
 import styled from "styled-components";
+import { useUserContext } from "../Context";
 
 const ListTitle = styled.div`
   display: flex;
@@ -18,6 +19,7 @@ const ListTitleDetail = styled.div`
 const ListContent = styled.div``;
 
 function ContentList() {
+  const { user } = useUserContext();
   const activeStyle = {
     color: "#56AEDF",
     borderBottom: "4px solid #56AEDF",
@@ -31,23 +33,33 @@ function ContentList() {
   };
   return (
     <>
-      <ListTitle>
-        <NavLink
-          to="/mypage/content/borrow"
-          style={({ isActive }) => (isActive ? activeStyle : nonActiveStyle)}
-        >
-          <ListTitleDetail>빌린 내역</ListTitleDetail>
-        </NavLink>
-        <NavLink
-          to="/mypage/content/lend"
-          style={({ isActive }) => (isActive ? activeStyle : nonActiveStyle)}
-        >
-          <ListTitleDetail>빌려준 내역</ListTitleDetail>
-        </NavLink>
-      </ListTitle>
-      <ListContent>
-        <Outlet />
-      </ListContent>
+      {user ? (
+        <>
+          <ListTitle>
+            <NavLink
+              to="/mypage/content/borrow"
+              style={({ isActive }) =>
+                isActive ? activeStyle : nonActiveStyle
+              }
+            >
+              <ListTitleDetail>빌린 내역</ListTitleDetail>
+            </NavLink>
+            <NavLink
+              to="/mypage/content/lend"
+              style={({ isActive }) =>
+                isActive ? activeStyle : nonActiveStyle
+              }
+            >
+              <ListTitleDetail>빌려준 내역</ListTitleDetail>
+            </NavLink>
+          </ListTitle>
+          <ListContent>
+            <Outlet />
+          </ListContent>
+        </>
+      ) : (
+        "로그인 후 이용바람"
+      )}
     </>
   );
 }

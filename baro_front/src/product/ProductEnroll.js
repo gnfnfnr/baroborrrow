@@ -137,6 +137,7 @@ function ProductEnroll() {
     barrowMethod: "",
   });
   const [files, setFiles] = useState();
+  console.log(condition);
   return (
     <>
       <PdContainer style={{ display: showSelect ? "none" : "" }}>

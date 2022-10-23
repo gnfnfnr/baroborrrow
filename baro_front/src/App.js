@@ -31,7 +31,6 @@ function App() {
             <Route path="/main" element={<Home />} />
             <Route element={<ProductDetail />} path={"/detail:id"} />
             <Route path="/search" element={<Search />} />
-
             <Route path="/enroll" element={<ProductEnroll />} />
             <Route path="/basket" element={<Basket />} />
             <Route path={`/detail:id/result`} element={<ProductResult />} />

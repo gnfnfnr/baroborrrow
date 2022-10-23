@@ -16,7 +16,6 @@ function Login() {
   const [inputId, setInputId] = useState("");
   const [inputPassword, setInputPassword] = useState("");
   const navigate = useNavigate();
-
   return (
     <LoginBox>
       <LoginLogo src={require("../img/loginLogo.png")} />
@@ -59,15 +58,14 @@ function Login() {
             axios
               .post("http://127.0.0.1:8000/user/login/", { data })
               .then((res) => {
-                console.log(res.data);
                 const userObj = JSON.stringify(res.data);
                 localStorage.setItem("user", userObj);
                 navigate("/main");
                 window.location.reload();
               })
-              .catch((error) =>
-                alert("아이디 또는 비밀번호를 다시 확인해주세요")
-              );
+              .catch(() => {
+                alert("아이디 또는 비밀번호를 다시 확인해주세요");
+              });
           }}
         >
           로그인

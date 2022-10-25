@@ -21,6 +21,7 @@ import ProductResult from "./product/ProductResult";
 import { UserContextProvider } from "./Context";
 
 function App() {
+  const user = localStorage.getItem("user");
   return (
     <BrowserRouter>
       <GlobalStyle />
@@ -33,10 +34,16 @@ function App() {
             <Route element={<ProductDetail />} path={"/detail:id"} />
             <Route path="/search" element={<Search />} />
             <Route path="/enroll" element={<ProductEnroll />} />
-            <Route path="/basket" element={<Basket />} />
+            <Route
+              path="/basket"
+              element={user ? <Basket /> : <Navigate replace to="/login" />}
+            />
             <Route path={`/detail:id/result`} element={<ProductResult />} />
             {/* 마이페이지 */}
-            <Route path="/mypage" element={<Mypage />} />
+            <Route
+              path="/mypage"
+              element={user ? <Mypage /> : <Navigate replace to="/login" />}
+            />
             <Route path="/mypage/profile" element={<Profile />} />
             <Route path="/mypage/profileedit" element={<ProfileEdit />} />
             <Route path="/mypage/content" element={<ContentList />}>

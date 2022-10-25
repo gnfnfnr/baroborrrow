@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useUserContext } from "../Context";
 
 const HeaderBox = styled.header`
@@ -15,9 +15,8 @@ const HeaderBox = styled.header`
 
 function Header() {
   const { user } = useUserContext();
-  const { pathname } = useLocation();
   const nav = useNavigate();
-  console.log(pathname);
+
   return (
     <HeaderBox>
       {user ? (

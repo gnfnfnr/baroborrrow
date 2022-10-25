@@ -96,7 +96,7 @@ function Borrow() {
     axios
       .get(`http://127.0.0.1:8000/mypage/borrow/?username=${user.username}`)
       .then((res) => {
-        setBorData(res.data);
+        setBorData(res.data.reverse());
       });
   }, []);
 

@@ -64,8 +64,7 @@ function Lend() {
     axios
       .get(`http://127.0.0.1:8000/mypage/myproduct/?username=${user.username}`)
       .then((res) => {
-        setLendData(res.data);
-        console.log(lendData);
+        setLendData(res.data.reverse());
       });
   }, []);
   return (

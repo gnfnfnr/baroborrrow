@@ -1,4 +1,4 @@
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 import { GlobalStyle } from "./style";
 
 import Home from "./main/Home";
@@ -19,6 +19,7 @@ import Join from "./start/Join";
 import ProductDetail from "./product/ProductDetail";
 import ProductResult from "./product/ProductResult";
 import { UserContextProvider } from "./Context";
+
 function App() {
   return (
     <BrowserRouter>
@@ -27,6 +28,7 @@ function App() {
         <Header />
         <Routes>
           <Route path="/" element={<RouteMain />}>
+            <Route path="/" element={<Navigate replace to="/main" />} />
             <Route path="/main" element={<Home />} />
             <Route element={<ProductDetail />} path={"/detail:id"} />
             <Route path="/search" element={<Search />} />

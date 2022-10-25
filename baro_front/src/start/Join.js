@@ -34,20 +34,17 @@ function Join() {
         password: pwCompare.password,
         nickname: inputNick,
       })
-      .then(function (response) {
-        console.log(response);
+      .then(() => {
+        navigate("/login");
+      })
+      .catch(() => {
+        alert("동일한 아이디가 존재합니다. 다시 시도해주세요");
       });
-    //   오류 처리하기
-    // e.preventDefault();
-    navigate("/login");
-    console.log(joinData);
   };
   useEffect(() => {
     if (inputPw === inputPwCheck && inputPw !== "" && inputPwCheck !== "") {
-      console.log(inputPw, inputPwCheck, "확인");
       setPwCompare({ cp: true, password: inputPwCheck });
     } else {
-      console.log(inputPw, inputPwCheck);
       setPwCompare({ cp: false, password: "" });
     }
   }, [inputPw, inputPwCheck]);

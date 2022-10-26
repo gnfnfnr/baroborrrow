@@ -1,10 +1,10 @@
-from ast import For
 from datetime import datetime, date, timedelta
+from re import L
 from django.utils.dateformat import DateFormat
 from django.shortcuts import render, redirect
-from .models import Product, BarrowProduct
+from .models import Product, BarrowProduct, Review
 from django.http import HttpResponse
-from .serializers import ProductLikeSerializer, ProductSerializer, BarrowProductSerializer
+from .serializers import ProductLikeSerializer, ProductSerializer, BarrowProductSerializer, ReviewSerializer
 from rest_framework.viewsets import ModelViewSet
 from rest_framework import status
 from rest_framework.views import APIView
@@ -36,6 +36,15 @@ class ProductLikeDetail(APIView):
         serializer = ProductLikeSerializer(product)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
+class ProductLikeList(APIView):
+    def get(self, request):
+        username = request.GET.get('username', None)
+        obj  = User.objects.get(username=username)
+        products = obj.like_products.all()
+        serializers = ProductSerializer(products, many=True)
+        return Response(serializers.data)
+
+
 class NotBarrowedProductList(APIView):
     def get(self, request):
         products = Product.objects.filter(is_barrowed=False).all()
@@ -50,7 +59,9 @@ class ProductList(APIView):
         return Response(serializers.data)
     
     def post(self, request): #빌려주기 작성
-        obj  = User.objects.get(username=eval(request.data['owner'])['username'])
+        print(request.data)
+        print(request.data['owner'])
+        obj = User.objects.get(username=eval(request.data['owner'])['username'])
         serializer = ProductSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save(owner=obj)
@@ -159,16 +170,22 @@ class ReturnProduct(APIView):
             return Response(serializer.data)
         return Response(status=status.HTTP_400_BAD_REQUEST)
         
-#장바구니
-class ProductLikeList(APIView):
-    def get(self, request):
-        username = request.GET.get('username', None)
-        obj  = User.objects.get(username=username)
-        products = obj.like_products.all()
-        serializers = ProductSerializer(products, many=True)
-        return Response(serializers.data)
 
-
+##### 가져오고 수정 전혀 안했음!!!
+##### Serializer를 먼저 만들자
+class LeaveReview(APIView):
+    def post(self, request, pk): #빌리기 정보 저장
+        print(request)
+        obj  = User.objects.get(username=request.data['user']['username'])
+        serializer = ReviewSerializer(data=request.data)
+        product = get_object_or_404(Product, pk=pk)
+        serializer.barrow_product =  product.id
+        trader_user = product.owner
+        print(serializer)
+        if serializer.is_valid():
+            serializer.save(writer=obj, trader=trader_user)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)    
 
     
 

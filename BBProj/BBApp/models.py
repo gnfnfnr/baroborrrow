@@ -60,15 +60,15 @@ class Review(models.Model):
     #거래자
     trader = models.ForeignKey(User, on_delete=models.CASCADE, related_name='myreviews', blank=True, null=True)
     #항목1
-    q1 = models.IntegerField()
+    q_1 = models.IntegerField()
     #항목2
-    q2 = models.IntegerField()
+    q_2 = models.IntegerField()
     #항목3
-    q3 = models.IntegerField()
+    q_3 = models.IntegerField()
     #항목4
-    q4 = models.IntegerField()
+    q_4 = models.IntegerField()
     #항목5
-    q5 = models.IntegerField()
+    q_5 = models.IntegerField()
 
 class ReviewResult(models.Model):
     #유저

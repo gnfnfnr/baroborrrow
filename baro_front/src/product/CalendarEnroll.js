@@ -128,7 +128,7 @@ function CalendarEnroll({ borrowInfo }) {
               formData.append("barrowMethod", borrowInfo.barrowMethod);
               formData.append("barrowAvailableStart", start);
               formData.append("barrowAvailableEnd", end);
-              formData.append("enctype", "multipart/form-data");
+              formData.append("encType", "multipart/form-data");
               axios({
                 method: "POST",
                 url: "http://127.0.0.1:8000/product/",

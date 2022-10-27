@@ -1,5 +1,8 @@
+import axios from "axios";
 import React, { useState } from "react";
+import { useContext } from "react";
 import styled from "styled-components";
+import { useUserContext } from "../Context";
 import InfoBar from "../product/InfoBar";
 
 const RentalCheckModal = styled.section`
@@ -83,6 +86,7 @@ const RentalSurvey = styled.div`
 `;
 
 function RentalCheck({ setRental, setComplete, list }) {
+  const { user } = useUserContext();
   const [rate, setRate] = useState();
   const ownerDes = [
     "1.약속한 날짜에 대여가 잘 이루어졌나요?",
@@ -93,9 +97,10 @@ function RentalCheck({ setRental, setComplete, list }) {
   ];
 
   const an = {};
+
   const QuestList = ({ Index, title }) => {
     const [condition, setCondition] = useState(0);
-    an[title] = condition;
+    an[Index] = condition;
     return (
       <InfoBar
         key={Index}
@@ -106,7 +111,6 @@ function RentalCheck({ setRental, setComplete, list }) {
       />
     );
   };
-
   return (
     <RentalCheckModal>
       <RentalCheckBox>
@@ -127,8 +131,20 @@ function RentalCheck({ setRental, setComplete, list }) {
             ))}
             <RentalCheckBtn
               onClick={() => {
+                console.log(an);
                 setRental(false);
                 setComplete(true);
+                axios.post(`http://127.0.0.1:8000/review/${list.product}/`, {
+                  data: {
+                    user: user,
+                    barrowProdcuct: 2,
+                    q1: an[0],
+                    q2: an[1],
+                    q3: an[2],
+                    q4: an[3],
+                    q5: an[4],
+                  },
+                });
               }}
             >
               설문 제출

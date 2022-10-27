@@ -33,7 +33,12 @@ function App() {
             <Route path="/main" element={<Home />} />
             <Route element={<ProductDetail />} path={"/detail:id"} />
             <Route path="/search" element={<Search />} />
-            <Route path="/enroll" element={<ProductEnroll />} />
+            <Route
+              path="/enroll"
+              element={
+                user ? <ProductEnroll /> : <Navigate replace to="/login" />
+              }
+            />
             <Route
               path="/basket"
               element={user ? <Basket /> : <Navigate replace to="/login" />}

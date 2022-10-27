@@ -31,6 +31,7 @@ const Detail = ({ list }) => {
       .get(`http://127.0.0.1:8000/product/${list.product}`)
       .then((response) => setProductDt(response.data));
   }, []);
+  console.log(productDt);
   return (
     <>
       <ProductBox>
@@ -97,6 +98,7 @@ function Borrow() {
       .get(`http://127.0.0.1:8000/mypage/borrow/?username=${user.username}`)
       .then((res) => {
         setBorData(res.data.reverse());
+        console.log(borData);
       });
   }, []);
 

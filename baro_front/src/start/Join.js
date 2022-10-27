@@ -36,6 +36,7 @@ function Join() {
       })
       .then(() => {
         navigate("/login");
+        alert("회원가입이 완료되었습니다. 바로에 오신 걸 환영합니다");
       })
       .catch(() => {
         alert("동일한 아이디가 존재합니다. 다시 시도해주세요");

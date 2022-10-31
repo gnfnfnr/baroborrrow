@@ -43,20 +43,6 @@ const ListTitle = styled.div`
   padding-bottom: 15px;
 `;
 
-const NextButton = styled.div`
-  background: #56aedf;
-  border-radius: 5px;
-  padding: 13px 0;
-  margin: 0 24px;
-  text-align: center;
-  color: white;
-  font-weight: bold;
-  margin-top: 40px;
-  @media only screen and (max-width: 500px) {
-    margin-top: 120px;
-  }
-`;
-
 const ListBtn = styled.div`
   display: flex;
   gap: 12px;
@@ -75,7 +61,6 @@ const ListBtnDetail = styled.div`
 
 function Option({ setCondition, setWay }) {
   const [local, setLocal] = useState(false);
-  const [pdData, setPdData] = useState([]);
   const [localName, setLocalName] = useState("");
   function onClick(event, text, func) {
     func(text);
@@ -114,13 +99,6 @@ function Option({ setCondition, setWay }) {
           <ListBtn>
             <ListBtnDetail
               onClick={(event) => {
-                onClick(event, "product/", setCondition);
-              }}
-            >
-              전체
-            </ListBtnDetail>
-            <ListBtnDetail
-              onClick={(event) => {
                 onClick(event, "nbproduct/", setCondition);
               }}
             >
@@ -138,13 +116,6 @@ function Option({ setCondition, setWay }) {
         <OptionList>
           <ListTitle>BORROW 방식</ListTitle>
           <ListBtn>
-            <ListBtnDetail
-              onClick={(event) => {
-                onClick(event, "전체", setWay);
-              }}
-            >
-              전체
-            </ListBtnDetail>
             <ListBtnDetail
               onClick={(event) => {
                 onClick(event, "대면", setWay);

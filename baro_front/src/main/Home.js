@@ -65,9 +65,9 @@ function Home() {
                 `http://127.0.0.1:8000/search/products?search=${inputSearch}`
               )
               .then((response) => {
-                console.log(response);
                 setPdData(response.data);
               });
+            localStorage.setItem("search", inputSearch);
           }}
         >
           <Input

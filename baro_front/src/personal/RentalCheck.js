@@ -85,7 +85,7 @@ const RentalSurvey = styled.div`
   }
 `;
 
-function RentalCheck({ setRental, setComplete, list }) {
+function RentalCheck({ setRental, productDt, list }) {
   const { user } = useUserContext();
   const [rate, setRate] = useState();
   const ownerDes = [
@@ -97,7 +97,7 @@ function RentalCheck({ setRental, setComplete, list }) {
   ];
 
   const an = {};
-
+  console.log(productDt, list);
   const QuestList = ({ Index, title }) => {
     const [condition, setCondition] = useState(0);
     an[Index] = condition;
@@ -111,6 +111,7 @@ function RentalCheck({ setRental, setComplete, list }) {
       />
     );
   };
+
   return (
     <RentalCheckModal>
       <RentalCheckBox>
@@ -133,11 +134,10 @@ function RentalCheck({ setRental, setComplete, list }) {
               onClick={() => {
                 console.log(an);
                 setRental(false);
-                setComplete(true);
-                axios.post(`http://127.0.0.1:8000/review/${list.product}/`, {
+                // list가 barrowid, product가 물품id
+                axios.post(`http://127.0.0.1:8000/review/${list.id}/`, {
                   data: {
-                    user: user,
-                    barrowProdcuct: 2,
+                    writer: user,
                     q1: an[0],
                     q2: an[1],
                     q3: an[2],
@@ -154,7 +154,7 @@ function RentalCheck({ setRental, setComplete, list }) {
           <>
             <RentalImg>
               <img
-                src={list.productPhoto}
+                src={`http://127.0.0.1:8000${productDt.productPhoto}`}
                 style={{
                   width: "100%",
                   height: "100%",
@@ -162,12 +162,15 @@ function RentalCheck({ setRental, setComplete, list }) {
                 }}
               />
             </RentalImg>
-            <RentalName>{list.productName}</RentalName>
+            <RentalName>{productDt.productName}</RentalName>
             <RentalEnsure>해당 물품을 반납 장소에 반납하셨습니까?</RentalEnsure>
             <RentalReport>(허위 반납시 신고 조치됩니다.)</RentalReport>
             <RentalCheckBtn
               onClick={() => {
                 setRate(true);
+                axios.get(
+                  `http://127.0.0.1:8000/return/${list.id}/?username=${user.username}`
+                );
               }}
             >
               네, 반납했습니다.

@@ -19,6 +19,7 @@ import Join from "./start/Join";
 import ProductDetail from "./product/ProductDetail";
 import ProductResult from "./product/ProductResult";
 import { UserContextProvider } from "./Context";
+import IsSearch from "./main/IsSearch";
 
 function App() {
   const user = localStorage.getItem("user");
@@ -32,7 +33,10 @@ function App() {
             <Route path="/" element={<Navigate replace to="/main" />} />
             <Route path="/main" element={<Home />} />
             <Route element={<ProductDetail />} path={"/detail:id"} />
-            <Route path="/search" element={<Search />} />
+            <Route
+              path="/search"
+              element={user ? <IsSearch /> : <Navigate replace to="/login" />}
+            />
             <Route
               path="/enroll"
               element={
@@ -49,9 +53,17 @@ function App() {
               path="/mypage"
               element={user ? <Mypage /> : <Navigate replace to="/login" />}
             />
-            <Route path="/mypage/profile" element={<Profile />} />
+            <Route
+              path="/mypage/profile"
+              element={user ? <Profile /> : <Navigate replace to="/login" />}
+            />
             <Route path="/mypage/profileedit" element={<ProfileEdit />} />
-            <Route path="/mypage/content" element={<ContentList />}>
+            <Route
+              path="/mypage/content"
+              element={
+                user ? <ContentList /> : <Navigate replace to="/login" />
+              }
+            >
               <Route path="/mypage/content/borrow" element={<Borrow />} />
               <Route path="/mypage/content/lend" element={<Lend />} />
             </Route>

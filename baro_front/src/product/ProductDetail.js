@@ -139,6 +139,7 @@ function ProductDetail() {
       }
     });
   }, []);
+  console.log(dt);
   return (
     <>
       <PdHead>
@@ -227,6 +228,12 @@ function ProductDetail() {
                     : ""}
                   <InfoWon>원</InfoWon>
                 </InfoMoney>
+              </InfoBox>
+              <InfoBox>
+                <InfoTitle>대여 진행 방식</InfoTitle>
+                <Map address={dt.address} />
+                <InfoLoc>{dt.address}</InfoLoc>
+                <InfoLoc>{dt.detailAddress}</InfoLoc>
               </InfoBox>
             </>
           ) : (

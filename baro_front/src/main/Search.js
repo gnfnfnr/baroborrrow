@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import ProductList from "./ProductList";
 import styled from "styled-components";
-import SearchDetail from "./SearchDetail";
 import axios from "axios";
 import Option from "./Option";
 import { useUserContext } from "../Context.js";
@@ -43,7 +42,7 @@ const PdSearchKeyWord = styled.span`
   text-align: center;
 `;
 
-const PdSearchInput = styled.div`
+const PdSearchInput = styled.form`
   display: flex;
   align-items: center;
   padding: 14px 12px;
@@ -76,12 +75,13 @@ function Search() {
   useEffect(() => {
     axios.get(`http://127.0.0.1:8000/search/products`).then((response) => {
       setPdData(response.data.reverse());
-      console.log(response);
     });
   }, []);
   const [condition, setCondition] = useState("product/");
   const [way, setWay] = useState("");
-  const [inputSearch, setInputSearch] = useState("");
+  const [inputSearch, setInputSearch] = useState(
+    localStorage.getItem("search")
+  );
   const { user } = useUserContext();
   return (
     <PdSearchContainer>
@@ -98,7 +98,32 @@ function Search() {
             "로그인이 필요합니다"
           )}
         </PdSearchInfo>
-        <PdSearchInput>
+        <PdSearchInput
+          onSubmit={(event) => {
+            event.preventDefault();
+            localStorage.setItem("search", inputSearch);
+            axios
+              .get(
+                `http://127.0.0.1:8000/search/products?search=${inputSearch}`
+              )
+              .then((response) => {
+                const entire = response.data;
+                axios
+                  .get(`http://127.0.0.1:8000/${condition}`)
+                  .then((response) => {
+                    const detail = response.data;
+                    const cp = entire.filter((li) => {
+                      for (let index = 0; index < detail.length; index++) {
+                        if (detail[index].id === li.id) {
+                          return true;
+                        }
+                      }
+                    });
+                    setPdData(cp.reverse());
+                  });
+              });
+          }}
+        >
           <SearchImg
             src={require("../img/filter.png")}
             onClick={() => {
@@ -113,32 +138,7 @@ function Search() {
               setInputSearch(e.target.value);
             }}
           />
-          <SearchImg
-            src={require("../img/searchIcon.png")}
-            onClick={() => {
-              axios
-                .get(
-                  `http://127.0.0.1:8000/search/products?search=${inputSearch}`
-                )
-                .then((response) => {
-                  const entire = response.data;
-                  axios
-                    .get(`http://127.0.0.1:8000/${condition}`)
-                    .then((response) => {
-                      const detail = response.data;
-                      console.log(entire, detail);
-                      const cp = entire.filter((li) => {
-                        for (let index = 0; index < detail.length; index++) {
-                          if (detail[index].id === li.id) {
-                            return true;
-                          }
-                        }
-                      });
-                      setPdData(cp.reverse());
-                    });
-                });
-            }}
-          />
+          <SearchImg src={require("../img/searchIcon.png")} />
         </PdSearchInput>
       </PdSearchHeader>
 

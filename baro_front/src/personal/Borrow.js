@@ -19,7 +19,6 @@ import { useUserContext } from "../Context";
 
 const Detail = ({ list }) => {
   const navigate = useNavigate();
-  const [complete, setComplete] = useState(false);
   const [rental, setRental] = useState();
   const today = new Date();
   const diff = Math.floor(
@@ -31,7 +30,7 @@ const Detail = ({ list }) => {
       .get(`http://127.0.0.1:8000/product/${list.product}`)
       .then((response) => setProductDt(response.data));
   }, []);
-  console.log(productDt);
+  console.log(list, productDt);
   return (
     <>
       <ProductBox>
@@ -62,7 +61,7 @@ const Detail = ({ list }) => {
               <ProductCheckDate>
                 {diff >= 0 ? ` D + ${diff}` : `D - ${Math.abs(diff)}`}
               </ProductCheckDate>
-              {complete ? (
+              {list.isReturn ? (
                 <ProductComBtn>반납완료</ProductComBtn>
               ) : (
                 <ProductCheckBtn
@@ -78,11 +77,7 @@ const Detail = ({ list }) => {
         </ProductRentalInfo>
       </ProductBox>
       {rental ? (
-        <RentalCheck
-          setRental={setRental}
-          setComplete={setComplete}
-          list={list}
-        />
+        <RentalCheck setRental={setRental} productDt={productDt} list={list} />
       ) : (
         ""
       )}

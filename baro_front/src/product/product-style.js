@@ -18,11 +18,11 @@ export const PdInfo = style.ul`
 
 export const InfoBox = style.li`
   border-bottom: 1px solid #D9D9D9;
-  padding: 20px 0;
+  padding: 20px 12px;
 `;
 
 export const InfoTitle = style.div`
-  padding: 0 12px 20px;
+  padding-bottom: 20px;
 `;
 
 export const InfoWon = style.span`
@@ -30,14 +30,12 @@ export const InfoWon = style.span`
 `;
 
 export const InfoDes = style.div`
-  padding: 0 12px;
   overflow: hidden;
   font-size: 14px;
   line-height: 21px;
 `;
 
 export const InfoMoney = style.div`
-  padding: 0 12px;
 `;
 
 export const InfoLoc = style.div`

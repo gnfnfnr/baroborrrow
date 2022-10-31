@@ -16,12 +16,18 @@ import {
 const BasketItem = function ({ user }) {
   const navigate = useNavigate();
   const [bkData, setBkData] = useState([]);
+  const [borrow, setBorrow] = useState([]);
   useEffect(() => {
     axios
       .get(
         `http://127.0.0.1:8000/mypage/likeproducts/?username=${user.username}`
       )
       .then((res) => {
+        axios
+          .get(`http://127.0.0.1:8000/mypage/borrow/?username=${user.username}`)
+          .then((response) => {
+            setBorrow(response.data.map((x) => x.product));
+          });
         setBkData(res.data);
       });
   }, []);
@@ -36,7 +42,7 @@ const BasketItem = function ({ user }) {
             objectFit: "cover",
           }}
         />
-        <ProductBorrow>대여중</ProductBorrow>
+        {borrow.includes(list.id) ? <ProductBorrow>대여중</ProductBorrow> : ""}
       </ProductImg>
       <ProductInfo>
         <ProductName

@@ -85,7 +85,7 @@ const RentalSurvey = styled.div`
   }
 `;
 
-function RentalCheck({ setRental, productDt, list }) {
+function RentalCheck({ setRental, productDt, list, setStateRental }) {
   const { user } = useUserContext();
   const [rate, setRate] = useState();
   const ownerDes = [
@@ -97,7 +97,6 @@ function RentalCheck({ setRental, productDt, list }) {
   ];
 
   const an = {};
-  console.log(productDt, list);
   const QuestList = ({ Index, title }) => {
     const [condition, setCondition] = useState(0);
     an[Index] = condition;
@@ -132,9 +131,7 @@ function RentalCheck({ setRental, productDt, list }) {
             ))}
             <RentalCheckBtn
               onClick={() => {
-                console.log(an);
                 setRental(false);
-                // list가 barrowid, product가 물품id
                 axios.post(`http://127.0.0.1:8000/review/${list.id}/`, {
                   data: {
                     writer: user,
@@ -167,6 +164,7 @@ function RentalCheck({ setRental, productDt, list }) {
             <RentalReport>(허위 반납시 신고 조치됩니다.)</RentalReport>
             <RentalCheckBtn
               onClick={() => {
+                setStateRental(true);
                 setRate(true);
                 axios.get(
                   `http://127.0.0.1:8000/return/${list.id}/?username=${user.username}`

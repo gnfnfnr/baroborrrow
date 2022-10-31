@@ -156,24 +156,34 @@ class ProductViewSet(viewsets.ModelViewSet):
 #반납
 class ReturnProduct(APIView):
     def get_object(self, pk):
-        product = get_object_or_404(BarrowProduct, pk=pk)
-        return product
+        barrow_product_object = get_object_or_404(BarrowProduct, pk=pk)
+        return barrow_product_object
 
     def get(self, request, pk): #디테일뷰
-        product = self.get_object(pk)
+        barrow_product = self.get_object(pk)
         username = request.GET.get('username', None)
         obj  = User.objects.get(username=username)
-        if (product.user == obj):
-            product.is_return = True
-            product.product.is_barrowed = False
-            serializer = BarrowProductSerializer(product)
+        print(barrow_product.user == obj)
+        if (barrow_product.user == obj):
+            barrow_product.is_return = True
+            print(barrow_product.is_return)
+            barrow_product.product.is_barrowed = False
+            barrow_product.save()
+            serializer = BarrowProductSerializer(barrow_product)
+            print(serializer.data)
             return Response(serializer.data)
         return Response(status=status.HTTP_400_BAD_REQUEST)
         
 
+####### 10/29 - barrowproduct 주면 이거로 조회하는걸로 바꿔야함
 class LeaveReview(APIView):
+    def get_object(self, pk):
+        barrow_product_object = get_object_or_404(BarrowProduct, pk=pk)
+        return barrow_product_object
+
     #리뷰결과(평균) 저장
     def calculate_average(self, serializer):
+        print(serializer)
         user = User.objects.get(username=serializer['trader']['username'])
         is_exist = ReviewResult.objects.filter(user=user).exists()
         
@@ -192,21 +202,20 @@ class LeaveReview(APIView):
             review_result.av_q4 = (review_result.av_q4 * review_count + serializer['q_4']) / (review_count + 1)
             review_result.av_q5 = (review_result.av_q5 * review_count + serializer['q_5']) / (review_count + 1)
             review_result.save()
+
             
-    def post(self, request, pk): #빌리기 정보 저장
+    def post(self, request, pk):
         obj  = User.objects.get(username=request.data['data']['writer']['username'])
         serializer = ReviewSerializer(data=request.data['data'])
-        product = get_object_or_404(Product, pk=pk)
-        #product가 여러번 빌려질수도 있으니까 빌리는 사람까지 같이 검색해야함
-        #그렇지 않으면 2개 이상의 object가 반환되기에 에러가 생김
-        barrow_product_object = get_object_or_404(BarrowProduct, product=product)
-        print(serializer)
+        barrow_product = self.get_object(pk)
         if serializer.is_valid():
-            serializer.save(writer=obj, trader=product.owner, barrow_product=barrow_product_object)
-            print(serializer.data['trader'])
-            self.calculate_average(serializer.data)
+            serializer.save(writer=obj)
+            serializer.save(trader=barrow_product.product.owner)
+            serializer.save(barrow_product=barrow_product)
+            print(serializer, "Dfd")
+            self.calculate_average(serializer)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)    
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)  
 
 
 

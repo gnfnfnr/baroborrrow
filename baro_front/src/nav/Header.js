@@ -20,22 +20,22 @@ function Header() {
   return (
     <HeaderBox>
       {user ? (
-        <div
+        <span
           onClick={() => {
             localStorage.removeItem("user");
             window.location.reload();
           }}
         >
           로그아웃
-        </div>
+        </span>
       ) : (
-        <div
+        <span
           onClick={() => {
             nav("/login");
           }}
         >
           로그인하기
-        </div>
+        </span>
       )}
     </HeaderBox>
   );

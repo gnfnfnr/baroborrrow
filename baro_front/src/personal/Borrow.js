@@ -17,7 +17,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useUserContext } from "../Context";
 
-const Detail = ({ list }) => {
+const Detail = ({ list, setStateRental }) => {
   const navigate = useNavigate();
   const [rental, setRental] = useState();
   const today = new Date();
@@ -28,9 +28,10 @@ const Detail = ({ list }) => {
   useEffect(() => {
     axios
       .get(`http://127.0.0.1:8000/product/${list.product}`)
-      .then((response) => setProductDt(response.data));
+      .then((response) => {
+        setProductDt(response.data);
+      });
   }, []);
-  console.log(list, productDt);
   return (
     <>
       <ProductBox>
@@ -77,7 +78,12 @@ const Detail = ({ list }) => {
         </ProductRentalInfo>
       </ProductBox>
       {rental ? (
-        <RentalCheck setRental={setRental} productDt={productDt} list={list} />
+        <RentalCheck
+          setRental={setRental}
+          productDt={productDt}
+          list={list}
+          setStateRental={setStateRental}
+        />
       ) : (
         ""
       )}
@@ -88,19 +94,21 @@ const Detail = ({ list }) => {
 function Borrow() {
   const [borData, setBorData] = useState([]);
   const { user } = useUserContext();
+  const [stateRental, setStateRental] = useState(false);
   useEffect(() => {
     axios
       .get(`http://127.0.0.1:8000/mypage/borrow/?username=${user.username}`)
       .then((res) => {
         setBorData(res.data.reverse());
-        console.log(borData);
       });
-  }, []);
+  }, [stateRental]);
 
   return (
     <>
       {borData
-        ? borData.map((list, index) => <Detail list={list} key={index} />)
+        ? borData.map((list, index) => (
+            <Detail list={list} key={index} setStateRental={setStateRental} />
+          ))
         : ""}
     </>
   );

@@ -27,7 +27,7 @@ class BarrowProductSerializer(ModelSerializer):
     class Meta:
         model = BarrowProduct
         fields = [
-            'user', 'product', 'barrow_start', 'barrow_end', 'is_return'
+            'id', 'user', 'product', 'barrow_start', 'barrow_end', 'is_return'
         ]
         #extra_kwargs = {"user": {"required": False, "allow_null": True}, "product": {"required": False, "allow_null": True}}
 
@@ -37,7 +37,7 @@ class ReviewSerializer(ModelSerializer):
     barrow_product = serializers.PrimaryKeyRelatedField(
         many=False, queryset=Product.objects.all(), required=False
     )
-    trader = UserBasicSerializer(required=False, read_only=True)
+    trader = UserBasicSerializer(required=False)
     class Meta:
         model = Review
         fields = [

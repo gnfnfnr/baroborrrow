@@ -57,7 +57,12 @@ function App() {
               path="/mypage/profile"
               element={user ? <Profile /> : <Navigate replace to="/login" />}
             />
-            <Route path="/mypage/profileedit" element={<ProfileEdit />} />
+            <Route
+              path="/mypage/profileedit"
+              element={
+                user ? <ProfileEdit /> : <Navigate replace to="/login" />
+              }
+            />
             <Route
               path="/mypage/content"
               element={

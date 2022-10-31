@@ -35,7 +35,6 @@ const DetailTitle = styled.div``;
 
 function Mypage() {
   const { user } = useUserContext();
-  console.log(user);
   return (
     <>
       {user ? (

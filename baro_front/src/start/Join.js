@@ -21,12 +21,6 @@ function Join() {
   const [pwCompare, setPwCompare] = useState({ cp: false, password: "" });
   const navigate = useNavigate();
   const onSubmit = (e) => {
-    const joinData = {
-      username: inputId,
-      name: inputName,
-      password: pwCompare.password,
-      nickname: inputNick,
-    };
     axios
       .post("http://127.0.0.1:8000/user/accounts/", {
         username: inputId,

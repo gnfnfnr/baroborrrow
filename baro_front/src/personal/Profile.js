@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import InfoBar from "../product/InfoBar";
 import { Link } from "react-router-dom";
 import { useUserContext } from "../Context";
+import axios from "axios";
 
 const OwnerContainer = styled.div`
   color: #666666;
@@ -44,16 +45,39 @@ const NickNameLink = styled(Link)`
   color: #666666;
 `;
 
-const ownerDes = [
-  { title: "1.약속한 날짜에 대여가 잘 이루어졌나요?", per: 43 },
-  { title: "2.설정한 위치에서 대여가 잘 이루어졌나요?", per: 80 },
-  { title: "3.물건의 상태는 대여자가 설정한 것과 일치했나요?", per: 7 },
-  { title: "4.구성품이 빠짐없이 잘 있었나요?", per: 100 },
-  { title: "5.대여비와 보증금은 적절했나요?", per: 20 },
-];
-
 function Profile() {
   const { user } = useUserContext();
+  const [rateDt, setRateDt] = useState([]);
+  useEffect(() => {
+    axios
+      .get(
+        `http://127.0.0.1:8000/mypage/reviewresult/?username=${user.username}`
+      )
+      .then((res) => {
+        const scores = res.data;
+        setRateDt([
+          {
+            title: "1.약속한 날짜에 대여가 잘 이루어졌나요?",
+            per: scores.avQ1,
+          },
+          {
+            title: "2.설정한 위치에서 대여가 잘 이루어졌나요?",
+            per: scores.avQ2,
+          },
+          {
+            title: "3.물건의 상태는 대여자가 설정한 것과 일치했나요?",
+            per: scores.avQ3,
+          },
+          { title: "4.구성품이 빠짐없이 잘 있었나요?", per: scores.avQ4 },
+          { title: "5.대여비와 보증금은 적절했나요?", per: scores.avQ5 },
+        ]);
+      })
+      .catch((err) => {
+        console.log(err);
+        setRateDt([]);
+      });
+  }, []);
+  console.log(rateDt);
   return (
     <OwnerContainer>
       <OwnerHead>
@@ -66,11 +90,15 @@ function Profile() {
         </NickNameLink>
         <OwnerHeadDes>(실제 대여자들의 후기 평균입니다.)</OwnerHeadDes>
       </OwnerHead>
-      {ownerDes.map((li, Index) => (
-        <OwnerInfoBox key={Index}>
-          <InfoBar title={li.title} percentage={li.per} />
-        </OwnerInfoBox>
-      ))}
+      {rateDt.length ? (
+        rateDt.map((li, Index) => (
+          <OwnerInfoBox key={Index}>
+            <InfoBar title={li.title} percentage={li.per / 2.5} />
+          </OwnerInfoBox>
+        ))
+      ) : (
+        <div>등록된 정보가 없습니다</div>
+      )}
     </OwnerContainer>
   );
 }

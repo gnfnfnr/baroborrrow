@@ -115,10 +115,10 @@ const PdHeader = ({ params, user }) => {
 };
 
 function ProductDetail() {
+  const { user } = useUserContext();
   const params = useParams();
   const navigate = useNavigate();
   const [dt, setDt] = useState({});
-  const { user } = useUserContext();
   useEffect(() => {
     axios.get(`http://127.0.0.1:8000/product/${params.id}`).then((response) => {
       setDt(response.data);
@@ -139,7 +139,6 @@ function ProductDetail() {
       }
     });
   }, []);
-  console.log(dt);
   return (
     <>
       <PdHead>
@@ -240,13 +239,21 @@ function ProductDetail() {
             "로딩중"
           )}
         </PdInfo>
-        <PdBtn
-          onClick={() => {
-            setShowSelect(true);
-          }}
-        >
-          대여날짜 선택하기
-        </PdBtn>
+        {dt.owner ? (
+          dt.owner.username === user.username ? (
+            ""
+          ) : (
+            <PdBtn
+              onClick={() => {
+                setShowSelect(true);
+              }}
+            >
+              대여날짜 선택하기
+            </PdBtn>
+          )
+        ) : (
+          ""
+        )}
       </PdContainer>
       {showSelect ? <Calendar item={dt} ban={ban} /> : ""}
     </>

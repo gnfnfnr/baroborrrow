@@ -10,7 +10,11 @@ const ResultBox = style.section`
   box-sizing: border-box;
   font-weight: 700;  
   background: #E9F6FD;
-  height: calc(100vh - 52px);
+  min-height: calc(100vh - 132px);
+
+  @media only screen and (max-width: 500px) {
+    min-height: calc(100vh - 120px);
+  }
 `;
 
 const ResultInside = style.div`

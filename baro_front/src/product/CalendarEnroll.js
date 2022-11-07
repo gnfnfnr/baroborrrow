@@ -112,7 +112,7 @@ function CalendarEnroll({ borrowInfo }) {
         />
         {start !== "Invalid date" && end !== "Invalid date" ? (
           <form
-            enctype="multipart/form-data"
+            encType="multipart/form-data"
             onSubmit={() => {
               const formData = new FormData();
               formData.append("owner", JSON.stringify(user));

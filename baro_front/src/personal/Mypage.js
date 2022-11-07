@@ -36,15 +36,7 @@ const DetailTitle = styled.div``;
 
 function Mypage() {
   const { user } = useUserContext();
-  useEffect(() => {
-    axios
-      .get(
-        `http://127.0.0.1:8000/mypage/reviewresult/?username=${user.username}`
-      )
-      .then((res) => {
-        console.log(res);
-      });
-  }, []);
+
   return (
     <>
       {user ? (

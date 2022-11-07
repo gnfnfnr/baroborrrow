@@ -166,9 +166,9 @@ function RentalCheck({ setRental, productDt, list, setStateRental }) {
               onClick={() => {
                 setStateRental(true);
                 setRate(true);
-                // axios.get(
-                //   `http://127.0.0.1:8000/return/${list.id}/?username=${user.username}`
-                // );
+                axios.get(
+                  `http://127.0.0.1:8000/return/${list.id}/?username=${user.username}`
+                );
               }}
             >
               네, 반납했습니다.

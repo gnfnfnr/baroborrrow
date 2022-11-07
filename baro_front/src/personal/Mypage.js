@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { useUserContext } from "../Context";
+import axios from "axios";
 
 const MypageBox = styled.div``;
 const MypageTitle = styled.div`
@@ -35,6 +36,15 @@ const DetailTitle = styled.div``;
 
 function Mypage() {
   const { user } = useUserContext();
+  useEffect(() => {
+    axios
+      .get(
+        `http://127.0.0.1:8000/mypage/reviewresult/?username=${user.username}`
+      )
+      .then((res) => {
+        console.log(res);
+      });
+  }, []);
   return (
     <>
       {user ? (

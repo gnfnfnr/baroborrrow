@@ -3,24 +3,18 @@ import { useLocation, Link } from "react-router-dom";
 import style from "styled-components";
 
 const ResultBox = style.section`
-  position: absolute;
-  width: 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  top: 0;
-  left: 0;
   box-sizing: border-box;
-  font-weight: 700;
-  overflow-x: hidden;
-  margin-top: 52px;
+  font-weight: 700;  
   background: #E9F6FD;
+  height: calc(100vh - 52px);
 `;
 
 const ResultInside = style.div`
   width: 70%;
-  height: calc(100vh - 52px);
   max-width: 900px;
 `;
 

@@ -2,9 +2,9 @@ import React, { useState, useRef } from "react";
 import style from "styled-components";
 
 const SearchSection = style.section`
-  position: absolute;
-  width: 100vw;
-  height: 100vh;
+  position: fixed;
+  width: 100%;
+  height: 100%;
   overflow: hidden;
   top: 0;
   left: 0;
@@ -504,7 +504,11 @@ function Local({ setLocal, setLocalName }) {
         <SearchBtn
           onClick={() => {
             setLocal(false);
-            setLocalName(`${infoState} ${infoGu}`);
+            // setLocalName(`${infoState} ${infoGu}`);
+            setLocalName({
+              gu: infoGu,
+              city: infoState,
+            });
           }}
         >
           선택

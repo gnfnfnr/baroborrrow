@@ -3,8 +3,6 @@ import styled from "styled-components";
 import { useState } from "react";
 import Local from "./Local";
 import LocalBoxIcon from "../img/LocalBoxIcon.png";
-import SearchDetail from "./SearchDetail";
-import { Link } from "react-router-dom";
 
 const OptionBox = styled.div`
   background: #f4f7f8;
@@ -89,7 +87,9 @@ function Option({ setCondition, setWay }) {
             }}
           >
             <LocalText>
-              {localName ? localName : "대여를 원하는 지역을 선택해주세요"}
+              {localName
+                ? localName.gu + " " + localName.city
+                : "대여를 원하는 지역을 선택해주세요"}
             </LocalText>
             <img src={LocalBoxIcon} />
           </LocalBox>
@@ -118,14 +118,14 @@ function Option({ setCondition, setWay }) {
           <ListBtn>
             <ListBtnDetail
               onClick={(event) => {
-                onClick(event, "대면", setWay);
+                onClick(event, 0, setWay);
               }}
             >
               대면
             </ListBtnDetail>
             <ListBtnDetail
               onClick={(event) => {
-                onClick(event, "비대면", setWay);
+                onClick(event, 1, setWay);
               }}
             >
               비대면

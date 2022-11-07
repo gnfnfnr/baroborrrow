@@ -16,12 +16,12 @@ const CalendarSection = style.section`
   left: 0;
   background: #FFFFFF;
   border-radius: 30px 30px 0px 0px;
-  z-index: 99;
+  z-index: 100;
   align-items: center;
   padding: 0 24px;
   box-sizing: border-box;
   font-weight: 700;
-  height: 100vh;
+  min-height: 100vh;
 `;
 
 const CalendarInside = style.div`

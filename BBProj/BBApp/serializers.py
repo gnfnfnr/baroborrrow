@@ -1,5 +1,5 @@
 from rest_framework.serializers import ModelSerializer
-from .models import Product, BarrowProduct, Review
+from .models import Product, BarrowProduct, Review, ReviewResult
 from accounts.serializers import UserLikeSerializer, UserBasicSerializer
 from rest_framework import serializers
 
@@ -44,3 +44,10 @@ class ReviewSerializer(ModelSerializer):
             'writer', 'barrow_product', 'trader', 'q_1', 'q_2', 'q_3', 'q_4', 'q_5'
         ]
 
+class ReviewResultSerializer(ModelSerializer):
+    user = UserBasicSerializer(required=False, read_only=True)
+    class Meta:
+        model = ReviewResult
+        fields = [
+            'user', 'av_q1', 'av_q2', 'av_q3', 'av_q4', 'av_q5'
+        ]

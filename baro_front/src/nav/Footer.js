@@ -14,7 +14,7 @@ const FooterBox = styled.footer`
     font-size: 8px;
     height: 68px;
   }
-  z-index: 99;
+  z-index: 98;
 `;
 
 const IconList = styled.ul`

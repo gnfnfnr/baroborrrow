@@ -72,16 +72,20 @@ const SearchImg = styled.img`
 function Search() {
   const [pdData, setPdData] = useState([]);
   const [showOp, setShowOp] = useState(false);
+  const saveSearch = localStorage.getItem("search");
   useEffect(() => {
-    axios.get(`http://127.0.0.1:8000/search/products`).then((response) => {
-      setPdData(response.data.reverse());
-    });
+    axios
+      .get(`http://127.0.0.1:8000/search/products?search=${inputSearch}`)
+      .then((response) => {
+        setPdData(response.data.reverse());
+      });
   }, []);
   const [condition, setCondition] = useState("product/");
   const [way, setWay] = useState("");
   const [inputSearch, setInputSearch] = useState(
     localStorage.getItem("search")
   );
+  console.log(condition, way);
   const { user } = useUserContext();
   return (
     <PdSearchContainer>

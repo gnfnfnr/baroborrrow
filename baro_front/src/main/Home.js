@@ -2,6 +2,8 @@ import React, { useState, useRef, useEffect } from "react";
 import styled from "styled-components";
 import axios from "axios";
 import ProductList from "./ProductList";
+import { useNavigate } from "react-router-dom";
+import { useUserContext } from "../Context";
 
 const Header = styled.div`
   padding: 20px 20px 0;
@@ -54,6 +56,8 @@ function Home() {
       setPdData(response.data.reverse());
     });
   }, []);
+  const nav = useNavigate();
+  const { user } = useUserContext();
   return (
     <>
       <Header>
@@ -66,6 +70,9 @@ function Home() {
               )
               .then((response) => {
                 setPdData(response.data);
+                if (user) {
+                  nav("/search");
+                }
               });
             localStorage.setItem("search", inputSearch);
           }}

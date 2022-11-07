@@ -21,7 +21,7 @@ const CalendarSection = style.section`
   padding: 0 24px;
   box-sizing: border-box;
   font-weight: 700;
-  height: 100vh;
+  min-height: 100%;
 `;
 
 const CalendarInside = style.div`

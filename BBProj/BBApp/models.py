@@ -83,3 +83,5 @@ class ReviewResult(models.Model):
     av_q4 = models.IntegerField()
     #항목5 - 평균점수
     av_q5 = models.IntegerField()
+    #리뷰 개수
+    review_count = models.IntegerField(default = 0)

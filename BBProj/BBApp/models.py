@@ -51,6 +51,8 @@ class BarrowProduct(models.Model):
     barrow_end = models.DateField()
     #반납되었는지 여부
     is_return = models.BooleanField(default=False)
+    #리뷰되었는지 여부
+    is_reviewed = models.BooleanField(default=False)
 
 class Review(models.Model):
     #작성자
@@ -74,14 +76,12 @@ class ReviewResult(models.Model):
     #유저
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name = 'myreviewresult', blank=True, null=True)
     #항목1 - 평균점수
-    av_q1 = models.IntegerField()
+    av_q1 = models.FloatField()
     #항목2 - 평균점수
-    av_q2 = models.IntegerField()
+    av_q2 = models.FloatField()
     #항목3 - 평균점수
-    av_q3 = models.IntegerField()
+    av_q3 = models.FloatField()
     #항목4 - 평균점수
-    av_q4 = models.IntegerField()
+    av_q4 = models.FloatField()
     #항목5 - 평균점수
-    av_q5 = models.IntegerField()
-    #리뷰 개수
-    review_count = models.IntegerField(default = 0)
+    av_q5 = models.FloatField()

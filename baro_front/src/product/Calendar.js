@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import style from "styled-components";
 import { DateRange } from "react-date-range";
 import "react-date-range/dist/styles.css"; // main css file
@@ -69,7 +69,7 @@ const CalendarBtnLink = style(Link)`
   margin-top: 20px;
 `;
 
-function Calendar({ item, ban }) {
+function Calendar({ item }) {
   let compare = new Date();
   if (compare <= new Date(item.barrowAvailableStart)) {
     compare = new Date(item.barrowAvailableStart);
@@ -85,6 +85,25 @@ function Calendar({ item, ban }) {
   const start = moment(state[0].startDate).format("YYYY-MM-DD");
   const end = moment(state[0].endDate).format("YYYY-MM-DD");
   const lender = JSON.parse(localStorage.getItem("user"));
+  const [banDate, setBanDate] = useState([]);
+  useEffect(() => {
+    axios.get(`http://127.0.0.1:8000/barrowedinfo/${item.id}/`).then((res) => {
+      const preventDate = res.data.map((alreday) => [
+        alreday.barrowStart,
+        alreday.barrowEnd,
+      ]);
+      const ban = [];
+      preventDate.forEach(([start, end]) => {
+        const st = new Date(start);
+        const lt = new Date(end);
+        while (st <= lt) {
+          ban.push(new Date(st));
+          st.setDate(st.getDate() + 1);
+        }
+        setBanDate(ban);
+      });
+    });
+  }, []);
   return (
     <CalendarSection>
       <CalendarInside>
@@ -107,7 +126,7 @@ function Calendar({ item, ban }) {
           maxDate={new Date(item.barrowAvailableEnd)}
           locale={ko}
           showDateDisplay={false}
-          disabledDates={ban} // 빌리는 거 금지 날짜
+          disabledDates={banDate} // 빌리는 거 금지 날짜
           color={"#aeb9bf"}
           showMonthAndYearPickers={false}
           ranges={state}

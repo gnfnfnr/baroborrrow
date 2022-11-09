@@ -137,7 +137,7 @@ function ProductEnroll() {
     barrowMethod: "",
   });
   const [files, setFiles] = useState();
-  console.log(condition);
+
   return (
     <>
       <PdContainer style={{ display: showSelect ? "none" : "" }}>
@@ -451,7 +451,6 @@ function ProductEnroll() {
       {showSelect ? (
         <CalendarEnroll
           item={"2022-04"}
-          ban={"2022-03-04"}
           borrowInfo={borrowInfo}
           setBorrowInfo={setBorrowInfo}
         />

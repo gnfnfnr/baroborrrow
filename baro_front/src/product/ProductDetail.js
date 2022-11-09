@@ -239,7 +239,7 @@ function ProductDetail() {
             "로딩중"
           )}
         </PdInfo>
-        {dt.owner ? (
+        {dt.owner && user ? (
           dt.owner.username === user.username ? (
             ""
           ) : (

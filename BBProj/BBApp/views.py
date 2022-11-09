@@ -1,8 +1,7 @@
 from datetime import datetime, date, timedelta
-from re import L
 from django.utils.dateformat import DateFormat
 from django.shortcuts import render, redirect
-from .models import Product, BarrowProduct, ReviewResult
+from .models import Product, BarrowProduct, Review, ReviewResult
 from django.http import HttpResponse
 from .serializers import ProductLikeSerializer, ProductSerializer, BarrowProductSerializer, ReviewSerializer, ReviewResultSerializer
 from rest_framework.viewsets import ModelViewSet
@@ -59,8 +58,8 @@ class ProductList(APIView):
         return Response(serializers.data)
     
     def post(self, request): #빌려주기 작성
-        #print(request.data)
-        #print(request.data['owner'])
+        print(request.data)
+        print(request.data['owner'])
         obj = User.objects.get(username=eval(request.data['owner'])['username'])
         serializer = ProductSerializer(data=request.data)
         if serializer.is_valid():
@@ -103,12 +102,12 @@ class ProductDetail(APIView):
 
 class CreateBarrowProduct(APIView):
     def post(self, request, pk): #빌리기 정보 저장
-        #print(request.data['user']['username'])
+        print(request.data['user']['username'])
         obj  = User.objects.get(username=request.data['user']['username'])
         serializer = BarrowProductSerializer(data=request.data)
         product = get_object_or_404(Product, pk=pk)
         serializer.product = product.id
-        #print(serializer)
+        print(serializer)
         if serializer.is_valid():
             serializer.save(user=obj)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -141,16 +140,18 @@ class MyReviewResult(APIView):
         return Response(serializer.data)
 
 
-class MyBarrowProductDetail(APIView):
+
+class BarrowedInfoList(APIView):
     def get_object(self, pk):
         try:
-            return BarrowProduct.objects.get(pk=pk)
-        except BarrowProduct.DoesNotExist:
+            return Product.objects.get(pk=pk)
+        except Product.DoesNotExist:
             raise Http404
 
     def get(self, request, pk): #내 바로 내역 - 디테일
-        borrow_product = self.get_object(pk)
-        serializer = BarrowProductSerializer(borrow_product)
+        product = self.get_object(pk)
+        queryset = BarrowProduct.objects.filter(product=product)
+        serializer = BarrowProductSerializer(queryset, many=True)
         return Response(serializer.data)
 
 #검색
@@ -162,6 +163,7 @@ class ProductViewSet(viewsets.ModelViewSet):
     search_fields = ('product_name',)
 
 #반납
+####### 10/29 - barrowproduct 주면 이거로 조회하는걸로 바꿔야함
 class ReturnProduct(APIView):
     def get_object(self, pk):
         barrow_product_object = get_object_or_404(BarrowProduct, pk=pk)
@@ -197,16 +199,16 @@ class LeaveReview(APIView):
         
         #아직 없을때
         if (is_exist == False):
-            print("11111111111111111111111")
+            #print("11111111111111111111111")
             review_result = ReviewResult(user=user, av_q1=serializer['q_1'], av_q2=serializer['q_2'], av_q3=serializer['q_3'], av_q4=serializer['q_4'], av_q5=serializer['q_5'])
             review_result.review_count += 1
             review_result.save()
         #이미 있을때
         else :
-            print("11111122222222222222222222111111")
+            #print("11111122222222222222222222111111")
             review_result = ReviewResult.objects.get(user=user)
             review_count = review_result.review_count
-            print(review_count)
+            #print(review_count)
             ######### 모델 변경 필요(integer -> float 등으로)
             review_result.av_q1 = (review_result.av_q1 * review_count + serializer['q_1']) / (review_count + 1)
             review_result.av_q2 = (review_result.av_q2 * review_count + serializer['q_2']) / (review_count + 1)
@@ -216,23 +218,25 @@ class LeaveReview(APIView):
             review_result.review_count += 1
             review_result.save()
 
+
             
     def post(self, request, pk):
-        
         obj  = User.objects.get(username=request.data['data']['writer']['username'])
-
         serializer = ReviewSerializer(data=request.data['data'])
         barrow_product = self.get_object(pk)
         #print(serializer)
         if serializer.is_valid():
             serializer.save(writer=obj, trader=barrow_product.product.owner, barrow_product=barrow_product)
-            #print(serializer.data)
             self.calculate_average(serializer.data)
+            barrow_product.is_reviewed=True
+            barrow_product.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)    
 
+    
 
 
 
-
-
+#class SearchProduct(APIView):
+#    def get(self, request):
+#        

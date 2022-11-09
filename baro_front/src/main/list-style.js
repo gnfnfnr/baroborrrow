@@ -58,6 +58,7 @@ export const ProductRentalInfo = styled.div`
   position: relative;
   display: flex;
   justify-content: space-between;
+  align-items: center;
 `;
 
 export const ProductCart = styled.img`
@@ -106,6 +107,7 @@ export const ProductCheckBtn = styled.div`
   border-radius: 5px;
   color: white;
   cursor: pointer;
+  margin-bottom: 10px;
   @media only screen and (max-width: 500px) {
     width: 45px;
     font-size: 12px;
@@ -117,6 +119,7 @@ export const ProductComBtn = styled.div`
   background: #d9d9d9;
   border-radius: 5px;
   color: #666666;
+  margin-bottom: 10px;
   @media only screen and (max-width: 500px) {
     padding: 4px 14px;
     font-size: 12px;

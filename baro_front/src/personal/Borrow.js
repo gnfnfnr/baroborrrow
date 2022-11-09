@@ -16,10 +16,12 @@ import RentalCheck from "./RentalCheck";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useUserContext } from "../Context";
+import ReviewCheck from "./ReviewCheck";
 
 const Detail = ({ list, setStateRental }) => {
   const navigate = useNavigate();
   const [rental, setRental] = useState();
+  const [review, setReview] = useState();
   const today = new Date();
   const diff = Math.floor(
     (today - new Date(list.barrowEnd)) / (1000 * 60 * 60 * 24)
@@ -32,6 +34,7 @@ const Detail = ({ list, setStateRental }) => {
         setProductDt(response.data);
       });
   }, []);
+  console.log(list);
   return (
     <>
       <ProductBox>
@@ -73,20 +76,27 @@ const Detail = ({ list, setStateRental }) => {
                   반납하기
                 </ProductCheckBtn>
               )}
+              {list.isReviewed ? (
+                <ProductComBtn>반납완료</ProductComBtn>
+              ) : (
+                <ProductCheckBtn
+                  onClick={() => {
+                    setReview(true);
+                  }}
+                >
+                  설문하기
+                </ProductCheckBtn>
+              )}
             </ProductCheck>
           </ProductDes>
         </ProductRentalInfo>
       </ProductBox>
       {rental ? (
-        <RentalCheck
-          setRental={setRental}
-          productDt={productDt}
-          list={list}
-          setStateRental={setStateRental}
-        />
+        <RentalCheck setRental={setRental} productDt={productDt} list={list} />
       ) : (
         ""
       )}
+      {review ? <ReviewCheck list={list} setReview={setReview} /> : ""}
     </>
   );
 };

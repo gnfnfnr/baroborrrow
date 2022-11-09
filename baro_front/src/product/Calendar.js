@@ -88,6 +88,7 @@ function Calendar({ item }) {
   const [banDate, setBanDate] = useState([]);
   useEffect(() => {
     axios.get(`http://127.0.0.1:8000/barrowedinfo/${item.id}/`).then((res) => {
+      console.log(res.data);
       const preventDate = res.data.map((alreday) => [
         alreday.barrowStart,
         alreday.barrowEnd,

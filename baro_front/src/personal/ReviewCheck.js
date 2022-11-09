@@ -100,17 +100,21 @@ function ReviewCheck({ list, setReview }) {
         <RentalCheckBtn
           onClick={() => {
             setReview(false);
-            axios.post(`http://127.0.0.1:8000/review/${list.product}/`, {
-              data: {
-                writer: list.user,
-                q1: an[0],
-                q2: an[1],
-                q3: an[2],
-                q4: an[3],
-                q5: an[4],
-              },
-            });
-            window.location.reload();
+            axios
+              .post(`http://127.0.0.1:8000/review/${list.product}/`, {
+                data: {
+                  writer: list.user,
+                  q1: an[0],
+                  q2: an[1],
+                  q3: an[2],
+                  q4: an[3],
+                  q5: an[4],
+                },
+              })
+              .then(() => window.location.reload())
+              .catch(() =>
+                alert("예상치 못한 오류 발생했습니다. 다시 시도해주세요")
+              );
           }}
         >
           설문 제출

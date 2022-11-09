@@ -66,7 +66,17 @@ const Detail = ({ list, setStateRental }) => {
                 {diff >= 0 ? ` D + ${diff}` : `D - ${Math.abs(diff)}`}
               </ProductCheckDate>
               {list.isReturn ? (
-                <ProductComBtn>반납완료</ProductComBtn>
+                list.isReviewed ? (
+                  <ProductComBtn>설문완료</ProductComBtn>
+                ) : (
+                  <ProductCheckBtn
+                    onClick={() => {
+                      setReview(true);
+                    }}
+                  >
+                    설문하기
+                  </ProductCheckBtn>
+                )
               ) : (
                 <ProductCheckBtn
                   onClick={() => {
@@ -74,17 +84,6 @@ const Detail = ({ list, setStateRental }) => {
                   }}
                 >
                   반납하기
-                </ProductCheckBtn>
-              )}
-              {list.isReviewed ? (
-                <ProductComBtn>반납완료</ProductComBtn>
-              ) : (
-                <ProductCheckBtn
-                  onClick={() => {
-                    setReview(true);
-                  }}
-                >
-                  설문하기
                 </ProductCheckBtn>
               )}
             </ProductCheck>

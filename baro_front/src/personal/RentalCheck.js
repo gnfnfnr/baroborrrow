@@ -96,10 +96,14 @@ function RentalCheck({ setRental, productDt, list }) {
         <RentalCheckBtn
           onClick={() => {
             setRental(false);
-            window.location.reload();
-            axios.get(
-              `http://127.0.0.1:8000/return/${list.id}/?username=${list.user.username}`
-            );
+            axios
+              .get(
+                `http://127.0.0.1:8000/return/${list.id}/?username=${list.user.username}`
+              )
+              .then(() => window.location.reload())
+              .catch(() =>
+                alert("예상치 못한 오류 발생했습니다. 다시 시도해주세요")
+              );
           }}
         >
           네, 반납했습니다.

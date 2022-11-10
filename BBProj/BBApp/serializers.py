@@ -50,5 +50,5 @@ class ReviewResultSerializer(ModelSerializer):
     class Meta:
         model = ReviewResult
         fields = [
-            'user', 'av_q1', 'av_q2', 'av_q3', 'av_q4', 'av_q5'
+            'user', 'av_q1', 'av_q2', 'av_q3', 'av_q4', 'av_q5', 'review_count'
         ]

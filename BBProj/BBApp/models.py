@@ -76,12 +76,14 @@ class ReviewResult(models.Model):
     #유저
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name = 'myreviewresult', blank=True, null=True)
     #항목1 - 평균점수
-    av_q1 = models.FloatField()
+    av_q1 = models.IntegerField()
     #항목2 - 평균점수
-    av_q2 = models.FloatField()
+    av_q2 = models.IntegerField()
     #항목3 - 평균점수
-    av_q3 = models.FloatField()
+    av_q3 = models.IntegerField()
     #항목4 - 평균점수
-    av_q4 = models.FloatField()
+    av_q4 = models.IntegerField()
     #항목5 - 평균점수
-    av_q5 = models.FloatField()
+    av_q5 = models.IntegerField()
+    #리뷰 개수
+    review_count = models.IntegerField(default = 0)

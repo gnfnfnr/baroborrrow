@@ -221,8 +221,8 @@ class LeaveReview(APIView):
 
             
     def post(self, request, pk):
-        obj  = User.objects.get(username=request.data['data']['writer']['username'])
-        serializer = ReviewSerializer(data=request.data['data'])
+        obj  = User.objects.get(username=request.data['writer']['username'])
+        serializer = ReviewSerializer(data=request.data)
         barrow_product = self.get_object(pk)
         #print(serializer)
         if serializer.is_valid():

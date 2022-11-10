@@ -83,7 +83,7 @@ class ChangeUserName(APIView):
         username = request.GET.get('username', None)
         user  = User.objects.get(username=username)
         nickname = request.data['nickname']
-        location_city = request.data['nickname']
+        location_city = request.data['location_city']
         location_gu = request.data['location_gu']
         user.nickname = nickname
         user.location_city = location_city

@@ -1,7 +1,7 @@
 from re import search
 from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
-
+from rest_framework import status
 from rest_framework.parsers import JSONParser
 
 from .serializers import AccountSerializer, UserLocationSerializer
@@ -69,12 +69,11 @@ def login(request):
 
 class BorrowLocation(APIView):
     def post(self, request):
-        user = get_object_or_404(User, pk=request.user.id)
-        serializer = UserLocationSerializer(user, data=request.data)
-       # print(user)
-        #print(serializer)
-        if serializer.is_valid():
-            serializer.save()
-            print(serializer.data)
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        username = request.GET.get('username', None)
+        user  = User.objects.get(username=username)
+        location_city = request['location_city']
+        location_gu = request['location_gu']
+        user.location_city = location_city
+        user.location_gu = location_gu
+        user.save()
+        return Response(status=status.HTTP_201_CREATED)

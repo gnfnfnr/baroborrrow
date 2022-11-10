@@ -18,7 +18,7 @@ class UserBasicSerializer(serializers.ModelSerializer):
 class UserLocationSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['username', 'nickname', 'location_gu', 'location_city']
+        fields = ['username', 'location_gu', 'location_city']
 
 class AccountSerializer(serializers.ModelSerializer):
     class Meta:

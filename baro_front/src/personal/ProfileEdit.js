@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
+import axios from "axios";
 
 const ProfileEditForm = styled.form`
   max-width: 450px;
@@ -55,7 +56,18 @@ function ProfileEdit() {
           setCgLocal(event.target.value);
         }}
       />
-      <ProfileEditConfirm>수정하기</ProfileEditConfirm>
+      <ProfileEditConfirm
+        onClick={(event) => {
+          event.preventDefault();
+          axios.post(`http://127.0.0.1:8000/user/changename/?username=dd`, {
+            nickname: cgNickName,
+            locationGu: "구로구",
+            locationCity: "서울시",
+          });
+        }}
+      >
+        수정하기
+      </ProfileEditConfirm>
     </ProfileEditForm>
   );
 }

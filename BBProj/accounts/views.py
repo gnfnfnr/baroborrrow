@@ -67,12 +67,25 @@ def login(request):
         else:
             return HttpResponse(status=400)
 
-class BorrowLocation(APIView):
+class UserLocation(APIView):
     def post(self, request):
         username = request.GET.get('username', None)
         user  = User.objects.get(username=username)
-        location_city = request['location_city']
-        location_gu = request['location_gu']
+        location_city = request.data['location_city']
+        location_gu = request.data['location_gu']
+        user.location_city = location_city
+        user.location_gu = location_gu
+        user.save()
+        return Response(status=status.HTTP_201_CREATED)
+
+class ChangeUserName(APIView):
+    def post(self, request):
+        username = request.GET.get('username', None)
+        user  = User.objects.get(username=username)
+        nickname = request.data['nickname']
+        location_city = request.data['nickname']
+        location_gu = request.data['location_gu']
+        user.nickname = nickname
         user.location_city = location_city
         user.location_gu = location_gu
         user.save()

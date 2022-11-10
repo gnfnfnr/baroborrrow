@@ -26,6 +26,7 @@ const Detail = ({ list, setStateRental }) => {
   const diff = Math.floor(
     (today - new Date(list.barrowEnd)) / (1000 * 60 * 60 * 24)
   );
+
   const [productDt, setProductDt] = useState([]);
   useEffect(() => {
     axios
@@ -34,7 +35,7 @@ const Detail = ({ list, setStateRental }) => {
         setProductDt(response.data);
       });
   }, []);
-  console.log(list);
+  console.log(diff);
   return (
     <>
       <ProductBox>
@@ -62,7 +63,7 @@ const Detail = ({ list, setStateRental }) => {
           </div>
           <ProductDes>
             <ProductCheck>
-              <ProductCheckDate>
+              <ProductCheckDate style={{background: diff >= -3 && diff <=0 ? "red": "blue"}}>
                 {diff >= 0 ? ` D + ${diff}` : `D - ${Math.abs(diff)}`}
               </ProductCheckDate>
               {list.isReturn ? (

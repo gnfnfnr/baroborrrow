@@ -71,8 +71,8 @@ class BorrowLocation(APIView):
     def post(self, request):
         username = request.GET.get('username', None)
         user  = User.objects.get(username=username)
-        location_city = request['location_city']
-        location_gu = request['location_gu']
+        location_city = request.data['location_city']
+        location_gu = request.data['location_gu']
         user.location_city = location_city
         user.location_gu = location_gu
         user.save()

@@ -7,5 +7,6 @@ urlpatterns = [
     path('accounts/<int:pk>/', views.account),
     path('login/', views.login),
     path('auth/', include('rest_framework.urls', namespace='rest_framework')),
-    path('location/', views.BorrowLocation.as_view()),
+    path('location/', views.UserLocation.as_view()),
+    path('changename/', views.ChangeUserName.as_view()),
  ]

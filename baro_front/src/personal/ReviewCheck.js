@@ -80,7 +80,7 @@ function ReviewCheck({ list, setReview }) {
       />
     );
   };
-
+  console.log(list);
   return (
     <RentalCheckModal>
       <RentalCheckBox>
@@ -101,7 +101,7 @@ function ReviewCheck({ list, setReview }) {
           onClick={() => {
             setReview(false);
             axios
-              .post(`http://127.0.0.1:8000/review/${list.product}/`, {
+              .post(`http://127.0.0.1:8000/review/${list.id}/`, {
                 writer: list.user,
                 q1: an[0],
                 q2: an[1],

@@ -63,9 +63,6 @@ const Detail = ({ list, setStateRental }) => {
           </div>
           <ProductDes>
             <ProductCheck>
-              <ProductCheckDate style={{background: diff >= -3 && diff <=0 ? "red": "blue"}}>
-                {diff >= 0 ? ` D + ${diff}` : `D - ${Math.abs(diff)}`}
-              </ProductCheckDate>
               {list.isReturn ? (
                 list.isReviewed ? (
                   <ProductComBtn>설문완료</ProductComBtn>
@@ -79,20 +76,35 @@ const Detail = ({ list, setStateRental }) => {
                   </ProductCheckBtn>
                 )
               ) : (
-                <ProductCheckBtn
-                  onClick={() => {
-                    setRental(true);
-                  }}
-                >
-                  반납하기
-                </ProductCheckBtn>
+                <>
+                  <ProductCheckDate
+                    style={{
+                      background:
+                        diff >= -3 && diff <= 0 ? "#94484B" : "#397293",
+                    }}
+                  >
+                    {diff >= 0 ? ` D + ${diff}` : `D - ${Math.abs(diff)}`}
+                  </ProductCheckDate>
+                  <ProductCheckBtn
+                    onClick={() => {
+                      setRental(true);
+                    }}
+                  >
+                    반납하기
+                  </ProductCheckBtn>
+                </>
               )}
             </ProductCheck>
           </ProductDes>
         </ProductRentalInfo>
       </ProductBox>
       {rental ? (
-        <RentalCheck setRental={setRental} productDt={productDt} list={list} />
+        <RentalCheck
+          setRental={setRental}
+          productDt={productDt}
+          list={list}
+          rental={rental}
+        />
       ) : (
         ""
       )}

@@ -36,7 +36,7 @@ const Detail = ({ list }) => {
         <div>
           <ProductName
             onClick={() => {
-              navigate(`/user/detail${list.id}`);
+              navigate(`/detail${list.id}`);
             }}
           >
             {list.productName}

@@ -13,6 +13,26 @@ const HeaderBox = styled.header`
   left: 0;
 `;
 
+const LogoutBtn = styled.div`
+  float: right;
+  padding: 15px;
+  color: #153547;
+  &:hover {
+    color: white;
+  }
+  cursor: pointer;
+`;
+
+const LoginBtn = styled.div`
+  float: right;
+  padding: 15px;
+  color: white;
+  cursor: pointer;
+  &:hover {
+    color: #153547;
+  }
+`;
+
 function Header() {
   const { user } = useUserContext();
   const nav = useNavigate();
@@ -20,22 +40,22 @@ function Header() {
   return (
     <HeaderBox>
       {user ? (
-        <span
+        <LogoutBtn
           onClick={() => {
             localStorage.removeItem("user");
             window.location.reload();
           }}
         >
           로그아웃
-        </span>
+        </LogoutBtn>
       ) : (
-        <span
+        <LoginBtn
           onClick={() => {
             nav("/login");
           }}
         >
           로그인하기
-        </span>
+        </LoginBtn>
       )}
     </HeaderBox>
   );

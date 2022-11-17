@@ -107,12 +107,12 @@ class CreateBarrowProduct(APIView):
         obj  = User.objects.get(username=request.data['user']['username'])
         serializer = BarrowProductSerializer(data=request.data)
         product = get_object_or_404(Product, pk=pk)
-        product.is_barrowed = True
-        product.save()
         serializer.product = product.id
         print(serializer)
         if serializer.is_valid():
-            serializer.save(user=obj, product=product.id)
+            serializer.save(user=obj, product=product)
+            product.is_barrowed = True
+            product.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 

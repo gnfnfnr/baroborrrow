@@ -59,7 +59,7 @@ function ProfileEdit() {
       <ProfileEditConfirm
         onClick={(event) => {
           event.preventDefault();
-          axios.post(`http://127.0.0.1:8000/user/changename/?username=dd`, {
+          axios.post(`http://127.0.0.1:8000/user/changename/?username=user1`, {
             nickname: cgNickName,
             locationGu: "구로구",
             locationCity: "서울시",

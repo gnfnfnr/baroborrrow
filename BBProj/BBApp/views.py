@@ -251,17 +251,17 @@ class SearchProduct(APIView):
             q &= Q(product_name__contains=keyword)
 
         if status:
-            if status == 0:
+            if status == "0":
                 q &= Q(is_barrowed=False)
-            elif status == 1:
+            elif status == "1":
                 q &= Q(barrow_available_start__range=[date.today() - timedelta(weeks=500), date.today()])
                 q &= Q(barrow_available_end__range=[date.today(), date.today() + timedelta(weeks=500)])
                 q &= Q(is_barrowed=False)
 
         if method:
-            if method == 0:
+            if method == "0":
                 q &= Q(barrow_method='대면')
-            elif method == 1:
+            elif method == "1":
                 q &= Q(barrow_method='비대면')
 
         products = Product.objects.filter(q)

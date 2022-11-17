@@ -42,7 +42,7 @@ const PdSearchKeyWord = styled.span`
   text-align: center;
 `;
 
-const PdSearchInput = styled.form`
+const PdSearchForm = styled.form`
   display: flex;
   align-items: center;
   padding: 14px 12px;
@@ -69,23 +69,27 @@ const SearchImg = styled.img`
   }
 `;
 
+const PdSearchBtn = styled.button`
+  all: unset;
+`;
+
 function Search() {
   const [pdData, setPdData] = useState([]);
   const [showOp, setShowOp] = useState(false);
-  const saveSearch = localStorage.getItem("search");
   useEffect(() => {
     axios
-      .get(`http://127.0.0.1:8000/search/products?search=${inputSearch}`)
+      .get(
+        `http://127.0.0.1:8000/search/?keyword=${inputSearch}&&status=${condition}&&method=${way}`
+      )
       .then((response) => {
         setPdData(response.data.reverse());
       });
   }, []);
-  const [condition, setCondition] = useState("product/");
+  const [condition, setCondition] = useState("");
   const [way, setWay] = useState("");
   const [inputSearch, setInputSearch] = useState(
     localStorage.getItem("search")
   );
-  console.log(condition, way);
   const { user } = useUserContext();
   return (
     <PdSearchContainer>
@@ -102,29 +106,16 @@ function Search() {
             "로그인이 필요합니다"
           )}
         </PdSearchInfo>
-        <PdSearchInput
+        <PdSearchForm
           onSubmit={(event) => {
             event.preventDefault();
             localStorage.setItem("search", inputSearch);
             axios
               .get(
-                `http://127.0.0.1:8000/search/products?search=${inputSearch}`
+                `http://127.0.0.1:8000/search/?keyword=${inputSearch}&&status=${condition}&&method=${way}`
               )
               .then((response) => {
-                const entire = response.data;
-                axios
-                  .get(`http://127.0.0.1:8000/${condition}`)
-                  .then((response) => {
-                    const detail = response.data;
-                    const cp = entire.filter((li) => {
-                      for (let index = 0; index < detail.length; index++) {
-                        if (detail[index].id === li.id) {
-                          return true;
-                        }
-                      }
-                    });
-                    setPdData(cp.reverse());
-                  });
+                setPdData(response.data.reverse());
               });
           }}
         >
@@ -132,7 +123,7 @@ function Search() {
             src={require("../img/filter.png")}
             onClick={() => {
               setShowOp(!showOp);
-              setCondition("product/");
+              setCondition("");
             }}
           />
           <SearchInput
@@ -142,8 +133,10 @@ function Search() {
               setInputSearch(e.target.value);
             }}
           />
-          <SearchImg src={require("../img/searchIcon.png")} />
-        </PdSearchInput>
+          <PdSearchBtn>
+            <SearchImg src={require("../img/searchIcon.png")} />
+          </PdSearchBtn>
+        </PdSearchForm>
       </PdSearchHeader>
 
       {showOp ? <Option setCondition={setCondition} setWay={setWay} /> : ""}

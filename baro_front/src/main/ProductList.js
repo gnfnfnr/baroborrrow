@@ -18,7 +18,7 @@ function ProductList({ pdData }) {
         <ProductBox key={list.id}>
           <ProductImg>
             <img
-              src={list.productPhoto}
+              src={`http://127.0.0.1:8000${list.productPhoto}`}
               style={{
                 width: "100%",
                 height: "100%",

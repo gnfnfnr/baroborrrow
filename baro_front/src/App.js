@@ -5,7 +5,6 @@ import Home from "./main/Home";
 import Footer from "./nav/Footer";
 import Header from "./nav/Header";
 import RouteMain from "./RouteMain";
-import Search from "./main/Search";
 import ProductEnroll from "./product/ProductEnroll";
 import Basket from "./main/Basket";
 import Mypage from "./personal/Mypage";

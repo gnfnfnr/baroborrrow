@@ -24,6 +24,10 @@ class Product(models.Model):
     address = models.TextField()
     #상세주소
     detail_address =  models.TextField()
+    #시/도
+    localCity = models.CharField(max_length=64, null=True)
+    #구/군
+    localGu = models.CharField(max_length=64, null=True)
     #사진
     product_photo = models.ImageField(blank=True, null=True, upload_to='product_photo')
     #대여가능기간 시작

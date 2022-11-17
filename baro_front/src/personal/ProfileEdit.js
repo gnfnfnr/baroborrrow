@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import axios from "axios";
+import { useUserContext } from "../Context";
+import { Navigate, useNavigate } from "react-router-dom";
 
 const ProfileEditForm = styled.form`
   max-width: 450px;
@@ -36,6 +38,9 @@ function ProfileEdit() {
   const [cgNickName, setCgNickName] = useState("");
   const [cgLocal, setCgLocal] = useState("");
   console.log(cgLocal, cgNickName);
+  const { user } = useUserContext();
+  console.log(user);
+  const navigate = useNavigate();
   return (
     <ProfileEditForm>
       <ProfileEditLabel htmlFor="changeNick">닉네임</ProfileEditLabel>
@@ -59,11 +64,27 @@ function ProfileEdit() {
       <ProfileEditConfirm
         onClick={(event) => {
           event.preventDefault();
-          axios.post(`http://127.0.0.1:8000/user/changename/?username=user1`, {
-            nickname: cgNickName,
-            locationGu: "구로구",
-            locationCity: "서울시",
-          });
+          axios
+            .post(
+              `http://127.0.0.1:8000/user/changename/?username=${user.username}`,
+              {
+                nickname: cgNickName,
+                locationGu: "구로구",
+                locationCity: "서울시",
+              }
+            )
+            .then(() => {
+              axios
+                .get(
+                  `http://127.0.0.1:8000/user/account/?username=${user.username}`
+                )
+                .then((res) => {
+                  const userObj = JSON.stringify(res.data);
+                  localStorage.setItem("user", userObj);
+                  navigate("/mypage/profile");
+                  window.location.reload();
+                });
+            });
         }}
       >
         수정하기

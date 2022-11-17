@@ -8,7 +8,7 @@
 
 ### 프로젝트 로고
 
-![웹로고블루ver-removebg-preview 2](https://user-images.githubusercontent.com/91455804/201514777-48eef71d-9d6e-4f91-b250-7b0d6848830a.png)
+![Group 31](https://user-images.githubusercontent.com/91455804/202372223-b50bc5de-1fce-4ede-8bfd-1e1d37d088b8.png)
 
 ### 프로젝트 설명
 
@@ -113,7 +113,11 @@
 - 빌려준 목록
   - 빌려준 목록의 반납 기한을 D-DAY를 통해 확인할 수 있다.
 
-#### 3. 고객센터
+## 추가 구현 기획
+
+1. 결제하기
+2. 채팅으로 서로 소통하기
+3. 고객센터
 
 ## 프로젝트 시작하기
 

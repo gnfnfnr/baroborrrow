@@ -25,9 +25,10 @@ urlpatterns = [
     path('mypage/myproduct/', views.MyProductList.as_view()),
     path('mypage/likeproducts/', views.ProductLikeList.as_view()),
     path('mypage/reviewresult/', views.MyReviewResult.as_view()),
-    path('search/', include(product_router.urls)),
+    #path('search/', include(product_router.urls)),
     path('return/<int:pk>/', views.ReturnProduct.as_view()),
     path('review/<int:pk>/', views.LeaveReview.as_view()),
+    path('search/', views.SearchProduct.as_view()),
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)

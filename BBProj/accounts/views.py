@@ -36,23 +36,14 @@ def account_list(request):
 
 
 @csrf_exempt
-def account(request, pk):
-    obj = User.objects.get(pk=pk)
+def account(request):
 
     if request.method =='GET':
+        username = request.GET.get('username', None)
+        obj  = User.objects.get(username=username)
         serializer = AccountSerializer(obj)
         return JsonResponse(serializer.data, safe=False)
 
-    elif request.method == 'PUT':
-        data = JSONParser().parse(request)
-        serializer = AccountSerializer(obj, data=data)
-        if serializer.is_valid():
-            serializer.save()
-            return JsonResponse(serializer.data, status=201)
-        return JsonResponse(serializer.errors, status=400)
-    elif request.method == 'DELETE':
-        obj.delete()
-        return HttpResponse(status=204)
 
 
 @csrf_exempt

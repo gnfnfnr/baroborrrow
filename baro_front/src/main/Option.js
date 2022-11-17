@@ -99,14 +99,14 @@ function Option({ setCondition, setWay }) {
           <ListBtn>
             <ListBtnDetail
               onClick={(event) => {
-                onClick(event, "nbproduct/", setCondition);
+                onClick(event, "0", setCondition);
               }}
             >
               대여 중 제외
             </ListBtnDetail>
             <ListBtnDetail
               onClick={(event) => {
-                onClick(event, "today_available/", setCondition);
+                onClick(event, "1", setCondition);
               }}
             >
               오늘 바로
@@ -118,14 +118,14 @@ function Option({ setCondition, setWay }) {
           <ListBtn>
             <ListBtnDetail
               onClick={(event) => {
-                onClick(event, 0, setWay);
+                onClick(event, "0", setWay);
               }}
             >
               대면
             </ListBtnDetail>
             <ListBtnDetail
               onClick={(event) => {
-                onClick(event, 1, setWay);
+                onClick(event, "1", setWay);
               }}
             >
               비대면

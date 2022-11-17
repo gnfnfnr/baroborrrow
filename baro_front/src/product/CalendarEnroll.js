@@ -83,6 +83,7 @@ function CalendarEnroll({ borrowInfo }) {
   const start = moment(state[0].startDate).format("YYYY-MM-DD");
   const end = moment(state[0].endDate).format("YYYY-MM-DD");
   const user = JSON.parse(localStorage.getItem("user"));
+  const [borrowCity, borrowGu] = borrowInfo.address.split(" ");
   return (
     <CalendarSection>
       <CalendarInside>
@@ -126,6 +127,8 @@ function CalendarEnroll({ borrowInfo }) {
               formData.append("detailAddress", borrowInfo.detailAddress);
               formData.append("productPhoto", borrowInfo.productPhoto);
               formData.append("barrowMethod", borrowInfo.barrowMethod);
+              formData.append("localCity", borrowCity);
+              formData.append("localGu", borrowGu.slice(0, -1));
               formData.append("barrowAvailableStart", start);
               formData.append("barrowAvailableEnd", end);
               formData.append("encType", "multipart/form-data");

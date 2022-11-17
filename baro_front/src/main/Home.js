@@ -52,9 +52,11 @@ function Home() {
   const [inputSearch, setInputSearch] = useState("");
   const clickRef = useRef();
   useEffect(() => {
-    axios.get(`http://127.0.0.1:8000/search/products`).then((response) => {
-      setPdData(response.data.reverse());
-    });
+    axios
+      .get(`http://127.0.0.1:8000/search/?keyword=${inputSearch}`)
+      .then((response) => {
+        setPdData(response.data.reverse());
+      });
   }, []);
   const nav = useNavigate();
   const { user } = useUserContext();
@@ -65,9 +67,7 @@ function Home() {
           onSubmit={(event) => {
             event.preventDefault();
             axios
-              .get(
-                `http://127.0.0.1:8000/search/products?search=${inputSearch}`
-              )
+              .get(`http://127.0.0.1:8000/search/?keyword=${inputSearch}`)
               .then((response) => {
                 setPdData(response.data);
                 if (user) {

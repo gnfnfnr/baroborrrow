@@ -66,7 +66,7 @@ class ProductList(APIView):
         if serializer.is_valid():
             serializer.save(owner=obj)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
-            
+        print(serializer.errors)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class TodayAvailableList(APIView):
@@ -110,7 +110,9 @@ class CreateBarrowProduct(APIView):
         serializer.product = product.id
         print(serializer)
         if serializer.is_valid():
-            serializer.save(user=obj)
+            serializer.save(user=obj, product=product)
+            product.is_barrowed = True
+            product.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -257,6 +259,12 @@ class SearchProduct(APIView):
                 q &= Q(barrow_available_start__range=[date.today() - timedelta(weeks=500), date.today()])
                 q &= Q(barrow_available_end__range=[date.today(), date.today() + timedelta(weeks=500)])
                 q &= Q(is_barrowed=False)
+
+        if localCity:
+            q &= Q(localCity__contains=localCity)
+
+        if localGu:
+            q &= Q(localGu__contains=localGu)
 
         if method:
             if method == "0":

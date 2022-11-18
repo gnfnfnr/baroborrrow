@@ -55,11 +55,9 @@ const ListBtnDetail = styled.div`
   cursor: pointer;
 `;
 
-//글자 간격은 폰트 적용 후 확인할것
-
-function Option({ setCondition, setWay }) {
+function Option({ setCondition, setWay, setLocalName, localName }) {
   const [local, setLocal] = useState(false);
-  const [localName, setLocalName] = useState("");
+
   function onClick(event, text, func) {
     func(text);
     if (event.target.style.backgroundColor === "rgb(233, 246, 253)") {
@@ -88,7 +86,7 @@ function Option({ setCondition, setWay }) {
           >
             <LocalText>
               {localName
-                ? localName.gu + " " + localName.city
+                ? localName.city + " " + localName.gu
                 : "대여를 원하는 지역을 선택해주세요"}
             </LocalText>
             <img src={LocalBoxIcon} />

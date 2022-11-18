@@ -262,10 +262,10 @@ class SearchProduct(APIView):
                 q &= Q(is_barrowed=False)
 
         if localCity:
-            q &= Q(localCity__contains=localCity)
+            q &= Q(local_city__contains=localCity)
 
         if localGu:
-            q &= Q(localGu__contains=localGu)
+            q &= Q(local_gu__contains=localGu)
 
         if method:
             if method == "0":

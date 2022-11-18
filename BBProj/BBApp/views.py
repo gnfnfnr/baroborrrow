@@ -179,6 +179,7 @@ class ReturnProduct(APIView):
         if (barrow_product.user == obj):
             barrow_product.is_return = True
             barrow_product.product.is_barrowed = False
+            barrow_product.product.save()
             barrow_product.save()
             serializer = BarrowProductSerializer(barrow_product)
             return Response(serializer.data)

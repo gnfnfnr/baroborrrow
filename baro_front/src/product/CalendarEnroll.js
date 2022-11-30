@@ -61,6 +61,7 @@ const CalendarBtn = style.div`
 `;
 
 const CalendarBtnLink = style.button`
+  all: unset;
   background: #56AEDF;
   border-radius: 5px;
   padding: 13px 45px;

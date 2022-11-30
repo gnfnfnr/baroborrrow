@@ -1,5 +1,8 @@
+import axios from "axios";
 import React, { useState } from "react";
+import { useLocation, useParams } from "react-router-dom";
 import style from "styled-components";
+import { useUserContext } from "../Context";
 
 const MessageLabel = style.label`
 `;
@@ -75,15 +78,47 @@ const MessageButton = style.button`
   width: 100%;
 `;
 
-function SendMessage(props) {
+function SendMessage() {
   const [fileImg, setFileImg] = useState();
   const [file, setFile] = useState();
+  const params = useParams();
+  const { user } = useUserContext();
+  const [content, setContent] = useState();
   return (
-    <form>
+    <form
+      encType="multipart/form-data"
+      onSubmit={() => {
+        const formData = new FormData();
+        formData.append("encType", "multipart/form-data");
+        formData.append("받는사람", params.nickname);
+        formData.append("보내는 사람", JSON.stringify(user));
+        formData.append("사진", file);
+        formData.append("내용", content);
+        axios({
+          method: "POST",
+          url: "",
+          headers: {
+            "Content-Type": "multipart/form-data", // Content-Type을 반드시 이렇게 하여야 한다.
+          },
+          data: formData, // data 전송시에 반드시 생성되어 있는 formData 객체만 전송 하여야 한다.
+        })
+          .then(() => {
+            alert("쪽지가 성공적으로 보내졌습니다.");
+            window.location.reload();
+          })
+          .catch(() => {
+            alert("알 수 없는 오류가 발생했습니다.");
+          });
+      }}
+    >
       <ul>
         <MessageListDetail>
           <MessageLabel htmlFor="receiver">받는사람</MessageLabel>
-          <MessageReceiver id="receiver" placeholder="123" disabled />
+          <MessageReceiver
+            id="receiver"
+            placeholder={params.nickname}
+            disabled
+          />
         </MessageListDetail>
         <MessageListDetail>
           {fileImg ? (
@@ -120,7 +155,13 @@ function SendMessage(props) {
         <MessageListDetail>
           <MessageContext>
             <MessageLabel>보낼 내용</MessageLabel>
-            <MessageInputArea placeholder="내용을 입력해주세요" />
+            <MessageInputArea
+              placeholder="내용을 입력해주세요"
+              value={content}
+              onChange={(event) => {
+                setContent(event.target.value);
+              }}
+            />
           </MessageContext>
         </MessageListDetail>
         <MessageListDetail>

@@ -24,6 +24,7 @@ const PdHead = style.div`
   justify-content: space-between;
   padding: 13px;
   color: white;
+  align-items: center;
 `;
 
 const PdTitle = style.div`
@@ -74,8 +75,6 @@ const InfoPer = style.div`
 `;
 
 const MessageIcon = style.svg`
-  width: 21px;
-  height: 21px; 
   padding-right: 10px;
   cursor: pointer;
 `;
@@ -84,10 +83,9 @@ const MarketIcon = style.svg`
   cursor: pointer;
 `;
 
-const PdHeader = ({ params, user }) => {
+const PdHeader = ({ params, user, pdOwner }) => {
   const [basket, setBasket] = useState();
   const navigate = useNavigate();
-
   useEffect(() => {
     axios
       .get(
@@ -102,14 +100,33 @@ const PdHeader = ({ params, user }) => {
   return (
     <div>
       <MessageIcon
+        width="30"
+        height="30"
+        viewBox="0 0 30 30"
+        fill="none"
         xmlns="http://www.w3.org/2000/svg"
-        viewBox="0 0 448 512"
         onClick={() => {
-          navigate("/mypage/sendMessage");
+          navigate(`/mypage/sendMessage/receiver=${pdOwner.nickname}`);
         }}
       >
-        <path d="M429.6 92.1c4.9-11.9 2.1-25.6-7-34.7s-22.8-11.9-34.7-7l-352 144c-14.2 5.8-22.2 20.8-19.3 35.8s16.1 25.8 31.4 25.8H224V432c0 15.3 10.8 28.4 25.8 31.4s30-5.1 35.8-19.3l144-352z" />
+        <g clipPath="url(#clip0_101_4)">
+          <path
+            d="M12.9094 26.3565L22.4454 8.78607L3.14543 13.9982L6.94252 18.8042L18.326 12.0407L9.11228 21.5505L12.9094 26.3565Z"
+            fill="white"
+          />
+        </g>
+        <defs>
+          <clipPath id="clip0_101_4">
+            <rect
+              width="21"
+              height="21"
+              fill="white"
+              transform="translate(0.144958 13.0233) rotate(-38.3112)"
+            />
+          </clipPath>
+        </defs>
       </MessageIcon>
+
       <MarketIcon
         width="21"
         height="21"
@@ -165,7 +182,15 @@ function ProductDetail() {
     <>
       <PdHead>
         <span>물품 상세보기</span>
-        {user ? <PdHeader params={params} user={user} /> : ""}
+        {user && dt.owner ? (
+          dt.owner.username === user.username ? (
+            ""
+          ) : (
+            <PdHeader params={params} user={user} pdOwner={dt.owner} />
+          )
+        ) : (
+          ""
+        )}
       </PdHead>
       <PdContainer style={{ display: showSelect ? "none" : "" }}>
         <PdImgDiv>

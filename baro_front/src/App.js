@@ -20,6 +20,7 @@ import ProductResult from "./product/ProductResult";
 import { UserContextProvider } from "./Context";
 import IsSearch from "./main/IsSearch";
 import SendMessage from "./personal/SendMessage";
+import Message from "./personal/Message";
 
 function App() {
   const user = localStorage.getItem("user");
@@ -72,7 +73,13 @@ function App() {
               <Route path="/mypage/content/borrow" element={<Borrow />} />
               <Route path="/mypage/content/lend" element={<Lend />} />
             </Route>
-            <Route path="/mypage/sendMessage" element={<SendMessage />} />
+            <Route
+              path="/mypage/sendMessage/receiver=:nickname"
+              element={
+                user ? <SendMessage /> : <Navigate replace to="/login" />
+              }
+            />
+            <Route path="/mypage/message" element={<Message />} />
             {/* 로그인 */}
             <Route path="/login" element={<Login />} />
             <Route path="/join" element={<Join />} />

@@ -62,6 +62,12 @@ function Mypage() {
               <DetailIcon src={require("../img/center.png")} />
               <DetailTitle>고객센터</DetailTitle>
             </MypageDetail>
+            <Link to="/mypage/message">
+              <MypageDetail>
+                <DetailIcon src={require("../img/send.png")} />
+                <DetailTitle>쪽지</DetailTitle>
+              </MypageDetail>
+            </Link>
           </MypageList>
         </MypageBox>
       ) : (

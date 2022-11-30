@@ -456,7 +456,7 @@ function Local({ setLocal, setLocalName }) {
                 key={`cate${list.cityId}`}
                 onClick={(event) => {
                   setSelectState(list.cityDt);
-                  setInfoState(list.cityFullName);
+                  setInfoState(list.cityName);
                   if (guRef.current[infoGu]) {
                     guRef.current[infoGu].style.background = "";
                     guRef.current[infoGu].style.color = "";

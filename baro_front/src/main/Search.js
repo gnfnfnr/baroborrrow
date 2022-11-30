@@ -76,6 +76,7 @@ const PdSearchBtn = styled.button`
 function Search() {
   const [pdData, setPdData] = useState([]);
   const [showOp, setShowOp] = useState(false);
+  const [localName, setLocalName] = useState("");
   useEffect(() => {
     axios
       .get(
@@ -91,6 +92,7 @@ function Search() {
     localStorage.getItem("search")
   );
   const { user } = useUserContext();
+
   return (
     <PdSearchContainer>
       <PdSearchHeader>
@@ -112,7 +114,10 @@ function Search() {
             localStorage.setItem("search", inputSearch);
             axios
               .get(
-                `http://127.0.0.1:8000/search/?keyword=${inputSearch}&&status=${condition}&&method=${way}`
+                `http://127.0.0.1:8000/search/?keyword=${inputSearch}&&status=${condition}&&method=${way}&&localGu=${localName.gu.slice(
+                  0,
+                  -1
+                )}&&localCity=${localName.city}`
               )
               .then((response) => {
                 setPdData(response.data.reverse());
@@ -139,7 +144,16 @@ function Search() {
         </PdSearchForm>
       </PdSearchHeader>
 
-      {showOp ? <Option setCondition={setCondition} setWay={setWay} /> : ""}
+      {showOp ? (
+        <Option
+          setCondition={setCondition}
+          setWay={setWay}
+          localName={localName}
+          setLocalName={setLocalName}
+        />
+      ) : (
+        ""
+      )}
 
       <ProductList pdData={pdData} />
     </PdSearchContainer>

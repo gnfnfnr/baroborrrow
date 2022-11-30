@@ -1,3 +1,4 @@
+@@ -1,139 +0,0 @@
 # 바로바로
 
 ## 설명
@@ -134,6 +135,6 @@
 
 ## 참여자
 
-- 디자인: [ebenezerkhy](https://github.com/KoHyeYeon)<img src="https://img.shields.io/badge/Figma-F24E1E?style=flat&logo=Figma&logoColor=white"/>
+- 디자인: [KoHyeYeon](https://github.com/KoHyeYeon)<img src="https://img.shields.io/badge/Figma-F24E1E?style=flat&logo=Figma&logoColor=white"/>
 - 프론트: [gnfnfnr](https://github.com/gnfnfnr) <img src="https://img.shields.io/badge/React-61DAFB?style=flat&logo=React&logoColor=white"/>
 - 백엔드: [hyeonahhh](https://github.com/hyeonahhh) <img src="https://img.shields.io/badge/Django-092E20?style=flat&logo=Django&logoColor=white"/>

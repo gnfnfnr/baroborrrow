@@ -18,10 +18,10 @@ import Join from "./start/Join";
 import ProductDetail from "./product/ProductDetail";
 import ProductResult from "./product/ProductResult";
 import { UserContextProvider } from "./Context";
-import IsSearch from "./main/IsSearch";
 import SendMessage from "./personal/SendMessage";
 import Message from "./personal/Message";
 import Chating from "./personal/Chating";
+import Search from "./main/Search";
 
 function App() {
   const user = localStorage.getItem("user");
@@ -37,7 +37,7 @@ function App() {
             <Route element={<ProductDetail />} path={"/detail:id"} />
             <Route
               path="/search"
-              element={user ? <IsSearch /> : <Navigate replace to="/login" />}
+              element={user ? <Search /> : <Navigate replace to="/login" />}
             />
             <Route
               path="/enroll"

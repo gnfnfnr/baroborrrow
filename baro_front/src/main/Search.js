@@ -4,6 +4,7 @@ import styled from "styled-components";
 import axios from "axios";
 import Option from "./Option";
 import { useUserContext } from "../Context.js";
+import { useLocation, useSearchParams } from "react-router-dom";
 
 const PdSearchContainer = styled.div`
   margin-top: 52px;
@@ -74,9 +75,12 @@ const PdSearchBtn = styled.button`
 `;
 
 function Search() {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const item = searchParams.get("detail");
+  const [inputSearch, setInputSearch] = useState(item ? item : "");
   const [pdData, setPdData] = useState([]);
   const [showOp, setShowOp] = useState(false);
-  const [localName, setLocalName] = useState("");
+  const [localName, setLocalName] = useState({ gu: " ", city: " " });
   useEffect(() => {
     axios
       .get(
@@ -88,9 +92,6 @@ function Search() {
   }, []);
   const [condition, setCondition] = useState("");
   const [way, setWay] = useState("");
-  const [inputSearch, setInputSearch] = useState(
-    localStorage.getItem("search")
-  );
   const { user } = useUserContext();
 
   return (
@@ -111,7 +112,6 @@ function Search() {
         <PdSearchForm
           onSubmit={(event) => {
             event.preventDefault();
-            localStorage.setItem("search", inputSearch);
             axios
               .get(
                 `http://127.0.0.1:8000/search/?keyword=${inputSearch}&&status=${condition}&&method=${way}&&localGu=${localName.gu.slice(
@@ -121,6 +121,7 @@ function Search() {
               )
               .then((response) => {
                 setPdData(response.data.reverse());
+                setSearchParams({ detail: inputSearch });
               });
           }}
         >

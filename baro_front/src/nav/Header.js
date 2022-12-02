@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useUserContext } from "../Context";
 
 const HeaderBox = styled.header`
@@ -13,9 +13,15 @@ const HeaderBox = styled.header`
   left: 0;
 `;
 
+const HeaderSpace = styled.div`
+  max-width: 1080px;
+  display: flex;
+  align-items: center;
+  margin: 0 auto;
+`;
+
 const LogoutBtn = styled.div`
-  float: right;
-  padding: 15px;
+  padding-right: 15px;
   color: #153547;
   &:hover {
     color: white;
@@ -24,8 +30,7 @@ const LogoutBtn = styled.div`
 `;
 
 const LoginBtn = styled.div`
-  float: right;
-  padding: 15px;
+  padding-right: 15px;
   color: white;
   cursor: pointer;
   &:hover {
@@ -33,30 +38,39 @@ const LoginBtn = styled.div`
   }
 `;
 
+const HeaderLogo = styled.img`
+  margin: 0 auto;
+  object-fit: cover;
+`;
+
 function Header() {
   const { user } = useUserContext();
   const nav = useNavigate();
-
+  const locate = useLocation();
+  console.log(locate);
   return (
     <HeaderBox>
-      {user ? (
-        <LogoutBtn
-          onClick={() => {
-            localStorage.removeItem("user");
-            window.location.reload();
-          }}
-        >
-          로그아웃
-        </LogoutBtn>
-      ) : (
-        <LoginBtn
-          onClick={() => {
-            nav("/login");
-          }}
-        >
-          로그인하기
-        </LoginBtn>
-      )}
+      <HeaderSpace>
+        <HeaderLogo src={require("../img/headerLogo.png")} />
+        {user ? (
+          <LogoutBtn
+            onClick={() => {
+              localStorage.removeItem("user");
+              window.location.reload();
+            }}
+          >
+            로그아웃
+          </LogoutBtn>
+        ) : (
+          <LoginBtn
+            onClick={() => {
+              nav("/login");
+            }}
+          >
+            로그인하기
+          </LoginBtn>
+        )}
+      </HeaderSpace>
     </HeaderBox>
   );
 }

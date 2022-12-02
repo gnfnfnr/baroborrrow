@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import style from "styled-components";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
 const MessageUserPicker = style.select`
   outline: none;
@@ -68,7 +68,9 @@ function MessageDetail({ detail }) {
   return (
     <MessageBox
       onClick={() => {
-        navigate("/mypage");
+        navigate(
+          `/mypage/chatting/nickname=${detail.receiver}&&item=${detail.items}`
+        );
       }}
     >
       <MessageSender>

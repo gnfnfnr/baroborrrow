@@ -21,6 +21,7 @@ import { UserContextProvider } from "./Context";
 import IsSearch from "./main/IsSearch";
 import SendMessage from "./personal/SendMessage";
 import Message from "./personal/Message";
+import Chating from "./personal/Chating";
 
 function App() {
   const user = localStorage.getItem("user");
@@ -80,6 +81,10 @@ function App() {
               }
             />
             <Route path="/mypage/message" element={<Message />} />
+            <Route
+              path="/mypage/chatting/nickname=:nickname&&item=:item"
+              element={<Chating />}
+            />
             {/* 로그인 */}
             <Route path="/login" element={<Login />} />
             <Route path="/join" element={<Join />} />

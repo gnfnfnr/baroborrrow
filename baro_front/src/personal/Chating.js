@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useParams } from "react-router-dom";
 import style from "styled-components";
 
@@ -107,8 +107,21 @@ const ChatSendingButton = style.button`
     border: 1px solid white;
 `;
 
+const ChatPreview = style.div`
+  align-self: flex-end;
+  padding: 20px;
+`;
+
+const PreviewImg = style.img`
+  width: 80px;
+  height: 80px;
+  object-fit: contain;
+`;
+
 function Chating() {
+  const [imgFile, setImgFile] = useState();
   const params = useParams();
+
   return (
     <ChattingSpace>
       <ChattingSpaceBox>
@@ -131,12 +144,37 @@ function Chating() {
           </Myself>
         </ChatMain>
         <ChatSend>
+          {imgFile ? (
+            <ChatPreview>
+              <PreviewImg
+                src={URL.createObjectURL(imgFile)}
+                alt="사진 미리보기"
+              />
+
+              <img
+                src={require("../img/closeBtn.png")}
+                alt="선택한 사진 제거"
+                onClick={() => {
+                  setImgFile("");
+                }}
+                style={{ cursor: "pointer" }}
+              />
+            </ChatPreview>
+          ) : (
+            ""
+          )}
           <ChatSendTextInput placeholder="내용을 입력해주세요" />
           <ChatSendButton>
-            <label htmlFor="file">
+            <label htmlFor="file" style={{ cursor: "pointer" }}>
               <img src={require("../img/fileClip.png")} alt="파일 이미지" />
             </label>
-            <ChatSendFileInput type="file" id="file" />
+            <ChatSendFileInput
+              type="file"
+              id="file"
+              onChange={(event) => {
+                setImgFile(event.target.files[0]);
+              }}
+            />
             <ChatSendingButton>전송</ChatSendingButton>
           </ChatSendButton>
         </ChatSend>

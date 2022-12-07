@@ -115,7 +115,8 @@ function CalendarEnroll({ borrowInfo }) {
         {start !== "Invalid date" && end !== "Invalid date" ? (
           <form
             encType="multipart/form-data"
-            onSubmit={() => {
+            onSubmit={(event) => {
+              event.preventDefault();
               const formData = new FormData();
               formData.append("owner", JSON.stringify(user));
               formData.append("productName", borrowInfo.productName);
@@ -142,9 +143,8 @@ function CalendarEnroll({ borrowInfo }) {
                 data: formData, // data 전송시에 반드시 생성되어 있는 formData 객체만 전송 하여야 한다.
               })
                 .then(() => {
-                  naviagte("/main");
                   alert("상품 등록이 완료되었습니다");
-                  window.location.reload();
+                  naviagte("/main");
                 })
                 .catch(() => {
                   alert("알 수 없는 오류가 발생했습니다.");

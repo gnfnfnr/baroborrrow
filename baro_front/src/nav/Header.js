@@ -47,7 +47,7 @@ function Header() {
   const { user } = useUserContext();
   const nav = useNavigate();
   const locate = useLocation();
-  if (locate.pathname !== "/login") {
+  if (locate.pathname !== "/login" && locate.pathname !== "/join") {
     localStorage.setItem("path", locate.pathname);
   }
   return (

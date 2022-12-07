@@ -142,8 +142,8 @@ function CalendarEnroll({ borrowInfo }) {
                 data: formData, // data 전송시에 반드시 생성되어 있는 formData 객체만 전송 하여야 한다.
               })
                 .then(() => {
-                  alert("상품 등록이 완료되었습니다");
                   naviagte("/main");
+                  alert("상품 등록이 완료되었습니다");
                   window.location.reload();
                 })
                 .catch(() => {

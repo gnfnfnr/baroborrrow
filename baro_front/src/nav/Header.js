@@ -47,7 +47,9 @@ function Header() {
   const { user } = useUserContext();
   const nav = useNavigate();
   const locate = useLocation();
-  console.log(locate);
+  if (locate.pathname !== "/login") {
+    localStorage.setItem("path", locate.pathname);
+  }
   return (
     <HeaderBox>
       <HeaderSpace>

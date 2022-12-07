@@ -45,16 +45,34 @@ class MessageRoomDetail(APIView):
     def get(self, request, rpk):
         messageroom = get_object_or_404(MessageRoom, pk=rpk)
         messages = Message.objects.filter(room=messageroom)
-        #미완성! 메세지들 시리얼라이저에 담아서 보내줘야함
+        #내가 누군지 파악하고 unread 바꿔줘야함!!
+        user = request.GET.get('user', None)
+        if user == 1:
+            if messageroom.unread == 1:
+                messageroom.unread = 0
+        elif user == 2:
+            if messageroom.unread == 2:
+                messageroom.unread = 0
+        messageroom.save()
         serializers = MessageSerializer(messages, many=True)
         return Response(serializers.data, status=status.HTTP_200_OK)
-        
-    
+
+
+    #메세지 보내기
     def post(self, request, rpk):
         messageroom = get_object_or_404(MessageRoom, pk=rpk)
+        messageroom.status = True
+        messageroom.last_message = request.data['text']
+        if request.data['sender'] == 1:
+            messageroom.unread = 2
+        elif request.data['sender'] == 2:
+            messageroom.unread = 1
         serializer = MessageSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save(room=messageroom)
+            #시간 추가하는 방법 알아보기
+            messageroom.last_at = serializer.send_at
+            messageroom.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 

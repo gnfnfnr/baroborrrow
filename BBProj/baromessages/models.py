@@ -12,7 +12,7 @@ class MessageRoom(models.Model):
     #product
     product = models.ForeignKey(Product, on_delete=models.SET_NULL, blank=True, null=True)
     #안읽은사람 (member1이면 1, member2면 2, 다 읽은 상태면 0)
-    unread = models.IntegerField()
+    unread = models.IntegerField(default=0)
     #생성시간
     created_at = models.DateTimeField(auto_now_add=True)
     #마지막 채팅 시간

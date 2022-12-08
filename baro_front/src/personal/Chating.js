@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import style from "styled-components";
 import axios from "axios";
@@ -11,62 +11,64 @@ const ChattingSpace = style.div`
     background-color: white;
     width: 100%;
     left: 0;
+
 `;
 
 const ChattingSpaceBox = style.div`
-    max-width: 1080px;
-    margin: 0 auto;
+  max-width: 1080px;
+  margin: 0 auto;
 `;
 
 const ChatHeader = style.div`
-    position: fixed;
-    background-color: #397293;
-    width: 100%;
-    padding: 16px 12px;
-    max-width: 1080px;
+  position: fixed;
+  background-color: #397293;
+  width: 100%;
+  padding: 16px 12px;
+  max-width: 1080px;
 `;
 const ChatTraderName = style.span`
-    font-size: 18px;
-    color: black;
-    margin-right: 16px;
-    `;
+  font-size: 18px;
+  color: black;
+  margin-right: 16px;
+`;
+
 const ChatTraderitem = style.span`
-    font-size: 14px;
-    color: white;
+  font-size: 14px;
+  color: white;
 `;
 const ChatMain = style.section`
   overflow-y: auto;
-  height: calc(100vh - 150px);
+  height: calc(100vh - ${(props) => (props.isImg ? 280 : 150)}px);
   position: relative;
   top: 50px;
   padding: 0 12px;
 `;
 const ChatDate = style.div`
-    font-weight: 400;
-    text-align: center;
-    margin: 25px 0;
+  font-weight: 400;
+  text-align: center;
+  margin: 25px 0;
 `;
 
 const Opponent = style.div`
-    display: flex;
-    align-items: end;
-    margin: 16px 0;
-    column-gap: 10px;
-    @media only screen and (max-width: 700px) {
-      font-size: 12px;
-    }
+  display: flex;
+  align-items: end;
+  margin: 16px 0;
+  column-gap: 10px;
+  @media only screen and (max-width: 700px) {
+    font-size: 12px;
+  }
 `;
 
 const OpponentText = style.div`
-    background-color: #5F6278;
-    color: white;
-    border-radius: 20px;
-    padding: 20px 15px;
-    align-self: baseline;
-    @media only screen and (max-width: 700px) {
-      border-radius: 10px;
-      padding: 12px 10px;
-    }
+  background-color: #5F6278;
+  color: white;
+  border-radius: 20px;
+  padding: 20px 15px;
+  align-self: baseline;
+  @media only screen and (max-width: 700px) {
+    border-radius: 10px;
+    padding: 12px 10px;
+  }
 `;
 const Myself = style.div`
   display: flex;
@@ -74,51 +76,54 @@ const Myself = style.div`
   column-gap: 10px;
 `;
 const MyselfText = style.div`
-    background-color: #57AEDE;
-    color: white;
-    border-radius: 20px;
-    padding: 20px 15px;
-    align-self: flex-end;
-    @media only screen and (max-width: 700px) {
-      border-radius: 10px;
-      padding: 12px 10px;
-    }
+  background-color: #57AEDE;
+  color: white;
+  border-radius: 20px;
+  padding: 20px 15px;
+  align-self: flex-end;
+  @media only screen and (max-width: 700px) {
+    border-radius: 10px;
+    padding: 12px 10px;
+  }
 `;
 const ChatSend = style.form`
-    position: fixed;
-    bottom: 0;
-    background-color: #397293;
-    width: 100%;
-    max-width: 1080px;
-    display:flex;
-    flex-direction: column;
-    
-    `;
+  position: fixed;
+  bottom: 0;
+  background-color: #397293;
+  width: 100%;
+  max-width: 1080px;
+  display:flex;
+  flex-direction: column;
+`;
+
 const ChatSendTextInput = style.textarea`
-    all: unset;
-    resize: none;
-    margin: 10px 10px 8px;
-    color: white;
-    &::placeholder {
-        color: #a6a6a6;
-    }
+  all: unset;
+  resize: none;
+  margin: 10px 10px 8px;
+  color: white;
+  &::placeholder {
+      color: #a6a6a6;
+  }
 `;
+
 const ChatSendFileInput = style.input`
-    resize: none;
-    display: none
+  resize: none;
+  display: none
 `;
+
 const ChatSendButton = style.div`
-    margin: 0 10px 4px;
-    align-self: flex-end;
-    display:flex;
-    align-items: center;
+  margin: 0 10px 4px;
+  align-self: flex-end;
+  display:flex;
+  align-items: center;
 `;
+
 const ChatSendingButton = style.button`
-    all: unset;
-    margin-left: 10px;
-    color: white;
-    padding: 5px 10px;
-    border: 1px solid white;
+  all: unset;
+  margin-left: 10px;
+  color: white;
+  padding: 5px 10px;
+  border: 1px solid white;
 `;
 
 const ChatPreview = style.div`
@@ -136,7 +141,7 @@ const ChatImg = style.img`
   width: 200px;
   height: 200px;
   object-fit: cover;
-  margin-top: 10px;
+  margin: 10px 0;
   @media only screen and (max-width: 700px) {
     width: 100px;
     height: 100px;
@@ -155,9 +160,9 @@ const ChatBox = style.div`
   }
 `;
 
-const ChatInput = ({ params }) => {
+const ChatInput = ({ params, imgFile, setImgFile }) => {
   const [inputText, setInputText] = useState();
-  const [imgFile, setImgFile] = useState();
+
   return (
     <ChatSend
       encType="multipart/form-data"
@@ -256,8 +261,9 @@ const MyChat = ({ chat }) => {
 
 function Chating() {
   const [chattingData, setChattingData] = useState([]);
+  const [imgFile, setImgFile] = useState();
   const params = useParams();
-  console.log(params);
+  const chatRef = useRef();
   useEffect(() => {
     axios({
       method: "GET",
@@ -266,7 +272,9 @@ function Chating() {
       .then((res) => setChattingData(res.data))
       .catch((err) => console.log(err));
   }, []);
-
+  useEffect(() => {
+    chatRef.current.scrollTop = chatRef.current.scrollHeight;
+  }, [chattingData, imgFile]);
   return (
     <ChattingSpace>
       <ChattingSpaceBox>
@@ -274,12 +282,10 @@ function Chating() {
           <ChatTraderName>{params.nickname}</ChatTraderName>
           <ChatTraderitem>{params.item}</ChatTraderitem>
         </ChatHeader>
-        <ChatMain>
+        <ChatMain isImg={imgFile} ref={chatRef}>
           {/* <ChatDate>2022-04-33</ChatDate> */}
           {chattingData.map((chat) => {
-            console.log(chat);
             const compare = parseInt(params.member) === chat.sender ? true : false;
-            console.log(params.member, chat.sender);
             if (compare) {
               return <MyChat key={chat.id} chat={chat} />;
             } else {
@@ -287,7 +293,7 @@ function Chating() {
             }
           })}
         </ChatMain>
-        <ChatInput params={params} />
+        <ChatInput params={params} imgFile={imgFile} setImgFile={setImgFile} />
       </ChattingSpaceBox>
     </ChattingSpace>
   );

@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import style from "styled-components";
+import axios from "axios";
 
 const ChattingSpace = style.div`
     height: 100%;
@@ -34,7 +35,11 @@ const ChatTraderitem = style.span`
     color: white;
 `;
 const ChatMain = style.section`
-    padding: 52px 24px 80px;
+  overflow-y: auto;
+  height: calc(100vh - 150px);
+  position: relative;
+  top: 50px;
+  padding: 0 12px;
 `;
 const ChatDate = style.div`
     font-weight: 400;
@@ -47,6 +52,9 @@ const Opponent = style.div`
     align-items: end;
     margin: 16px 0;
     column-gap: 10px;
+    @media only screen and (max-width: 700px) {
+      font-size: 12px;
+    }
 `;
 
 const OpponentText = style.div`
@@ -55,13 +63,15 @@ const OpponentText = style.div`
     border-radius: 20px;
     padding: 20px 15px;
     align-self: baseline;
+    @media only screen and (max-width: 700px) {
+      border-radius: 10px;
+      padding: 12px 10px;
+    }
 `;
 const Myself = style.div`
-    display: flex;
-    align-items: end;
-    margin: 16px 0;
-    justify-content: flex-end;
-    column-gap: 10px;
+  display: flex;
+  align-items: end;
+  column-gap: 10px;
 `;
 const MyselfText = style.div`
     background-color: #57AEDE;
@@ -69,8 +79,12 @@ const MyselfText = style.div`
     border-radius: 20px;
     padding: 20px 15px;
     align-self: flex-end;
+    @media only screen and (max-width: 700px) {
+      border-radius: 10px;
+      padding: 12px 10px;
+    }
 `;
-const ChatSend = style.div`
+const ChatSend = style.form`
     position: fixed;
     bottom: 0;
     background-color: #397293;
@@ -118,9 +132,140 @@ const PreviewImg = style.img`
   object-fit: contain;
 `;
 
-function Chating() {
+const ChatImg = style.img`
+  width: 200px;
+  height: 200px;
+  object-fit: cover;
+  margin-top: 10px;
+  @media only screen and (max-width: 700px) {
+    width: 100px;
+    height: 100px;
+  }
+`;
+
+const ChatBox = style.div`
+  display: flex;
+  align-items: end;
+  margin-top: 16px;
+  justify-content: flex-end;
+  column-gap: 10px;
+  flex-direction: column;
+  @media only screen and (max-width: 700px) {
+    font-size: 12px;
+  }
+`;
+
+const ChatInput = ({ params }) => {
+  const [inputText, setInputText] = useState();
   const [imgFile, setImgFile] = useState();
+  return (
+    <ChatSend
+      encType="multipart/form-data"
+      onSubmit={(event) => {
+        event.preventDefault();
+        const formData = new FormData();
+        formData.append("encType", "multipart/form-data");
+        formData.append("sender", params.member);
+        if (imgFile) {
+          console.log(imgFile);
+          formData.append("message_photo", imgFile);
+        }
+        formData.append("text", inputText);
+        axios({
+          method: "POST",
+          url: `http://127.0.0.1:8000/message/detail/${params.roomId}/?user=${params.member}`,
+          headers: {
+            "Content-Type": "multipart/form-data", // Content-Type을 반드시 이렇게 하여야 한다.
+          },
+          data: formData, // data 전송시에 반드시 생성되어 있는 formData 객체만 전송 하여야 한다.
+        })
+          .then(() => {
+            setInputText("");
+            window.location.reload();
+          })
+          .catch((err) => {
+            alert("알 수 없는 오류가 발생했습니다.");
+            console.log(err);
+          });
+      }}
+    >
+      {imgFile ? (
+        <ChatPreview>
+          <PreviewImg src={URL.createObjectURL(imgFile)} alt="사진 미리보기" />
+
+          <img
+            src={require("../img/closeBtn.png")}
+            alt="선택한 사진 제거"
+            onClick={() => {
+              setImgFile("");
+            }}
+            style={{ cursor: "pointer" }}
+          />
+        </ChatPreview>
+      ) : (
+        ""
+      )}
+      <ChatSendTextInput
+        placeholder="내용을 입력해주세요"
+        value={inputText}
+        onChange={(event) => {
+          setInputText(event.target.value);
+        }}
+      />
+      <ChatSendButton>
+        <label htmlFor="file" style={{ cursor: "pointer" }}>
+          <img src={require("../img/fileClip.png")} alt="파일 이미지" />
+        </label>
+        <ChatSendFileInput
+          type="file"
+          id="file"
+          onChange={(event) => {
+            setImgFile(event.target.files[0]);
+          }}
+        />
+        <ChatSendingButton>전송</ChatSendingButton>
+      </ChatSendButton>
+    </ChatSend>
+  );
+};
+
+const OpponentChat = ({ chat, params }) => {
+  return (
+    <div>
+      <p>{params.nickname}</p>
+      <Opponent>
+        <OpponentText>{chat.text}</OpponentText>
+        <time dateTime={chat.sendAt}>{new Date(chat.sendAt).toTimeString().slice(0, 5)}</time>
+      </Opponent>
+      {chat.messagePhoto ? <ChatImg src={`http://127.0.0.1:8000/${chat.messagePhoto}`} /> : ""}
+    </div>
+  );
+};
+
+const MyChat = ({ chat }) => {
+  return (
+    <ChatBox>
+      <Myself>
+        <time dateTime={chat.sendAt}>{new Date(chat.sendAt).toTimeString().slice(0, 5)}</time>
+        <MyselfText>{chat.text}</MyselfText>
+      </Myself>
+      {chat.messagePhoto ? <ChatImg src={`http://127.0.0.1:8000/${chat.messagePhoto}`} /> : ""}
+    </ChatBox>
+  );
+};
+
+function Chating() {
+  const [chattingData, setChattingData] = useState([]);
   const params = useParams();
+  console.log(params);
+  useEffect(() => {
+    axios({
+      method: "GET",
+      url: `http://127.0.0.1:8000/message/detail/${params.roomId}/?user=${params.member}`,
+    })
+      .then((res) => setChattingData(res.data))
+      .catch((err) => console.log(err));
+  }, []);
 
   return (
     <ChattingSpace>
@@ -130,54 +275,19 @@ function Chating() {
           <ChatTraderitem>{params.item}</ChatTraderitem>
         </ChatHeader>
         <ChatMain>
-          <ChatDate>2022-04-33</ChatDate>
-          <>
-            <span>123</span>
-            <Opponent>
-              <OpponentText>안녕하세요 거래하고 싶어요!</OpponentText>
-              <time>04:04</time>
-            </Opponent>
-          </>
-          <Myself>
-            <time>04:04</time>
-            <MyselfText>네~ 차 거래하고 싶은 신 분 맞으시죠?</MyselfText>
-          </Myself>
+          {/* <ChatDate>2022-04-33</ChatDate> */}
+          {chattingData.map((chat) => {
+            console.log(chat);
+            const compare = parseInt(params.member) === chat.sender ? true : false;
+            console.log(params.member, chat.sender);
+            if (compare) {
+              return <MyChat key={chat.id} chat={chat} />;
+            } else {
+              return <OpponentChat key={chat.id} chat={chat} params={params} />;
+            }
+          })}
         </ChatMain>
-        <ChatSend>
-          {imgFile ? (
-            <ChatPreview>
-              <PreviewImg
-                src={URL.createObjectURL(imgFile)}
-                alt="사진 미리보기"
-              />
-
-              <img
-                src={require("../img/closeBtn.png")}
-                alt="선택한 사진 제거"
-                onClick={() => {
-                  setImgFile("");
-                }}
-                style={{ cursor: "pointer" }}
-              />
-            </ChatPreview>
-          ) : (
-            ""
-          )}
-          <ChatSendTextInput placeholder="내용을 입력해주세요" />
-          <ChatSendButton>
-            <label htmlFor="file" style={{ cursor: "pointer" }}>
-              <img src={require("../img/fileClip.png")} alt="파일 이미지" />
-            </label>
-            <ChatSendFileInput
-              type="file"
-              id="file"
-              onChange={(event) => {
-                setImgFile(event.target.files[0]);
-              }}
-            />
-            <ChatSendingButton>전송</ChatSendingButton>
-          </ChatSendButton>
-        </ChatSend>
+        <ChatInput params={params} />
       </ChattingSpaceBox>
     </ChattingSpace>
   );

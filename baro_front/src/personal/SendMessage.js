@@ -82,21 +82,24 @@ function SendMessage() {
   const [fileImg, setFileImg] = useState();
   const [file, setFile] = useState();
   const params = useParams();
-  const { user } = useUserContext();
   const [content, setContent] = useState();
+  console.log(params);
+
   return (
     <form
       encType="multipart/form-data"
-      onSubmit={() => {
+      onSubmit={(event) => {
+        event.preventDefault();
         const formData = new FormData();
         formData.append("encType", "multipart/form-data");
-        formData.append("받는사람", params.nickname);
-        formData.append("보내는 사람", JSON.stringify(user));
-        formData.append("사진", file);
-        formData.append("내용", content);
+        formData.append("sender", params.id);
+        if (file) {
+          formData.append("message_photo", file);
+        }
+        formData.append("text", content);
         axios({
           method: "POST",
-          url: "",
+          url: `http://127.0.0.1:8000/message/detail/${params.int}/?user=${params.id}`,
           headers: {
             "Content-Type": "multipart/form-data", // Content-Type을 반드시 이렇게 하여야 한다.
           },
@@ -114,11 +117,7 @@ function SendMessage() {
       <ul>
         <MessageListDetail>
           <MessageLabel htmlFor="receiver">받는사람</MessageLabel>
-          <MessageReceiver
-            id="receiver"
-            placeholder={params.nickname}
-            disabled
-          />
+          <MessageReceiver id="receiver" placeholder={params.nickname} disabled />
         </MessageListDetail>
         <MessageListDetail>
           {fileImg ? (

@@ -22,6 +22,7 @@ import SendMessage from "./personal/SendMessage";
 import Message from "./personal/Message";
 import Chating from "./personal/Chating";
 import Search from "./main/Search";
+import LenderDetail from "./personal/LenderDetail";
 
 function App() {
   const user = localStorage.getItem("user");
@@ -35,55 +36,43 @@ function App() {
             <Route path="/" element={<Navigate replace to="/main" />} />
             <Route path="/main" element={<Home />} />
             <Route element={<ProductDetail />} path={"/detail:id"} />
-            <Route
-              path="/search"
-              element={user ? <Search /> : <Navigate replace to="/login" />}
-            />
+            <Route path="/search" element={user ? <Search /> : <Navigate replace to="/login" />} />
             <Route
               path="/enroll"
-              element={
-                user ? <ProductEnroll /> : <Navigate replace to="/login" />
-              }
+              element={user ? <ProductEnroll /> : <Navigate replace to="/login" />}
             />
-            <Route
-              path="/basket"
-              element={user ? <Basket /> : <Navigate replace to="/login" />}
-            />
+            <Route path="/basket" element={user ? <Basket /> : <Navigate replace to="/login" />} />
             <Route path={`/detail:id/result`} element={<ProductResult />} />
             {/* 마이페이지 */}
-            <Route
-              path="/mypage"
-              element={user ? <Mypage /> : <Navigate replace to="/login" />}
-            />
+            <Route path="/mypage" element={user ? <Mypage /> : <Navigate replace to="/login" />} />
             <Route
               path="/mypage/profile"
               element={user ? <Profile /> : <Navigate replace to="/login" />}
             />
             <Route
               path="/mypage/profileedit"
-              element={
-                user ? <ProfileEdit /> : <Navigate replace to="/login" />
-              }
+              element={user ? <ProfileEdit /> : <Navigate replace to="/login" />}
             />
             <Route
               path="/mypage/content"
-              element={
-                user ? <ContentList /> : <Navigate replace to="/login" />
-              }
+              element={user ? <ContentList /> : <Navigate replace to="/login" />}
             >
               <Route path="/mypage/content/borrow" element={<Borrow />} />
-              <Route path="/mypage/content/lend" element={<Lend />} />
+              <Route path="/mypage/content/lend" element={<Lend />}>
+                <Route path="/mypage/content/lend/:id" element={<LenderDetail />} />
+              </Route>
             </Route>
             <Route
-              path="/mypage/sendMessage/receiver=:nickname"
-              element={
-                user ? <SendMessage /> : <Navigate replace to="/login" />
-              }
+              path="/mypage/sendMessage/receiver=:nickname&&member=:int&&roomId=:id"
+              element={user ? <SendMessage /> : <Navigate replace to="/login" />}
             />
-            <Route path="/mypage/message" element={<Message />} />
             <Route
-              path="/mypage/chatting/nickname=:nickname&&item=:item"
-              element={<Chating />}
+              path="/mypage/message"
+              element={user ? <Message /> : <Navigate replace to="/login" />}
+            />
+            <Route
+              path="/mypage/chatting/nickname=:nickname&&item=:item&&roomId=:roomId&&member=:member"
+              element={user ? <Chating /> : <Navigate replace to="/login" />}
             />
             {/* 로그인 */}
             <Route path="/login" element={<Login />} />

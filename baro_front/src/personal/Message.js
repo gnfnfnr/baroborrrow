@@ -1,6 +1,8 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import style from "styled-components";
 import { useNavigate, useSearchParams } from "react-router-dom";
+import axios from "axios";
+import { useUserContext } from "../Context";
 
 const MessageUserPicker = style.select`
   outline: none;
@@ -8,7 +10,7 @@ const MessageUserPicker = style.select`
   color: #495057;
   width: 75px;
   height: 35px;
-  margin: 25px 0 10px;
+  margin: 25px 10px 10px;
 `;
 
 const MessageUser = style.option`
@@ -63,49 +65,47 @@ const MessageUpdate = style.span`
 
 `;
 
-function MessageDetail({ detail }) {
+function MessageDetail({ detail, username }) {
   const navigate = useNavigate();
+  console.log(detail);
+  const opposite =
+    detail.member1.username !== username ? detail.member1.username : detail.member2.username;
+  const memberNumber = detail.member1.username === username ? 1 : 2;
   return (
     <MessageBox
       onClick={() => {
         navigate(
-          `/mypage/chatting/nickname=${detail.receiver}&&item=${detail.items}`
+          `/mypage/chatting/nickname=${opposite}&&item=${detail.product.productName}&&roomId=${detail.id}&&member=${memberNumber}`
         );
       }}
     >
       <MessageSender>
-        <SenderPerson>{detail.receiver}</SenderPerson>
-        <SenderItem>커피보다는 차</SenderItem>
+        <SenderPerson>{opposite}</SenderPerson>
+        <SenderItem>{detail.product.productName}</SenderItem>
       </MessageSender>
       <MessageInfo>
-        <MessageDate>2022-03-33</MessageDate>
-        <MessageUpdate>N</MessageUpdate>
+        <MessageDate>{detail.lastAt.slice(0, 10)}</MessageDate>
+        {memberNumber === detail.unread ? <MessageUpdate>N</MessageUpdate> : ""}
       </MessageInfo>
-      <MessageRecent>안녕하세요~ 거래하고 싶어요</MessageRecent>
+      <MessageRecent>{detail.lastMessage}</MessageRecent>
     </MessageBox>
   );
 }
 
 function Message() {
-  const [messageFullData, setMessageFullData] = useState([
-    {
-      id: 1,
-      receiver: "123",
-      sender: "cc",
-      content: "안녕하세요~",
-      img: "",
-      items: "커피보다는 차",
-    },
-    {
-      id: 2,
-      receiver: "46",
-      sender: "cc",
-      content: "안녕하세요~",
-      img: "",
-      items: "커피보다는 차",
-    },
-  ]);
+  const [messageFullData, setMessageFullData] = useState([]);
   const [messageData, setMessageData] = useState(messageFullData);
+  const { user } = useUserContext();
+  useEffect(() => {
+    axios
+      .get(`http://127.0.0.1:8000/message/?username=${user.username}`)
+      .then((res) => {
+        setMessageFullData(res.data);
+        setMessageData(res.data);
+      })
+      .catch((err) => console.log(err));
+  }, []);
+
   return (
     <>
       <MessageUserPicker
@@ -113,19 +113,25 @@ function Message() {
           setMessageData(
             event.target.value === "all"
               ? messageFullData
-              : messageFullData.filter(
-                  (msg) => msg.receiver === event.target.value
-                )
+              : messageFullData.filter((msg) => {
+                  const opposite =
+                    msg.member1.username !== user.username
+                      ? msg.member1.username
+                      : msg.member2.username;
+                  return opposite === event.target.value;
+                })
           );
         }}
       >
         <MessageUser value="all">전부</MessageUser>
-        {messageFullData.map((msg) => (
-          <MessageUser key={msg.id}>{msg.receiver}</MessageUser>
-        ))}
+        {messageFullData.map((msg) => {
+          const opposite =
+            msg.member1.username !== user.username ? msg.member1.username : msg.member2.username;
+          return <MessageUser key={msg.id}>{opposite}</MessageUser>;
+        })}
       </MessageUserPicker>
       {messageData.map((msg) => {
-        return <MessageDetail key={msg.id} detail={msg} />;
+        return <MessageDetail key={msg.id} detail={msg} username={user.username} />;
       })}
     </>
   );

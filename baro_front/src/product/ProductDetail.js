@@ -24,6 +24,7 @@ const PdHead = style.div`
   justify-content: space-between;
   padding: 13px;
   color: white;
+  align-items: center;
 `;
 
 const PdTitle = style.div`
@@ -73,9 +74,18 @@ const InfoPer = style.div`
   float: right;
 `;
 
-const PdHeader = ({ params, user }) => {
-  const [basket, setBasket] = useState();
+const MessageIcon = style.svg`
+  padding-right: 10px;
+  cursor: pointer;
+`;
 
+const MarketIcon = style.svg`
+  cursor: pointer;
+`;
+
+const PdHeader = ({ params, user, pdOwner }) => {
+  const [basket, setBasket] = useState();
+  const navigate = useNavigate();
   useEffect(() => {
     axios
       .get(
@@ -88,29 +98,59 @@ const PdHeader = ({ params, user }) => {
       });
   }, []);
   return (
-    <svg
-      width="21"
-      height="21"
-      viewBox="0 0 21 21"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      onClick={() => {
-        axios
-          .get(
-            `http://127.0.0.1:8000/product/${params.id}/like/?username=${user.username}`
-          )
-          .then((res) => setBasket(...res.data.likeUsers));
-      }}
-    >
-      <path
-        d={
-          basket
-            ? "M3.9656 0.739745C3.84956 0.307883 3.4564 0 3 0H0V2H2.141L3.98101 14.1493L4.00413 14.2598C4.12017 14.6916 4.51333 14.9995 4.96973 14.9995H18.0044L18.1202 14.9928C18.5388 14.9443 18.8877 14.6356 18.9807 14.2159L20.9763 5.21324L20.9952 5.09669C21.0547 4.51717 20.5996 3.99683 20 3.99683L4.466 3.997L3.98871 0.850187L3.9656 0.739745ZM7 21C5.89543 21 5 20.1046 5 19C5 17.8954 5.89543 17 7 17C8.10457 17 9 17.8954 9 19C9 20.1046 8.10457 21 7 21ZM16 21C14.8954 21 14 20.1046 14 19C14 17.8954 14.8954 17 16 17C17.1046 17 18 17.8954 18 19C18 20.1046 17.1046 21 16 21Z"
-            : "M3 0C3.4564 0 3.84956 0.307883 3.9656 0.739745L3.98871 0.850187L4.466 3.997L20 3.99683C20.5996 3.99683 21.0547 4.51717 20.9952 5.09669L20.9763 5.21324L18.9807 14.2159C18.8877 14.6356 18.5388 14.9443 18.1202 14.9928L18.0044 14.9995H4.96973C4.51333 14.9995 4.12017 14.6916 4.00413 14.2598L3.98101 14.1493L2.141 2H0V0H3ZM5 19C5 20.1046 5.89543 21 7 21C8.10457 21 9 20.1046 9 19C9 17.8954 8.10457 17 7 17C5.89543 17 5 17.8954 5 19ZM14 19C14 20.1046 14.8954 21 16 21C17.1046 21 18 20.1046 18 19C18 17.8954 17.1046 17 16 17C14.8954 17 14 17.8954 14 19ZM4.769 5.997L5.83 13H17.203L18.755 5.997H4.769Z"
-        }
-        fill="white"
-      />
-    </svg>
+    <div>
+      <MessageIcon
+        width="30"
+        height="30"
+        viewBox="0 0 30 30"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+        onClick={() => {
+          navigate(`/mypage/sendMessage/receiver=${pdOwner.nickname}`);
+        }}
+      >
+        <g clipPath="url(#clip0_101_4)">
+          <path
+            d="M12.9094 26.3565L22.4454 8.78607L3.14543 13.9982L6.94252 18.8042L18.326 12.0407L9.11228 21.5505L12.9094 26.3565Z"
+            fill="white"
+          />
+        </g>
+        <defs>
+          <clipPath id="clip0_101_4">
+            <rect
+              width="21"
+              height="21"
+              fill="white"
+              transform="translate(0.144958 13.0233) rotate(-38.3112)"
+            />
+          </clipPath>
+        </defs>
+      </MessageIcon>
+
+      <MarketIcon
+        width="21"
+        height="21"
+        viewBox="0 0 21 21"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+        onClick={() => {
+          axios
+            .get(
+              `http://127.0.0.1:8000/product/${params.id}/like/?username=${user.username}`
+            )
+            .then((res) => setBasket(...res.data.likeUsers));
+        }}
+      >
+        <path
+          d={
+            basket
+              ? "M3.9656 0.739745C3.84956 0.307883 3.4564 0 3 0H0V2H2.141L3.98101 14.1493L4.00413 14.2598C4.12017 14.6916 4.51333 14.9995 4.96973 14.9995H18.0044L18.1202 14.9928C18.5388 14.9443 18.8877 14.6356 18.9807 14.2159L20.9763 5.21324L20.9952 5.09669C21.0547 4.51717 20.5996 3.99683 20 3.99683L4.466 3.997L3.98871 0.850187L3.9656 0.739745ZM7 21C5.89543 21 5 20.1046 5 19C5 17.8954 5.89543 17 7 17C8.10457 17 9 17.8954 9 19C9 20.1046 8.10457 21 7 21ZM16 21C14.8954 21 14 20.1046 14 19C14 17.8954 14.8954 17 16 17C17.1046 17 18 17.8954 18 19C18 20.1046 17.1046 21 16 21Z"
+              : "M3 0C3.4564 0 3.84956 0.307883 3.9656 0.739745L3.98871 0.850187L4.466 3.997L20 3.99683C20.5996 3.99683 21.0547 4.51717 20.9952 5.09669L20.9763 5.21324L18.9807 14.2159C18.8877 14.6356 18.5388 14.9443 18.1202 14.9928L18.0044 14.9995H4.96973C4.51333 14.9995 4.12017 14.6916 4.00413 14.2598L3.98101 14.1493L2.141 2H0V0H3ZM5 19C5 20.1046 5.89543 21 7 21C8.10457 21 9 20.1046 9 19C9 17.8954 8.10457 17 7 17C5.89543 17 5 17.8954 5 19ZM14 19C14 20.1046 14.8954 21 16 21C17.1046 21 18 20.1046 18 19C18 17.8954 17.1046 17 16 17C14.8954 17 14 17.8954 14 19ZM4.769 5.997L5.83 13H17.203L18.755 5.997H4.769Z"
+          }
+          fill="white"
+        />
+      </MarketIcon>
+    </div>
   );
 };
 
@@ -125,7 +165,6 @@ function ProductDetail() {
     });
   }, []);
   const [showSelect, setShowSelect] = useState(false);
-  // 여기 수정 필요: 대여자들의 물품 대여 날짜 필요
   const ban = [];
   const desRef = useRef();
   const [showDes, setShowDes] = useState(false);
@@ -143,7 +182,15 @@ function ProductDetail() {
     <>
       <PdHead>
         <span>물품 상세보기</span>
-        {user ? <PdHeader params={params} user={user} /> : ""}
+        {user && dt.owner ? (
+          dt.owner.username === user.username ? (
+            ""
+          ) : (
+            <PdHeader params={params} user={user} pdOwner={dt.owner} />
+          )
+        ) : (
+          ""
+        )}
       </PdHead>
       <PdContainer style={{ display: showSelect ? "none" : "" }}>
         <PdImgDiv>

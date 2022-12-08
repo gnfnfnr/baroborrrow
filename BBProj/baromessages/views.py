@@ -20,9 +20,11 @@ class MessageRoomCreate(APIView):
         m1  = User.objects.get(username=username)
         m2 = product.owner
         if MessageRoom.objects.filter(product=product, member1=m1, member2=m2).exists():
+            #print(1111111111111111111111111111111111)
             messageroom = MessageRoom.objects.filter(product=product, member1=m1, member2=m2)
-            serializer = MessageRoomSerializer(messageroom)
-            return Response(serializer, status = status.HTTP_200_OK)
+            #print(messageroom.unread)
+            serializer = MessageRoomSerializer(messageroom, many=True)
+            return Response(serializer.data, status = status.HTTP_200_OK)
         else:
             messageroom = MessageRoom(member1=m1, member2=m2, product=product, unread=0)
             messageroom.save()
@@ -62,17 +64,21 @@ class MessageRoomDetail(APIView):
     def post(self, request, rpk):
         messageroom = get_object_or_404(MessageRoom, pk=rpk)
         messageroom.status = True
+        print(request.data['text'])
         messageroom.last_message = request.data['text']
-        if request.data['sender'] == 1:
+        if request.data['sender'] == '1':
             messageroom.unread = 2
-        elif request.data['sender'] == 2:
+        elif request.data['sender'] == '2':
             messageroom.unread = 1
         serializer = MessageSerializer(data=request.data)
+        
         if serializer.is_valid():
             serializer.save(room=messageroom)
             #시간 추가하는 방법 알아보기
-            messageroom.last_at = serializer.send_at
+            messageroom.last_at = serializer['send_at']
             messageroom.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
+        print(serializer.data)
+        print(serializer.errors)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 

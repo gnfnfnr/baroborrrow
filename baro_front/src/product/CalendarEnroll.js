@@ -61,6 +61,7 @@ const CalendarBtn = style.div`
 `;
 
 const CalendarBtnLink = style.button`
+  all: unset;
   background: #56AEDF;
   border-radius: 5px;
   padding: 13px 45px;
@@ -114,7 +115,8 @@ function CalendarEnroll({ borrowInfo }) {
         {start !== "Invalid date" && end !== "Invalid date" ? (
           <form
             encType="multipart/form-data"
-            onSubmit={() => {
+            onSubmit={(event) => {
+              event.preventDefault();
               const formData = new FormData();
               formData.append("owner", JSON.stringify(user));
               formData.append("productName", borrowInfo.productName);
@@ -143,7 +145,6 @@ function CalendarEnroll({ borrowInfo }) {
                 .then(() => {
                   alert("상품 등록이 완료되었습니다");
                   naviagte("/main");
-                  window.location.reload();
                 })
                 .catch(() => {
                   alert("알 수 없는 오류가 발생했습니다.");

@@ -60,7 +60,7 @@ function Login() {
               .then((res) => {
                 const userObj = JSON.stringify(res.data);
                 localStorage.setItem("user", userObj);
-                navigate("/main");
+                navigate(localStorage.getItem("path"));
                 window.location.reload();
               })
               .catch(() => {

@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import styled from "styled-components";
 import axios from "axios";
 import ProductList from "./ProductList";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { useUserContext } from "../Context";
 
 const Header = styled.div`
@@ -48,8 +48,10 @@ const ProductText = styled.p`
 `;
 
 function Home() {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const item = searchParams.get("item");
   const [pdData, setPdData] = useState([]);
-  const [inputSearch, setInputSearch] = useState("");
+  const [inputSearch, setInputSearch] = useState(item ? item : "");
   const clickRef = useRef();
   useEffect(() => {
     axios
@@ -70,11 +72,11 @@ function Home() {
               .get(`http://127.0.0.1:8000/search/?keyword=${inputSearch}`)
               .then((response) => {
                 setPdData(response.data);
+                setSearchParams({ item: inputSearch });
                 if (user) {
-                  nav("/search");
+                  nav(`/search?detail=${inputSearch}`);
                 }
               });
-            localStorage.setItem("search", inputSearch);
           }}
         >
           <Input

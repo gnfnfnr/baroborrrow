@@ -24,7 +24,7 @@ class MessageRoomCreate(APIView):
             serializer = MessageRoomSerializer(messageroom)
             return Response(serializer, status = status.HTTP_200_OK)
         else:
-            messageroom = MessageRoom(member1=m1, member2=m2, product=product, unread=2)
+            messageroom = MessageRoom(member1=m1, member2=m2, product=product, unread=0)
             messageroom.save()
             serializer = MessageRoomSerializer(messageroom)
             return Response(serializer.data, status=status.HTTP_201_CREATED)

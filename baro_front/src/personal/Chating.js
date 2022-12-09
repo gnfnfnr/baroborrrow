@@ -259,11 +259,21 @@ const MyChat = ({ chat }) => {
   );
 };
 
+const ChatMessages = ({ chat, params }) => {
+  const compare = parseInt(params.member) === chat.sender ? true : false;
+  if (compare) {
+    return <MyChat key={chat.id} chat={chat} />;
+  } else {
+    return <OpponentChat key={chat.id} chat={chat} params={params} />;
+  }
+};
+
 function Chating() {
   const [chattingData, setChattingData] = useState([]);
   const [imgFile, setImgFile] = useState();
   const params = useParams();
   const chatRef = useRef();
+
   useEffect(() => {
     axios({
       method: "GET",
@@ -275,6 +285,7 @@ function Chating() {
   useEffect(() => {
     chatRef.current.scrollTop = chatRef.current.scrollHeight;
   }, [chattingData, imgFile]);
+  let lastSend = "";
   return (
     <ChattingSpace>
       <ChattingSpaceBox>
@@ -283,14 +294,13 @@ function Chating() {
           <ChatTraderitem>{params.item}</ChatTraderitem>
         </ChatHeader>
         <ChatMain isImg={imgFile} ref={chatRef}>
-          {/* <ChatDate>2022-04-33</ChatDate> */}
           {chattingData.map((chat) => {
-            const compare = parseInt(params.member) === chat.sender ? true : false;
-            if (compare) {
-              return <MyChat key={chat.id} chat={chat} />;
-            } else {
-              return <OpponentChat key={chat.id} chat={chat} params={params} />;
+            const currentSendDate = chat.sendAt.slice(0, 10);
+            if (chat.sendAt.slice(0, 10) !== lastSend) {
+              lastSend = currentSendDate;
+              return <ChatDate key={`${chat.id} - ${chat.sendAt}`}>{currentSendDate}</ChatDate>;
             }
+            return <ChatMessages chat={chat} params={params} key={chat.id} />;
           })}
         </ChatMain>
         <ChatInput params={params} imgFile={imgFile} setImgFile={setImgFile} />

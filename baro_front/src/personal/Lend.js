@@ -57,7 +57,7 @@ const Detail = ({ list }) => {
                 setShowDetail(!showDetail);
               }}
             >
-              알려주기
+              바로 내역
             </ProductCheckBtn>
           </ProductCheck>
         </ProductRentalInfo>
@@ -75,6 +75,7 @@ function Lend() {
       setLendData(res.data.reverse());
     });
   }, []);
+  console.log(lendData);
   return (
     <>
       {lendData.map((list) => (

@@ -5,9 +5,25 @@ import Deal from "./Deal.json";
 import LenderState from "./LenderState";
 
 const LenderDetailBox = style.section`
-    background: #D9D9D9;
-    min-height: 100px;
-    max-height: 300px;
+  background: #D9D9D9;
+  min-height: 100px;
+  padding: 20px;
+  @media only screen and (max-width: 700px) {
+    font-size: 14px;
+  }
+`;
+
+const LenderDetailTable = style.table`
+width: 100%;
+border-collapse: collapse;
+th, td {
+  border-bottom: 1px solid #c6c3c3;
+  text-align: center;
+  padding: 10px;
+  @media only screen and (max-width: 700px) {
+    padding: 10px 6px;
+  }
+}
 `;
 
 export default function LenderDetail() {
@@ -17,24 +33,21 @@ export default function LenderDetail() {
   const matchLenderState = new LenderState();
   return (
     <LenderDetailBox>
-      <div>
-        <table>
-          <tbody>
-            {lenderList.map((detail) => {
-              console.log();
-              return (
-                <tr>
-                  <td>{detail.user}</td>
-                  <td>
-                    {detail.barrowStart} ~ {detail.barrowEnd}
-                  </td>
-                  <td>{matchLenderState.getValue(detail)[0][1]()}</td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
-      </div>
+      <LenderDetailTable>
+        <tbody>
+          {lenderList.map((detail) => {
+            return (
+              <tr>
+                <td>{detail.user}</td>
+                <td>
+                  {detail.barrowStart} ~ {detail.barrowEnd}
+                </td>
+                <td>{matchLenderState.getValue(detail)[0][1]()}</td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </LenderDetailTable>
     </LenderDetailBox>
   );
 }

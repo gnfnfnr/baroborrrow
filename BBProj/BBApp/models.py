@@ -53,10 +53,16 @@ class BarrowProduct(models.Model):
     barrow_start = models.DateField()
     #빌리는 기간 끝
     barrow_end = models.DateField()
-    #반납되었는지 여부
-    is_return = models.BooleanField(default=False)
+    #반납되었는지 여부-빌린 사람
+    is_return_user = models.BooleanField(default=False)
+    #반납되었는지 여부-빌려준 사람
+    is_return_owner = models.BooleanField(default=False)
     #리뷰되었는지 여부
     is_reviewed = models.BooleanField(default=False)
+    #빌려주는 사람이 수락했는지 여부
+    is_accepted = models.BooleanField(null=True, blank=True, default=None)
+    #결제되었는지 여부
+    is_payed = models.BooleanField(default=False)
 
 class Review(models.Model):
     #작성자

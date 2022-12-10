@@ -27,7 +27,7 @@ class BarrowProductSerializer(ModelSerializer):
     class Meta:
         model = BarrowProduct
         fields = [
-            'id', 'user', 'product', 'barrow_start', 'barrow_end', 'is_return', 'is_reviewed'
+            'id', 'user', 'product', 'barrow_start', 'barrow_end', 'is_return_user', 'is_return_owner', 'is_reviewed', 'is_accepted', 'is_payed'
         ]
         #extra_kwargs = {"user": {"required": False, "allow_null": True}, "product": {"required": False, "allow_null": True}}
 

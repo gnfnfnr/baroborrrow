@@ -43,6 +43,8 @@ urlpatterns = [
     path('review/<int:pk>/', views.LeaveReview.as_view()),
     #검색하기
     path('search/', views.SearchProduct.as_view()),
+    #신청내역 수락/거절
+    path('mypage/myproduct/accept/<int:pk>/', views.AcceptBarrowProduct.as_view()),
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)

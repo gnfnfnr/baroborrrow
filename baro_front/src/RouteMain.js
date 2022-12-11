@@ -1,6 +1,8 @@
 import React from "react";
 import { Outlet } from "react-router-dom";
 import styled from "styled-components";
+import Footer from "./nav/Footer";
+import Header from "./nav/Header";
 
 const Container = styled.main`
   max-width: 1080px;
@@ -9,9 +11,13 @@ const Container = styled.main`
 
 function RouteMain() {
   return (
-    <Container>
-      <Outlet />
-    </Container>
+    <>
+      <Header />
+      <Container>
+        <Outlet />
+      </Container>
+      <Footer />
+    </>
   );
 }
 

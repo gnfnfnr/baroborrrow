@@ -1,9 +1,6 @@
 import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 import { GlobalStyle } from "./style";
-
 import Home from "./main/Home";
-import Footer from "./nav/Footer";
-import Header from "./nav/Header";
 import RouteMain from "./RouteMain";
 import ProductEnroll from "./product/ProductEnroll";
 import Basket from "./main/Basket";
@@ -23,6 +20,9 @@ import Message from "./personal/Message";
 import Chating from "./personal/Chating";
 import Search from "./main/Search";
 import LenderDetail from "./personal/LenderDetail";
+import Payment from "./pay/Payment";
+import PaymentApprove from "./pay/PaymentApprove";
+import PaymentType from "./pay/PaymentType";
 
 function App() {
   const user = localStorage.getItem("user");
@@ -30,9 +30,9 @@ function App() {
     <BrowserRouter>
       <GlobalStyle />
       <UserContextProvider>
-        <Header />
         <Routes>
           <Route path="/" element={<RouteMain />}>
+            {/* <Route path="/payment/approve" element={<Approve />} /> */}
             <Route path="/" element={<Navigate replace to="/main" />} />
             <Route path="/main" element={<Home />} />
             <Route element={<ProductDetail />} path={"/detail:id"} />
@@ -78,8 +78,11 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/join" element={<Join />} />
           </Route>
+          <Route path="/payment" element={<Payment />}>
+            <Route path="/payment/type" element={<PaymentType />} />
+            <Route path="/payment/approve" element={<PaymentApprove />} />
+          </Route>
         </Routes>
-        <Footer />
       </UserContextProvider>
     </BrowserRouter>
   );

@@ -1,7 +1,6 @@
 import axios from "axios";
-import React, { useState } from "react";
+import React from "react";
 import styled from "styled-components";
-import { useUserContext } from "../Context";
 
 const RentalCheckModal = styled.section`
   position: absolute;
@@ -69,7 +68,6 @@ const RentalReport = styled.p`
 `;
 
 function RentalCheck({ setRental, productDt, list }) {
-  console.log(list);
   return (
     <RentalCheckModal>
       <RentalCheckBox>
@@ -97,13 +95,9 @@ function RentalCheck({ setRental, productDt, list }) {
           onClick={() => {
             setRental(false);
             axios
-              .get(
-                `http://127.0.0.1:8000/return/${list.id}/?username=${list.user.username}`
-              )
+              .get(`http://127.0.0.1:8000/return/${list.id}/?username=${list.user.username}`)
               .then(() => window.location.reload())
-              .catch(() =>
-                alert("예상치 못한 오류 발생했습니다. 다시 시도해주세요")
-              );
+              .catch(() => alert("예상치 못한 오류 발생했습니다. 다시 시도해주세요"));
           }}
         >
           네, 반납했습니다.

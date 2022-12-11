@@ -57,7 +57,7 @@ const Detail = ({ list }) => {
                 setShowDetail(!showDetail);
               }}
             >
-              바로 내역
+              바로내역
             </ProductCheckBtn>
           </ProductCheck>
         </ProductRentalInfo>
@@ -75,7 +75,6 @@ function Lend() {
       setLendData(res.data.reverse());
     });
   }, []);
-  console.log(lendData);
   return (
     <>
       {lendData.map((list) => (

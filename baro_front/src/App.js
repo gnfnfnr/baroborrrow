@@ -32,7 +32,6 @@ function App() {
       <UserContextProvider>
         <Routes>
           <Route path="/" element={<RouteMain />}>
-            {/* <Route path="/payment/approve" element={<Approve />} /> */}
             <Route path="/" element={<Navigate replace to="/main" />} />
             <Route path="/main" element={<Home />} />
             <Route element={<ProductDetail />} path={"/detail:id"} />

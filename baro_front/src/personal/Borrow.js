@@ -7,38 +7,15 @@ import {
   ProductLocal,
   ProductText,
   ProductDes,
-  ProductCheck,
-  ProductCheckDate,
-  ProductCheckBtn,
-  ProductComBtn,
 } from "../main/list-style";
-import RentalCheck from "./RentalCheck";
+
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useUserContext } from "../Context";
-import ReviewCheck from "./ReviewCheck";
-import style from "styled-components";
-
-const StateButton = style.div``;
-
-const DetailSate = () => {
-  return (
-    <div>
-      <StateButton>수락 대기중</StateButton>
-      <StateButton>결제하기</StateButton>
-      <StateButton>결제완료</StateButton>
-    </div>
-  );
-};
+import BorrowState from "./BorrowState";
 
 const Detail = ({ list }) => {
-  const [showDetail, setShowDetail] = useState();
   const navigate = useNavigate();
-  const [rental, setRental] = useState();
-  const [review, setReview] = useState();
-  const today = new Date();
-  const diff = Math.floor((today - new Date(list.barrowEnd)) / (1000 * 60 * 60 * 24));
-
   const [productDt, setProductDt] = useState([]);
   useEffect(() => {
     axios.get(`http://127.0.0.1:8000/product/${list.product}`).then((response) => {
@@ -72,49 +49,10 @@ const Detail = ({ list }) => {
             <ProductText>약속된 장소에 반납하셨나요?</ProductText>
           </div>
           <ProductDes>
-            <DetailSate />
-            <ProductCheck>
-              {list.isReturn ? (
-                list.isReviewed ? (
-                  <ProductComBtn>설문완료</ProductComBtn>
-                ) : (
-                  <ProductCheckBtn
-                    onClick={() => {
-                      setReview(true);
-                    }}
-                  >
-                    설문하기
-                  </ProductCheckBtn>
-                )
-              ) : (
-                <>
-                  <ProductCheckDate
-                    style={{
-                      background: diff >= -3 && diff <= 0 ? "#94484B" : "#397293",
-                    }}
-                  >
-                    {diff >= 0 ? ` D + ${diff}` : `D - ${Math.abs(diff)}`}
-                  </ProductCheckDate>
-                  <ProductCheckBtn
-                    onClick={() => {
-                      setRental(true);
-                    }}
-                  >
-                    반납하기
-                  </ProductCheckBtn>
-                </>
-              )}
-            </ProductCheck>
-            {showDetail ? <div>수락중 결제하기 결제완료</div> : ""}
+            <BorrowState productDetail={productDt} productState={list} />
           </ProductDes>
         </ProductRentalInfo>
       </ProductBox>
-      {rental ? (
-        <RentalCheck setRental={setRental} productDt={productDt} list={list} rental={rental} />
-      ) : (
-        ""
-      )}
-      {review ? <ReviewCheck list={list} setReview={setReview} /> : ""}
     </>
   );
 };

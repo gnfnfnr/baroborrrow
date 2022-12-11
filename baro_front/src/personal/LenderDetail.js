@@ -27,17 +27,16 @@ th, td {
 `;
 
 export default function LenderDetail() {
+  console.log(Math.ceil(Deal.length / 5));
   const [lenderList, setLenderList] = useState(Deal);
-  const params = useParams();
-  console.log(params);
   const matchLenderState = new LenderState();
   return (
     <LenderDetailBox>
       <LenderDetailTable>
         <tbody>
-          {lenderList.map((detail) => {
+          {lenderList.map((detail, index) => {
             return (
-              <tr>
+              <tr key={`${detail.user}${index}`}>
                 <td>{detail.user}</td>
                 <td>
                   {detail.barrowStart} ~ {detail.barrowEnd}

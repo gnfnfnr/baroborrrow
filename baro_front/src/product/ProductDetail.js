@@ -265,6 +265,10 @@ function ProductDetail() {
               </InfoBox>
               <InfoBox>
                 <InfoTitle>대여 진행 방식</InfoTitle>
+                <InfoDes>{dt.barrowMethod}</InfoDes>
+              </InfoBox>
+              <InfoBox>
+                <InfoTitle>대여 장소</InfoTitle>
                 <Map address={dt.address} />
                 <InfoLoc>{dt.address}</InfoLoc>
                 <InfoLoc>{dt.detailAddress}</InfoLoc>

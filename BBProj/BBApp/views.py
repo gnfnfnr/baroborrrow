@@ -131,11 +131,25 @@ class CreateBarrowProduct(APIView):
         product = get_object_or_404(Product, pk=pk)
         print(serializer)
         if serializer.is_valid():
-            serializer.save(user=obj, product=product)
-            product.is_barrowed = True
-            product.save()
+            serializer.save(user=obj, product=product, is_accepted=None)
+            #product.is_barrowed = True
+            #product.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+#신청 내역 수락/거절
+class AcceptBarrowProduct(APIView):
+    def get(self, request, pk):
+        accept = request.GET.get('accept')
+        obj = BarrowProduct.objects.filter(pk=pk)
+        if accept == 'yes':
+            obj.is_accepted = True
+        elif accept == 'no':
+            obj.is_accepted = False
+        obj.save()
+        return Response(status=status.HTTP_200_OK)
+
+
 
 #빌린 내역
 class MyBarrowProductList(APIView): 
@@ -183,11 +197,20 @@ class BarrowedInfoList(APIView):
         except Product.DoesNotExist:
             raise Http404
 
+    #캘린더 (level=c, m(myproduct))
     def get(self, request, pk):
+        level = request.GET.get('level', None)
         product = self.get_object(pk)
-        queryset = BarrowProduct.objects.filter(product=product)
-        serializer = BarrowProductSerializer(queryset, many=True)
-        return Response(serializer.data)
+        if level == 'c':
+            queryset = BarrowProduct.objects.filter(product=product, is_accepted=True, is_payed=True)
+            serializer = BarrowProductSerializer(queryset, many=True)
+            return Response(serializer.data)
+        elif level == 'm':
+            queryset = BarrowProduct.objects.filter(product=product)
+            serializer = BarrowProductSerializer(queryset, many=True)
+            return Response(serializer.data)
+
+
 
 
 # 반납하기
@@ -206,10 +229,16 @@ class ReturnProduct(APIView):
         barrow_product = self.get_object(pk)
         username = request.GET.get('username', None)
         obj  = User.objects.get(username=username)
-        if (barrow_product.user == obj):
-            barrow_product.is_return = True
-            barrow_product.product.is_barrowed = False
-            barrow_product.product.save()
+        if (barrow_product.user == obj): #빌린 사람 반납
+            barrow_product.is_return_user = True
+            barrow_product.save()
+            serializer = BarrowProductSerializer(barrow_product)
+            return Response(serializer.data)
+        elif (barrow_product.product.owner == obj):
+            barrow_product.is_return_owner = True
+            if (barrow_product.is_return_user == True):
+                barrow_product.product.is_barrowed = False
+                barrow_product.product.save()
             barrow_product.save()
             serializer = BarrowProductSerializer(barrow_product)
             return Response(serializer.data)

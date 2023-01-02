@@ -1,5 +1,10 @@
 import React, { useState } from "react";
-import { ProductCheck, ProductCheckDate, ProductCheckBtn, ProductComBtn } from "../main/list-style";
+import {
+  ProductCheck,
+  ProductCheckDate,
+  ProductCheckBtn,
+  ProductComBtn,
+} from "../main/list-style";
 import RentalCheck from "./RentalCheck";
 import ReviewCheck from "./ReviewCheck";
 
@@ -7,7 +12,9 @@ export default function BorrowReturn({ productDetail, productState }) {
   const [rental, setRental] = useState();
   const [review, setReview] = useState();
   const today = new Date();
-  const diff = Math.floor((today - new Date(productState.barrowEnd)) / (1000 * 60 * 60 * 24));
+  const diff = Math.floor(
+    (today - new Date(productState.barrowEnd)) / (1000 * 60 * 60 * 24)
+  );
   return (
     <>
       <ProductCheck>

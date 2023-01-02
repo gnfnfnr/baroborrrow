@@ -19,7 +19,9 @@ const Detail = ({ list }) => {
   const nav = useNavigate();
   const today = new Date();
   const navigate = useNavigate();
-  const diff = Math.floor((today - new Date(list.barrowAvailableEnd)) / (1000 * 60 * 60 * 24));
+  const diff = Math.floor(
+    (today - new Date(list.barrowAvailableEnd)) / (1000 * 60 * 60 * 24)
+  );
   return (
     <>
       <ProductBox>
@@ -71,9 +73,13 @@ function Lend() {
   const [lendData, setLendData] = useState([]);
   const { user } = useUserContext();
   useEffect(() => {
-    axios.get(`http://127.0.0.1:8000/mypage/myproduct/?username=${user.username}`).then((res) => {
-      setLendData(res.data.reverse());
-    });
+    axios
+      .get(`http://127.0.0.1:8000/mypage/myproduct/?username=${user.username}`)
+      .then((res) => {
+        setLendData(res.data.reverse());
+        console.log(res.data);
+      });
+    axios.get(`barrowedinfo/3/`).then((res) => console.log(res));
   }, []);
   return (
     <>

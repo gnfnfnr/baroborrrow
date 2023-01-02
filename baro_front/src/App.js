@@ -23,6 +23,7 @@ import LenderDetail from "./personal/LenderDetail";
 import Payment from "./pay/Payment";
 import PaymentApprove from "./pay/PaymentApprove";
 import PaymentType from "./pay/PaymentType";
+import Deposit from "./pay/Deposit";
 
 function App() {
   const user = localStorage.getItem("user");
@@ -35,35 +36,59 @@ function App() {
             <Route path="/" element={<Navigate replace to="/main" />} />
             <Route path="/main" element={<Home />} />
             <Route element={<ProductDetail />} path={"/detail:id"} />
-            <Route path="/search" element={user ? <Search /> : <Navigate replace to="/login" />} />
+            <Route
+              path="/search"
+              element={user ? <Search /> : <Navigate replace to="/login" />}
+            />
             <Route
               path="/enroll"
-              element={user ? <ProductEnroll /> : <Navigate replace to="/login" />}
+              element={
+                user ? <ProductEnroll /> : <Navigate replace to="/login" />
+              }
             />
-            <Route path="/basket" element={user ? <Basket /> : <Navigate replace to="/login" />} />
+            <Route
+              path="/basket"
+              element={user ? <Basket /> : <Navigate replace to="/login" />}
+            />
             <Route path={`/detail:id/result`} element={<ProductResult />} />
             {/* 마이페이지 */}
-            <Route path="/mypage" element={user ? <Mypage /> : <Navigate replace to="/login" />} />
+            <Route
+              path="/mypage"
+              element={user ? <Mypage /> : <Navigate replace to="/login" />}
+            />
+            <Route
+              path="/mypage/deposit"
+              element={user ? <Deposit /> : <Navigate replace to="/login" />}
+            />
             <Route
               path="/mypage/profile"
               element={user ? <Profile /> : <Navigate replace to="/login" />}
             />
             <Route
               path="/mypage/profileedit"
-              element={user ? <ProfileEdit /> : <Navigate replace to="/login" />}
+              element={
+                user ? <ProfileEdit /> : <Navigate replace to="/login" />
+              }
             />
             <Route
               path="/mypage/content"
-              element={user ? <ContentList /> : <Navigate replace to="/login" />}
+              element={
+                user ? <ContentList /> : <Navigate replace to="/login" />
+              }
             >
               <Route path="/mypage/content/borrow" element={<Borrow />} />
               <Route path="/mypage/content/lend" element={<Lend />}>
-                <Route path="/mypage/content/lend/:id" element={<LenderDetail />} />
+                <Route
+                  path="/mypage/content/lend/:id"
+                  element={<LenderDetail />}
+                />
               </Route>
             </Route>
             <Route
               path="/mypage/sendMessage/receiver=:nickname&&member=:int&&roomId=:id"
-              element={user ? <SendMessage /> : <Navigate replace to="/login" />}
+              element={
+                user ? <SendMessage /> : <Navigate replace to="/login" />
+              }
             />
             <Route
               path="/mypage/message"

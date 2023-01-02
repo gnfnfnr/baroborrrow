@@ -18,11 +18,12 @@ const Detail = ({ list }) => {
   const navigate = useNavigate();
   const [productDt, setProductDt] = useState([]);
   useEffect(() => {
-    axios.get(`http://127.0.0.1:8000/product/${list.product}`).then((response) => {
-      setProductDt(response.data);
-    });
+    axios
+      .get(`http://127.0.0.1:8000/product/${list.product}`)
+      .then((response) => {
+        setProductDt(response.data);
+      });
   }, []);
-
   return (
     <>
       <ProductBox>
@@ -62,9 +63,12 @@ function Borrow() {
   const { user } = useUserContext();
   const [stateRental, setStateRental] = useState(false);
   useEffect(() => {
-    axios.get(`http://127.0.0.1:8000/mypage/borrow/?username=${user.username}`).then((res) => {
-      setBorData(res.data.reverse());
-    });
+    axios
+      .get(`http://127.0.0.1:8000/mypage/borrow/?username=${user.username}`)
+      .then((res) => {
+        setBorData(res.data.reverse());
+        console.log(res.data);
+      });
   }, [stateRental]);
 
   return (

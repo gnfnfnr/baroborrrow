@@ -26,10 +26,16 @@ export default class BorrowState extends Component {
   }
 
   returnItem() {
-    return <BorrowReturn productDetail={this.productDetail} productState={this.productState} />;
+    return (
+      <BorrowReturn
+        productDetail={this.productDetail}
+        productState={this.productState}
+      />
+    );
   }
 
   render() {
-    return this.waitAccept();
+    console.log(this.productState.isAccepted);
+    return this.productState.isAccepted === null ? this.waitAccept() : "";
   }
 }

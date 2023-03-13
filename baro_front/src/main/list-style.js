@@ -12,6 +12,7 @@ export const ProductImg = styled.div`
   border-radius: 5px;
   width: 160px;
   height: 160px;
+  position: relative;
   @media only screen and (max-width: 500px) {
     width: 100px;
     height: 100px;

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import data from "./data.json";
+import { useNavigate } from "react-router-dom";
 
 const ServiceBox = styled.div`
   display: flex;
@@ -27,6 +28,7 @@ const ServiceTitle = styled.div`
     padding: 8px 10px;
     color: white;
     font-size: 14px;
+    cursor: pointer;
   }
 `;
 
@@ -44,10 +46,11 @@ const ServicePage = styled.div`
   @media only screen and (max-width: 500px) {
     padding: 12px 0;
   }
+`;
 
-  & > span {
-    padding-right: 12px;
-  }
+const PageNumber = styled.span`
+  padding-right: 12px;
+  ${({ current, index }) => current === index && "color: #56aedf;"}
 `;
 
 export default function Service() {
@@ -66,12 +69,12 @@ export default function Service() {
       data.filter((_, index) => Math.floor(index / 10) === current)
     );
   }, [current]);
-
+  const navigate = useNavigate();
   return (
     <ServiceBox>
       <ServiceTitle>
         <span>고객센터</span>
-        <div>글쓰기</div>
+        <div onClick={() => navigate("/mypage/service/report")}>글쓰기</div>
       </ServiceTitle>
       <ServiceList>
         {currentData.map(({ id, title, user }, index) => (
@@ -84,9 +87,14 @@ export default function Service() {
       </ServiceList>
       <ServicePage>
         {pages.map((page, index) => (
-          <span key={`page${page}`} onClick={() => setCurrent(index)}>
+          <PageNumber
+            current={current}
+            index={index}
+            key={`page${page}`}
+            onClick={() => setCurrent(index)}
+          >
             {page}
-          </span>
+          </PageNumber>
         ))}
       </ServicePage>
     </ServiceBox>

@@ -58,10 +58,10 @@ function Mypage() {
                 <DetailTitle>내 바로 내역</DetailTitle>
               </MypageDetail>
             </Link>
-            <Link to="/mypage/deposit">
+            <Link to="/mypage/service">
               <MypageDetail>
                 <DetailIcon src={require("../img/center.png")} />
-                <DetailTitle>정산하기</DetailTitle>
+                <DetailTitle>고객센터</DetailTitle>
               </MypageDetail>
             </Link>
             <Link to="/mypage/message">

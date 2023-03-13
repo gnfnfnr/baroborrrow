@@ -23,7 +23,7 @@ import LenderDetail from "./personal/LenderDetail";
 import Payment from "./pay/Payment";
 import PaymentApprove from "./pay/PaymentApprove";
 import PaymentType from "./pay/PaymentType";
-import Deposit from "./pay/Deposit";
+import Service from "./customer/Service";
 
 function App() {
   const user = localStorage.getItem("user");
@@ -56,10 +56,7 @@ function App() {
               path="/mypage"
               element={user ? <Mypage /> : <Navigate replace to="/login" />}
             />
-            <Route
-              path="/mypage/deposit"
-              element={user ? <Deposit /> : <Navigate replace to="/login" />}
-            />
+            <Route path="/mypage/service" element={<Service />} />
             <Route
               path="/mypage/profile"
               element={user ? <Profile /> : <Navigate replace to="/login" />}

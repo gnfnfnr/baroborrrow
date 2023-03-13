@@ -34,10 +34,16 @@ const ServiceTitle = styled.div`
 
 const ServiceList = styled.ul``;
 const ListBox = styled.li`
-  padding: 14px 0;
+  padding: 14px 10px;
   display: flex;
   justify-content: space-between;
   border-bottom: 1px solid #ebebeb;
+  cursor: pointer;
+  gap: 4px;
+
+  &:hover {
+    background: #f7f7f7;
+  }
 `;
 
 const ServicePage = styled.div`
@@ -77,9 +83,14 @@ export default function Service() {
         <div onClick={() => navigate("/mypage/service/report")}>글쓰기</div>
       </ServiceTitle>
       <ServiceList>
-        {currentData.map(({ id, title, user }, index) => (
-          <ListBox key={id}>
-            <span>{id}</span>
+        {currentData.map(({ id, title, user }) => (
+          <ListBox
+            key={id}
+            onClick={() => {
+              navigate(`/mypage/service/${id}`);
+            }}
+          >
+            <span>{id + 1}</span>
             <div>{title}</div>
             <div>{user}</div>
           </ListBox>

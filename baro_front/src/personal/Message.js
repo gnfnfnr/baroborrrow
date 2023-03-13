@@ -69,7 +69,9 @@ function MessageDetail({ detail, username }) {
   const navigate = useNavigate();
   console.log(detail);
   const opposite =
-    detail.member1.username !== username ? detail.member1.username : detail.member2.username;
+    detail.member1.username !== username
+      ? detail.member1.username
+      : detail.member2.username;
   const memberNumber = detail.member1.username === username ? 1 : 2;
   return (
     <MessageBox
@@ -126,12 +128,16 @@ function Message() {
         <MessageUser value="all">전부</MessageUser>
         {messageFullData.map((msg) => {
           const opposite =
-            msg.member1.username !== user.username ? msg.member1.username : msg.member2.username;
+            msg.member1.username !== user.username
+              ? msg.member1.username
+              : msg.member2.username;
           return <MessageUser key={msg.id}>{opposite}</MessageUser>;
         })}
       </MessageUserPicker>
       {messageData.map((msg) => {
-        return <MessageDetail key={msg.id} detail={msg} username={user.username} />;
+        return (
+          <MessageDetail key={msg.id} detail={msg} username={user.username} />
+        );
       })}
     </>
   );

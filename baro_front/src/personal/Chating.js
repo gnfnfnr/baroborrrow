@@ -160,7 +160,7 @@ const ChatBox = style.div`
   }
 `;
 
-const ChatInput = ({ params, imgFile, setImgFile }) => {
+const ChatInput = ({ params, imgFile, setImgFile, setChange }) => {
   const [inputText, setInputText] = useState();
 
   return (
@@ -186,7 +186,7 @@ const ChatInput = ({ params, imgFile, setImgFile }) => {
         })
           .then(() => {
             setInputText("");
-            window.location.reload();
+            setChange(true);
           })
           .catch((err) => {
             alert("알 수 없는 오류가 발생했습니다.");
@@ -240,9 +240,15 @@ const OpponentChat = ({ chat, params }) => {
       <p>{params.nickname}</p>
       <Opponent>
         <OpponentText>{chat.text}</OpponentText>
-        <time dateTime={chat.sendAt}>{new Date(chat.sendAt).toTimeString().slice(0, 5)}</time>
+        <time dateTime={chat.sendAt}>
+          {new Date(chat.sendAt).toTimeString().slice(0, 5)}
+        </time>
       </Opponent>
-      {chat.messagePhoto ? <ChatImg src={`http://127.0.0.1:8000/${chat.messagePhoto}`} /> : ""}
+      {chat.messagePhoto ? (
+        <ChatImg src={`http://127.0.0.1:8000/${chat.messagePhoto}`} />
+      ) : (
+        ""
+      )}
     </div>
   );
 };
@@ -251,21 +257,27 @@ const MyChat = ({ chat }) => {
   return (
     <ChatBox>
       <Myself>
-        <time dateTime={chat.sendAt}>{new Date(chat.sendAt).toTimeString().slice(0, 5)}</time>
+        <time dateTime={chat.sendAt}>
+          {new Date(chat.sendAt).toTimeString().slice(0, 5)}
+        </time>
         <MyselfText>{chat.text}</MyselfText>
       </Myself>
-      {chat.messagePhoto ? <ChatImg src={`http://127.0.0.1:8000/${chat.messagePhoto}`} /> : ""}
+      {chat.messagePhoto ? (
+        <ChatImg src={`http://127.0.0.1:8000/${chat.messagePhoto}`} />
+      ) : (
+        ""
+      )}
     </ChatBox>
   );
 };
 
 const ChatMessages = ({ chat, params }) => {
   const compare = parseInt(params.member) === chat.sender ? true : false;
+  console.log(chat);
   if (compare) {
     return <MyChat key={chat.id} chat={chat} />;
-  } else {
-    return <OpponentChat key={chat.id} chat={chat} params={params} />;
   }
+  return <OpponentChat key={chat.id} chat={chat} params={params} />;
 };
 
 function Chating() {
@@ -273,15 +285,19 @@ function Chating() {
   const [imgFile, setImgFile] = useState();
   const params = useParams();
   const chatRef = useRef();
+  const [change, setChange] = useState();
 
   useEffect(() => {
     axios({
       method: "GET",
       url: `http://127.0.0.1:8000/message/detail/${params.roomId}/?user=${params.member}`,
     })
-      .then((res) => setChattingData(res.data))
+      .then((res) => {
+        setChattingData(res.data);
+        setChange(false);
+      })
       .catch((err) => console.log(err));
-  }, []);
+  }, [change]);
   useEffect(() => {
     chatRef.current.scrollTop = chatRef.current.scrollHeight;
   }, [chattingData, imgFile]);
@@ -298,12 +314,24 @@ function Chating() {
             const currentSendDate = chat.sendAt.slice(0, 10);
             if (chat.sendAt.slice(0, 10) !== lastSend) {
               lastSend = currentSendDate;
-              return <ChatDate key={`${chat.id} - ${chat.sendAt}`}>{currentSendDate}</ChatDate>;
+              return (
+                <>
+                  <ChatDate key={`${chat.id} - ${chat.sendAt}`}>
+                    {currentSendDate}
+                  </ChatDate>
+                  <ChatMessages chat={chat} params={params} key={chat.id} />
+                </>
+              );
             }
             return <ChatMessages chat={chat} params={params} key={chat.id} />;
           })}
         </ChatMain>
-        <ChatInput params={params} imgFile={imgFile} setImgFile={setImgFile} />
+        <ChatInput
+          params={params}
+          imgFile={imgFile}
+          setImgFile={setImgFile}
+          setChange={setChange}
+        />
       </ChattingSpaceBox>
     </ChattingSpace>
   );

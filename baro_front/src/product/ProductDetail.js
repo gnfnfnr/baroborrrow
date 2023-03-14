@@ -88,13 +88,9 @@ const PdHeader = ({ params, user, pdOwner }) => {
   const navigate = useNavigate();
   useEffect(() => {
     axios
-      .get(
-        `http://127.0.0.1:8000/mypage/likeproducts/?username=${user.username}`
-      )
+      .get(`http://127.0.0.1:8000/mypage/likeproducts/?username=${user.username}`)
       .then((res) => {
-        setBasket(
-          ...res.data.filter((item) => item.id === parseInt(params.id))
-        );
+        setBasket(...res.data.filter((item) => item.id === parseInt(params.id)));
       });
   }, []);
   return (
@@ -106,7 +102,17 @@ const PdHeader = ({ params, user, pdOwner }) => {
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
         onClick={() => {
-          navigate(`/mypage/sendMessage/receiver=${pdOwner.nickname}`);
+          axios
+            .get(`http://127.0.0.1:8000/message/${params.id}/?username=${user.username}`)
+            .then((res) => {
+              console.log(res);
+              const realName = res.data[0].member1 === user.username ? 1 : 2;
+              const roomId = res.data[0].id;
+              navigate(
+                `/mypage/sendMessage/receiver=${pdOwner.nickname}&&member=${realName}&&roomId=${roomId}`
+              );
+            })
+            .catch((err) => console.log(err));
         }}
       >
         <g clipPath="url(#clip0_101_4)">
@@ -135,9 +141,7 @@ const PdHeader = ({ params, user, pdOwner }) => {
         xmlns="http://www.w3.org/2000/svg"
         onClick={() => {
           axios
-            .get(
-              `http://127.0.0.1:8000/product/${params.id}/like/?username=${user.username}`
-            )
+            .get(`http://127.0.0.1:8000/product/${params.id}/like/?username=${user.username}`)
             .then((res) => setBasket(...res.data.likeUsers));
         }}
       >
@@ -211,11 +215,7 @@ function ProductDetail() {
             </InfoOwner>
           </InfoBox>
           <InfoBox>
-            <InfoBar
-              title={"상품 상태"}
-              percentage={dt.condition / 2}
-              inputMode={false}
-            />
+            <InfoBar title={"상품 상태"} percentage={dt.condition / 2} inputMode={false} />
           </InfoBox>
           <InfoBox>
             <InfoTitle>물품 설명</InfoTitle>
@@ -239,44 +239,36 @@ function ProductDetail() {
               <InfoBox>
                 <InfoTitle>상품 정가</InfoTitle>
                 <InfoMoney>
-                  {dt.listPrice
-                    .toString()
-                    .replace(/\B(?=(\d{3})+(?!\d))/g, ", ")}
+                  {dt.listPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ", ")}
                   <InfoWon>원</InfoWon>
                 </InfoMoney>
               </InfoBox>
               <InfoBox>
                 <InfoTitle>
                   대여비
-                  <InfoPer>
-                    {Math.round((dt.rentalFee / dt.listPrice) * 100)}%
-                  </InfoPer>
+                  <InfoPer>{Math.round((dt.rentalFee / dt.listPrice) * 100)}%</InfoPer>
                 </InfoTitle>
                 <InfoMoney>
-                  {dt.rentalFee
-                    .toString()
-                    .replace(/\B(?=(\d{3})+(?!\d))/g, ", ")}
+                  {dt.rentalFee.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ", ")}
                   <InfoWon>원</InfoWon>
                 </InfoMoney>
               </InfoBox>
               <InfoBox>
                 <InfoTitle>
                   보증금
-                  <InfoPer>
-                    {Math.round((dt.deposit / dt.listPrice) * 100)}%
-                  </InfoPer>
+                  <InfoPer>{Math.round((dt.deposit / dt.listPrice) * 100)}%</InfoPer>
                 </InfoTitle>
                 <InfoMoney>
-                  {dt.deposit
-                    ? dt.deposit
-                        .toString()
-                        .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-                    : ""}
+                  {dt.deposit ? dt.deposit.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : ""}
                   <InfoWon>원</InfoWon>
                 </InfoMoney>
               </InfoBox>
               <InfoBox>
                 <InfoTitle>대여 진행 방식</InfoTitle>
+                <InfoDes>{dt.barrowMethod}</InfoDes>
+              </InfoBox>
+              <InfoBox>
+                <InfoTitle>대여 장소</InfoTitle>
                 <Map address={dt.address} />
                 <InfoLoc>{dt.address}</InfoLoc>
                 <InfoLoc>{dt.detailAddress}</InfoLoc>

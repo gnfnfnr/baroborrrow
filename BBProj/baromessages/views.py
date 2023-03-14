@@ -49,10 +49,10 @@ class MessageRoomDetail(APIView):
         messages = Message.objects.filter(room=messageroom)
         #내가 누군지 파악하고 unread 바꿔줘야함!!
         user = request.GET.get('user', None)
-        if user == 1:
+        if user == "1":
             if messageroom.unread == 1:
                 messageroom.unread = 0
-        elif user == 2:
+        elif user == "2":
             if messageroom.unread == 2:
                 messageroom.unread = 0
         messageroom.save()

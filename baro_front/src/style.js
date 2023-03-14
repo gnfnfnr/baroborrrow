@@ -22,4 +22,8 @@ ${reset}
         text-decoration: none;
         color: inherit;
     }
+
+    button{
+        cursor: pointer;
+    }
 `;

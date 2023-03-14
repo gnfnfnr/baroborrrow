@@ -49,13 +49,11 @@ export const ProductFee = styled.div`
 export const ProductInfo = styled.div`
   padding-left: 12px;
   width: calc(100% - 100px);
-  position: relative;
 `;
 
 export const ProductRentalInfo = styled.div`
   padding-left: 12px;
   width: calc(100% - 100px);
-  position: relative;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -121,7 +119,7 @@ export const ProductComBtn = styled.div`
   color: #666666;
   margin-bottom: 10px;
   @media only screen and (max-width: 500px) {
-    padding: 4px 14px;
+    width: 45px;
     font-size: 12px;
   }
 `;

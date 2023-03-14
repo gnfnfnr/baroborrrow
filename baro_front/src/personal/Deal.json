@@ -1,0 +1,92 @@
+[
+  {
+    "user": "Gert",
+    "barrowStart": "2022-09-25",
+    "barrowEnd": "2022-09-03",
+    "isAccepted": true,
+    "isPayed": true,
+    "isReturnUser": true,
+    "isReturnOwner": true,
+    "isReviewed": true
+  },
+  {
+    "user": "Ileane",
+    "barrowStart": "2022-08-29",
+    "barrowEnd": "2021-12-30",
+    "isAccepted": true,
+    "isPayed": false,
+    "isReturnUser": false,
+    "isReturnOwner": false,
+    "isReviewed": false
+  },
+  {
+    "user": "Justino",
+    "barrowStart": "2022-01-10",
+    "barrowEnd": "2022-01-27",
+    "isAccepted": true,
+    "isPayed": true,
+    "isReturnUser": false,
+    "isReturnOwner": false,
+    "isReviewed": false
+  },
+  {
+    "user": "Roselle",
+    "barrowStart": "2022-01-12",
+    "barrowEnd": "2022-06-04",
+    "isAccepted": false,
+    "isPayed": false,
+    "isReturnUser": false,
+    "isReturnOwner": false,
+    "isReviewed": false
+  },
+  {
+    "user": "Estevan",
+    "barrowStart": "2022-07-24",
+    "barrowEnd": "2022-09-20",
+    "isAccepted": true,
+    "isPayed": true,
+    "isReturnUser": true,
+    "isReturnOwner": false,
+    "isReviewed": false
+  },
+  {
+    "user": "Keene",
+    "barrowStart": "2022-04-05",
+    "barrowEnd": "2022-02-14",
+    "isAccepted": true,
+    "isPayed": true,
+    "isReturnUser": true,
+    "isReturnOwner": true,
+    "isReviewed": false
+  },
+  {
+    "user": "Micky",
+    "barrowStart": "2022-03-24",
+    "barrowEnd": "2022-07-12",
+    "isAccepted": true,
+    "isPayed": true,
+    "isReturnUser": false,
+    "isReturnOwner": false,
+    "isReviewed": false
+  },
+  {
+    "user": "Hermy",
+    "barrowStart": "2022-06-20",
+    "barrowEnd": "2022-07-17",
+    "isAccepted": null,
+    "isPayed": false,
+    "isReturnUser": false,
+    "isReturnOwner": false,
+    "isReviewed": false
+  },
+  {
+    "user": "Jania",
+    "barrowStart": "2022-03-04",
+    "barrowEnd": "2022-02-21",
+    "isAccepted": true,
+    "isPayed": false,
+    "isReturnUser": false,
+    "isReturnOwner": false,
+    "isReviewed": false
+  }
+]

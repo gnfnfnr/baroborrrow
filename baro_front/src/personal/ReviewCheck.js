@@ -31,17 +31,6 @@ const RentalCheckBtn = styled.div`
   color: white;
 `;
 
-const RentalImg = styled.div`
-  width: 200px;
-  height: 200px;
-  margin: 24px auto;
-  @media only screen and (max-width: 700px) {
-    width: 100px;
-    height: 100px;
-    margin: 12px auto;
-  }
-`;
-
 const RentalQuest = styled.div`
   padding: 24px 0;
   border-bottom: 1px solid #d9d9d9;
@@ -110,9 +99,7 @@ function ReviewCheck({ list, setReview }) {
                 q5: an[4],
               })
               .then(() => window.location.reload())
-              .catch(() =>
-                alert("예상치 못한 오류 발생했습니다. 다시 시도해주세요")
-              );
+              .catch(() => alert("예상치 못한 오류 발생했습니다. 다시 시도해주세요"));
           }}
         >
           설문 제출

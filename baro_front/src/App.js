@@ -1,9 +1,6 @@
 import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 import { GlobalStyle } from "./style";
-
 import Home from "./main/Home";
-import Footer from "./nav/Footer";
-import Header from "./nav/Header";
 import RouteMain from "./RouteMain";
 import ProductEnroll from "./product/ProductEnroll";
 import Basket from "./main/Basket";
@@ -22,6 +19,13 @@ import SendMessage from "./personal/SendMessage";
 import Message from "./personal/Message";
 import Chating from "./personal/Chating";
 import Search from "./main/Search";
+import LenderDetail from "./personal/LenderDetail";
+import Payment from "./pay/Payment";
+import PaymentApprove from "./pay/PaymentApprove";
+import PaymentType from "./pay/PaymentType";
+import Service from "./customer/Service";
+import Report from "./customer/Report";
+import ReportDetail from "./customer/ReportDetail";
 
 function App() {
   const user = localStorage.getItem("user");
@@ -29,7 +33,6 @@ function App() {
     <BrowserRouter>
       <GlobalStyle />
       <UserContextProvider>
-        <Header />
         <Routes>
           <Route path="/" element={<RouteMain />}>
             <Route path="/" element={<Navigate replace to="/main" />} />
@@ -55,6 +58,12 @@ function App() {
               path="/mypage"
               element={user ? <Mypage /> : <Navigate replace to="/login" />}
             />
+            <Route path="/mypage/service" element={<Service />} />
+            <Route
+              path="/mypage/service/report"
+              element={user ? <Report /> : <Navigate replace to="/login" />}
+            />
+            <Route path="/mypage/service/:id" element={<ReportDetail />} />
             <Route
               path="/mypage/profile"
               element={user ? <Profile /> : <Navigate replace to="/login" />}
@@ -72,25 +81,36 @@ function App() {
               }
             >
               <Route path="/mypage/content/borrow" element={<Borrow />} />
-              <Route path="/mypage/content/lend" element={<Lend />} />
+              <Route path="/mypage/content/lend" element={<Lend />}>
+                <Route
+                  path="/mypage/content/lend/:id"
+                  element={<LenderDetail />}
+                />
+              </Route>
             </Route>
             <Route
-              path="/mypage/sendMessage/receiver=:nickname"
+              path="/mypage/sendMessage/receiver=:nickname&&member=:int&&roomId=:id"
               element={
                 user ? <SendMessage /> : <Navigate replace to="/login" />
               }
             />
-            <Route path="/mypage/message" element={<Message />} />
             <Route
-              path="/mypage/chatting/nickname=:nickname&&item=:item"
-              element={<Chating />}
+              path="/mypage/message"
+              element={user ? <Message /> : <Navigate replace to="/login" />}
+            />
+            <Route
+              path="/mypage/chatting/nickname=:nickname&&item=:item&&roomId=:roomId&&member=:member"
+              element={user ? <Chating /> : <Navigate replace to="/login" />}
             />
             {/* 로그인 */}
             <Route path="/login" element={<Login />} />
             <Route path="/join" element={<Join />} />
           </Route>
+          <Route path="/payment" element={<Payment />}>
+            <Route path="/payment/type" element={<PaymentType />} />
+            <Route path="/payment/approve" element={<PaymentApprove />} />
+          </Route>
         </Routes>
-        <Footer />
       </UserContextProvider>
     </BrowserRouter>
   );

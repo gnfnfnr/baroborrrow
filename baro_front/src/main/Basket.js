@@ -42,7 +42,7 @@ const BasketItem = function ({ user }) {
             objectFit: "cover",
           }}
         />
-        {borrow.includes(list.id) ? <ProductBorrow>대여중</ProductBorrow> : ""}
+        {borrow.includes(list.id) && <ProductBorrow>대여중</ProductBorrow>}
       </ProductImg>
       <ProductInfo>
         <ProductName
@@ -55,7 +55,6 @@ const BasketItem = function ({ user }) {
         <ProductLocal>{list.address}</ProductLocal>
         <ProductFee>{list.deposit}</ProductFee>
         <ProductFee>{list.rentalFee}</ProductFee>
-        <ProductCart src={require("../img/cart.png")} />
       </ProductInfo>
     </ProductBox>
   ));

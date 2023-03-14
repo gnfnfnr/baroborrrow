@@ -45,6 +45,11 @@ urlpatterns = [
     path('search/', views.SearchProduct.as_view()),
     #신청내역 수락/거절
     path('mypage/myproduct/accept/<int:pk>/', views.AcceptBarrowProduct.as_view()),
+    #결제 정보 저장
+    path('pay/create/<int:pk>/', views.CreatePayment.as_view()),
+    path('mypage/service/', views.CustomerServiceList.as_view()),
+    path('mypage/service/<int:pk>' views.CustomerServiceCenter.as_view()),
+    
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)

@@ -97,3 +97,34 @@ class ReviewResult(models.Model):
     av_q5 = models.IntegerField()
     #리뷰 개수
     review_count = models.IntegerField(default = 0)
+
+
+class Deposit(models.Model):
+    #취소 시각
+    canceled_at = models.DateTimeField()
+    ## 취소된 금액 관련
+    approved_cancel_amount_tax_free = models.IntegerField()
+    approved_cancel_amount_total = models.IntegerField()
+    approved_cancel_amount_vat = models.IntegerField()
+    ## 남은 취소 가능 금액 관련
+    cancel_available_amount_tax_free = models.IntegerField()
+    cancel_available_amount_total = models.IntegerField()
+    cancel_available_amount_vat = models.IntegerField()
+
+class Payment(models.Model):
+    barrow_product = models.ForeignKey(BarrowProduct, on_delete=models.CASCADE, null=True, blank=True)
+    deposit = models.ForeignKey(Deposit, on_delete=models.CASCADE, null=True, blank=True)
+    cid = models.CharField(max_length=512)
+    total_amount = models.IntegerField()
+    var_amount = models.IntegerField()
+    tax_free_amount = models.IntegerField()
+    tid = models.CharField(max_length=512)
+    aid = models.CharField(max_length=512)
+    created_at = models.DateTimeField()
+    approved_at = models.DateTimeField()
+
+class CustomerService(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name = 'myInquiry', blank=True, null=True)
+    title = models.CharField(max_length=256)
+    content = models.TextField()
+    created_at = models.DateTimeField()

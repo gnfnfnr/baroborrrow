@@ -1,5 +1,5 @@
 from rest_framework.serializers import ModelSerializer
-from .models import Product, BarrowProduct, Review, ReviewResult
+from .models import Product, BarrowProduct, Review, ReviewResult, Payment, Deposit, CustomerService
 from accounts.serializers import UserLikeSerializer, UserBasicSerializer
 from rest_framework import serializers
 
@@ -51,4 +51,28 @@ class ReviewResultSerializer(ModelSerializer):
         model = ReviewResult
         fields = [
             'user', 'av_q1', 'av_q2', 'av_q3', 'av_q4', 'av_q5', 'review_count'
+        ]
+
+
+class DepositSerializer(ModelSerializer):
+    class Meta:
+        model = Deposit
+        fields = [
+            'canceled_at', 'approved_cancel_amount_tax_free', 'approved_cancel_amount_total', 'approved_cancel_amount_vat', 'cancel_available_amount_tax_free', 'cancel_available_amount_total', 'cancel_available_amount_vat'
+        ]
+
+class PaymentSerializer(ModelSerializer):
+    barrow_product = BarrowProductSerializer(required=False, read_only=True)
+    class Meta:
+        model = Payment
+        fields = [
+            'barrow_product', 'deposit', 'cid', 'total_amount', 'var_amount', 'tax_free_amount', 'tid', 'aid', 'created_at', 'approved_at'
+        ]
+
+class CustomerServiceSerializer(ModelSerializer):
+    user = UserBasicSerializer(required=False, read_only=True)
+    class Meta:
+        model = CustomerService
+        fields = [
+            'user', 'title', 'content', 'created_at'
         ]

@@ -1,9 +1,9 @@
 from datetime import datetime, date, timedelta
 from django.utils.dateformat import DateFormat
 from django.shortcuts import render, redirect
-from .models import Product, BarrowProduct, Review, ReviewResult
+from .models import Product, BarrowProduct, Review, ReviewResult, Payment, Deposit, CustomerService
 from django.http import HttpResponse
-from .serializers import ProductLikeSerializer, ProductSerializer, BarrowProductSerializer, ReviewSerializer, ReviewResultSerializer
+from .serializers import ProductLikeSerializer, ProductSerializer, BarrowProductSerializer, ReviewSerializer, ReviewResultSerializer, DepositSerializer, PaymentSerializer, CustomerServiceSerializer
 from rest_framework.viewsets import ModelViewSet
 from rest_framework import status
 from rest_framework.views import APIView
@@ -210,8 +210,32 @@ class BarrowedInfoList(APIView):
             serializer = BarrowProductSerializer(queryset, many=True)
             return Response(serializer.data)
 
+class CustomerServiceCenter(APIView):
+    def get_object(self, pk):
+        customerService = get_object_or_404(CustomerService, pk=pk)
+        return customerService
 
+    def get(self, request, pk):
+        obj = self.get_object(pk)
+        serializer = CustomerServiceSerializer(obj)
+        return Response(serializer.data)
+        
+    
 
+class CustomerServiceList(API):
+    def get(self, request):
+        queryset = CustomerService.objects.all()
+        serializer = CustomerServiceSerializer(queryset, many=True)
+        return Response(serializer.data)
+
+    def post(self, request):
+        username = request.GET.get('username', None)
+        obj  = User.objects.get(username=username)
+        serializer = CustomerServiceSerializer(data=reqeust.data)
+        if serializer.is_valid():
+            serializer.save(user=obj)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 # 반납하기
 # 주소값에 있는 pk를 이용하여 BarrowProduct 객체를 가져옴
@@ -362,3 +386,21 @@ class SearchProduct(APIView):
         products = Product.objects.filter(q)
         serializer = ProductSerializer(products, many=True)
         return Response(serializer.data)
+
+
+class CreatePayment(APIView):
+    def post(self, request, pk): #빌리기 정보 저장
+        print(request.data['user']['username'])
+        obj = BarrowProduct.objects.get(pk=pk)
+        username = request.GET.get('username', None)
+        user  = User.objects.get(username=username)
+
+        depositserializer = DepositSerializer(data=request.data['deposit'])
+        if depositserializer.is_valid():
+            deposit = depositserializer.save()
+        paymentserializer = PaymentSerializer(data=request.data)
+        if user == obj.user:
+            if paymentserializer.is_valid():
+                paymentserializer.save(barrow_product = obj, deposit=deposit)
+                return Response(paymentserializer.data, status=status.HTTP_201_CREATED)
+        return Response(paymentserializer.errors, status=status.HTTP_400_BAD_REQUEST)

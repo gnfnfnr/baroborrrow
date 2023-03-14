@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import data from "./data.json";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const ServiceBox = styled.div`
   display: flex;
@@ -61,19 +62,19 @@ const PageNumber = styled.span`
 
 export default function Service() {
   const [pages, setPages] = useState(
-    Array.from(
-      { length: Math.ceil(data.length / 10) },
-      (_, number) => number + 1
-    )
+    Array.from({ length: Math.ceil(data / 10) }, (_, number) => number + 1)
   );
 
   const [current, setCurrent] = useState(0);
   const [currentData, setCurrentData] = useState([]);
 
   useEffect(() => {
-    setCurrentData(
-      data.filter((_, index) => Math.floor(index / 10) === current)
-    );
+    axios.get("http://127.0.0.1:8000/mypage/service/").then((res) => {
+      console.log(res);
+      setCurrentData(
+        res.data.filter((_, index) => Math.floor(index / 10) === current)
+      );
+    });
   }, [current]);
   const navigate = useNavigate();
   return (
@@ -90,9 +91,9 @@ export default function Service() {
               navigate(`/mypage/service/${id}`);
             }}
           >
-            <span>{id + 1}</span>
+            <span>{id}</span>
             <div>{title}</div>
-            <div>{user}</div>
+            <div>{user.username}</div>
           </ListBox>
         ))}
       </ServiceList>

@@ -74,5 +74,5 @@ class CustomerServiceSerializer(ModelSerializer):
     class Meta:
         model = CustomerService
         fields = [
-            'user', 'title', 'content', 'created_at'
+            'id', 'user', 'title', 'content', 'created_at'
         ]

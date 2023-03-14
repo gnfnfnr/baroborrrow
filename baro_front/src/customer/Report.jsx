@@ -1,4 +1,7 @@
-import React from "react";
+import axios from "axios";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useUserContext } from "../Context.js";
 import styled from "styled-components";
 
 const ReportBox = styled.div`
@@ -54,18 +57,55 @@ const ReportContentInput = styled.div`
 `;
 
 export default function Report() {
+  const [inputTitle, setInputTitle] = useState("");
+  const [inputContent, setInputContent] = useState("");
+  const navigate = useNavigate();
+  console.log(inputContent, inputTitle);
+  const { user } = useUserContext();
+
   return (
     <ReportBox>
       <ReportCover>
         <ReportTitleInput>
           <label htmlFor="title">제목</label>
-          <input placeholder="제목을 입력하세요" id="title" />
+          <input
+            placeholder="제목을 입력하세요"
+            id="title"
+            value={inputTitle}
+            onChange={(event) => {
+              setInputTitle(event.target.value);
+            }}
+          />
         </ReportTitleInput>
         <ReportContentInput>
           <label htmlFor="content">내용</label>
-          <textarea placeholder="제목을 입력하세요" id="content" />
+          <textarea
+            placeholder="제목을 입력하세요"
+            id="content"
+            value={inputContent}
+            onChange={(event) => {
+              setInputContent(event.target.value);
+            }}
+          />
         </ReportContentInput>
-        <ReportButton>올리기</ReportButton>
+        <ReportButton
+          onClick={(event) => {
+            event.preventDefault();
+            axios
+              .post("http://127.0.0.1:8000/mypage/service/", {
+                user: user,
+                title: inputTitle,
+                content: inputContent,
+                createdAt: new Date(),
+              })
+              .then((res) => {
+                navigate("/mypage/service");
+                console.log(res);
+              });
+          }}
+        >
+          올리기
+        </ReportButton>
       </ReportCover>
     </ReportBox>
   );

@@ -127,4 +127,4 @@ class CustomerService(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name = 'myInquiry', blank=True, null=True)
     title = models.CharField(max_length=256)
     content = models.TextField()
-    created_at = models.DateTimeField()
+    created_at = models.DateTimeField(auto_now_add=True)

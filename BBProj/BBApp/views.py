@@ -222,7 +222,7 @@ class CustomerServiceCenter(APIView):
         
     
 
-class CustomerServiceList(API):
+class CustomerServiceList(APIView):
     def get(self, request):
         queryset = CustomerService.objects.all()
         serializer = CustomerServiceSerializer(queryset, many=True)

@@ -48,7 +48,7 @@ urlpatterns = [
     #결제 정보 저장
     path('pay/create/<int:pk>/', views.CreatePayment.as_view()),
     path('mypage/service/', views.CustomerServiceList.as_view()),
-    path('mypage/service/<int:pk>' views.CustomerServiceCenter.as_view()),
+    path('mypage/service/<int:pk>', views.CustomerServiceCenter.as_view()),
     
 ]
 

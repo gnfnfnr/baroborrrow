@@ -229,9 +229,9 @@ class CustomerServiceList(APIView):
         return Response(serializer.data)
 
     def post(self, request):
-        username = request.GET.get('username', None)
+        username = request.data['user']['username']
         obj  = User.objects.get(username=username)
-        serializer = CustomerServiceSerializer(data=reqeust.data)
+        serializer = CustomerServiceSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save(user=obj)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -268,8 +268,6 @@ class ReturnProduct(APIView):
             return Response(serializer.data)
         return Response(status=status.HTTP_400_BAD_REQUEST)
         
-
-
 class LeaveReview(APIView):
     def get_object(self, pk):
         barrow_product_object = get_object_or_404(BarrowProduct, pk=pk)

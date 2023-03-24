@@ -1,3 +1,4 @@
+import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router";
 import styled from "styled-components";
@@ -50,6 +51,9 @@ export default function ReportDetail() {
   const { id } = useParams();
 
   useEffect(() => {
+    axios
+      .get(`http://127.0.0.1:8000/mypage/service/${id}`)
+      .then((res) => setData(res.data));
     setData(detail[42 - id]);
   }, []);
 
@@ -63,7 +67,7 @@ export default function ReportDetail() {
               <p>{data.title}</p>
             </DetailTitle>
             <DetailInfo>
-              <span>{data.user}</span>
+              <span>{data.user && data.user.username}</span>
               {data.date && (
                 <span>{new Date(data.date).toISOString().slice(0, 10)}</span>
               )}

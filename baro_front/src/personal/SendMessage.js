@@ -84,7 +84,6 @@ function SendMessage() {
   const params = useParams();
   const [content, setContent] = useState();
   console.log(params);
-
   return (
     <form
       encType="multipart/form-data"
@@ -109,7 +108,8 @@ function SendMessage() {
             alert("쪽지가 성공적으로 보내졌습니다.");
             window.location.reload();
           })
-          .catch(() => {
+          .catch((err) => {
+            console.log(err);
             alert("알 수 없는 오류가 발생했습니다.");
           });
       }}
@@ -117,7 +117,11 @@ function SendMessage() {
       <ul>
         <MessageListDetail>
           <MessageLabel htmlFor="receiver">받는사람</MessageLabel>
-          <MessageReceiver id="receiver" placeholder={params.nickname} disabled />
+          <MessageReceiver
+            id="receiver"
+            placeholder={params.nickname}
+            disabled
+          />
         </MessageListDetail>
         <MessageListDetail>
           {fileImg ? (

@@ -70,9 +70,10 @@ export default function Service() {
 
   useEffect(() => {
     axios.get("http://127.0.0.1:8000/mypage/service/").then((res) => {
-      console.log(res);
       setCurrentData(
-        res.data.filter((_, index) => Math.floor(index / 10) === current)
+        res.data
+          .filter((_, index) => Math.floor(index / 10) === current)
+          .reverse()
       );
     });
   }, [current]);
@@ -84,7 +85,7 @@ export default function Service() {
         <div onClick={() => navigate("/mypage/service/report")}>글쓰기</div>
       </ServiceTitle>
       <ServiceList>
-        {currentData.map(({ id, title, user }) => (
+        {currentData.map(({ id, title, user, createdAt }) => (
           <ListBox
             key={id}
             onClick={() => {
@@ -94,6 +95,7 @@ export default function Service() {
             <span>{id}</span>
             <div>{title}</div>
             <div>{user.username}</div>
+            <div> {new Date(createdAt).toISOString().slice(0, 10)}</div>
           </ListBox>
         ))}
       </ServiceList>

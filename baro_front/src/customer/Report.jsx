@@ -60,7 +60,6 @@ export default function Report() {
   const [inputTitle, setInputTitle] = useState("");
   const [inputContent, setInputContent] = useState("");
   const navigate = useNavigate();
-  console.log(inputContent, inputTitle);
   const { user } = useUserContext();
 
   return (

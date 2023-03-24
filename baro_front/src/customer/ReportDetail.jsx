@@ -68,8 +68,10 @@ export default function ReportDetail() {
             </DetailTitle>
             <DetailInfo>
               <span>{data.user && data.user.username}</span>
-              {data.date && (
-                <span>{new Date(data.date).toISOString().slice(0, 10)}</span>
+              {data.createdAt && (
+                <span>
+                  {new Date(data.createdAt).toISOString().slice(0, 10)}
+                </span>
               )}
             </DetailInfo>
             <DetailContent>

@@ -26,6 +26,7 @@ import PaymentType from "./pay/PaymentType";
 import Service from "./customer/Service";
 import Report from "./customer/Report";
 import ReportDetail from "./customer/ReportDetail";
+import ProductOwner from "./product/ProductOwner";
 
 function App() {
   const user = localStorage.getItem("user");
@@ -53,6 +54,7 @@ function App() {
               element={user ? <Basket /> : <Navigate replace to="/login" />}
             />
             <Route path={`/detail:id/result`} element={<ProductResult />} />
+            <Route path={`/detail/:owner`} element={<ProductOwner />} />
             {/* 마이페이지 */}
             <Route
               path="/mypage"

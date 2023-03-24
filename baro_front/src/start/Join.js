@@ -29,7 +29,7 @@ function Join() {
         nickname: inputNick,
       })
       .then(() => {
-        navigate("/joinLocate");
+        navigate("/");
         alert("회원가입이 완료되었습니다. 바로에 오신 걸 환영합니다");
       })
       .catch(() => {

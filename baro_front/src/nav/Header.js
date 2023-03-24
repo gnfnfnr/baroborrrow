@@ -18,6 +18,8 @@ const HeaderSpace = styled.div`
   display: flex;
   align-items: center;
   margin: 0 auto;
+  justify-content: space-between;
+  padding: 0 15px;
 `;
 
 const LogoutBtn = styled.div`
@@ -39,7 +41,6 @@ const LoginBtn = styled.div`
 `;
 
 const HeaderLogo = styled.img`
-  margin: 0 auto;
   object-fit: cover;
 `;
 

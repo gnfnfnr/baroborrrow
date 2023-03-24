@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import InfoBar from "../product/InfoBar";
-import { Link } from "react-router-dom";
-import { useUserContext } from "../Context";
+import { Link, useParams } from "react-router-dom";
 import axios from "axios";
 
 const OwnerContainer = styled.div`
@@ -38,25 +37,23 @@ const OwnerInfoBox = styled.div`
   border-bottom: 1px solid #d9d9d9;
 `;
 
-const NickNameLink = styled(Link)`
+const OwnerNodData = styled.div`
+  padding: 0 12px;
+`;
+
+const OwnerTop = styled.div`
   display: flex;
   padding-bottom: 12px;
   align-items: center;
   color: #666666;
 `;
 
-const OwnerNodData = styled.div`
-  padding: 0 12px;
-`;
-
-function Profile() {
-  const { user } = useUserContext();
+export default function ProductOwner() {
   const [rateDt, setRateDt] = useState([]);
+  const { owner } = useParams();
   useEffect(() => {
     axios
-      .get(
-        `http://127.0.0.1:8000/mypage/reviewresult/?username=${user.username}`
-      )
+      .get(`http://127.0.0.1:8000/mypage/reviewresult/?username=${owner}`)
       .then((res) => {
         const scores = res.data;
         setRateDt([
@@ -81,17 +78,16 @@ function Profile() {
         setRateDt([]);
       });
   }, []);
-
   return (
     <OwnerContainer>
       <OwnerHead>
-        <NickNameLink to={"/mypage/profileEdit"}>
+        <OwnerTop>
           <OwnerName>
-            <OwnerNameText>{user.nickname}</OwnerNameText>
+            <OwnerNameText>{owner}</OwnerNameText>
             <span>님</span>
           </OwnerName>
           <img src={require("../img/side.png")} />
-        </NickNameLink>
+        </OwnerTop>
         <OwnerHeadDes>(실제 대여자들의 후기 평균입니다.)</OwnerHeadDes>
       </OwnerHead>
       {rateDt.length ? (
@@ -106,5 +102,3 @@ function Profile() {
     </OwnerContainer>
   );
 }
-
-export default Profile;

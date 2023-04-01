@@ -87,23 +87,25 @@ function Calendar({ item }) {
   const lender = JSON.parse(localStorage.getItem("user"));
   const [banDate, setBanDate] = useState([]);
   useEffect(() => {
-    axios.get(`http://127.0.0.1:8000/barrowedinfo/${item.id}/`).then((res) => {
-      console.log(res.data);
-      const preventDate = res.data.map((alreday) => [
-        alreday.barrowStart,
-        alreday.barrowEnd,
-      ]);
-      const ban = [];
-      preventDate.forEach(([start, end]) => {
-        const st = new Date(start);
-        const lt = new Date(end);
-        while (st <= lt) {
-          ban.push(new Date(st));
-          st.setDate(st.getDate() + 1);
-        }
-        setBanDate(ban);
+    axios
+      .get(`http://127.0.0.1:8000/barrowedinfo/${item.id}/?lebel=c`)
+      .then((res) => {
+        console.log(res.data);
+        const preventDate = res.data.map((alreday) => [
+          alreday.barrowStart,
+          alreday.barrowEnd,
+        ]);
+        const ban = [];
+        preventDate.forEach(([start, end]) => {
+          const st = new Date(start);
+          const lt = new Date(end);
+          while (st <= lt) {
+            ban.push(new Date(st));
+            st.setDate(st.getDate() + 1);
+          }
+          setBanDate(ban);
+        });
       });
-    });
   }, []);
   return (
     <CalendarSection>

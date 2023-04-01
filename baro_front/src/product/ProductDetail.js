@@ -111,7 +111,9 @@ const PdHeader = ({ params, user, pdOwner }) => {
               `http://127.0.0.1:8000/message/${params.id}/?username=${user.username}`
             )
             .then((res) => {
-              const realName = res.data[0].member1 === user.username ? 1 : 2;
+              console.log(res);
+              const realName =
+                res.data[0].member1.username === user.username ? 1 : 2;
               const roomId = res.data[0].id;
               navigate(
                 `/mypage/sendMessage/receiver=${pdOwner.nickname}&&member=${realName}&&roomId=${roomId}`

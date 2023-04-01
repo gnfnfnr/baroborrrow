@@ -91,7 +91,7 @@ function App() {
               </Route>
             </Route>
             <Route
-              path="/mypage/sendMessage/receiver=:nickname&&member=:int&&roomId=:id"
+              path="/mypage/sendMessage/receiver=:nickname&&member=:member&&roomId=:roomId"
               element={
                 user ? <SendMessage /> : <Navigate replace to="/login" />
               }

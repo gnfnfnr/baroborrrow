@@ -83,7 +83,7 @@ function SendMessage() {
   const [file, setFile] = useState();
   const params = useParams();
   const [content, setContent] = useState();
-  console.log(params);
+
   return (
     <form
       encType="multipart/form-data"
@@ -91,14 +91,14 @@ function SendMessage() {
         event.preventDefault();
         const formData = new FormData();
         formData.append("encType", "multipart/form-data");
-        formData.append("sender", params.id);
+        formData.append("sender", params.member); // 보내는 사람
         if (file) {
           formData.append("message_photo", file);
         }
         formData.append("text", content);
         axios({
           method: "POST",
-          url: `http://127.0.0.1:8000/message/detail/${params.int}/?user=${params.id}`,
+          url: `http://127.0.0.1:8000/message/detail/${params.roomId}/?user=${params.member}`,
           headers: {
             "Content-Type": "multipart/form-data", // Content-Type을 반드시 이렇게 하여야 한다.
           },

@@ -273,7 +273,6 @@ const MyChat = ({ chat }) => {
 
 const ChatMessages = ({ chat, params }) => {
   const compare = parseInt(params.member) === chat.sender ? true : false;
-  console.log(chat);
   if (compare) {
     return <MyChat key={chat.id} chat={chat} />;
   }

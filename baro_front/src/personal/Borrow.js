@@ -24,6 +24,7 @@ const Detail = ({ list }) => {
         setProductDt(response.data);
       });
   }, []);
+
   return (
     <>
       <ProductBox>

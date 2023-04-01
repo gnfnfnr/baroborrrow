@@ -141,7 +141,7 @@ class CreateBarrowProduct(APIView):
 class AcceptBarrowProduct(APIView):
     def get(self, request, pk):
         accept = request.GET.get('accept')
-        obj = BarrowProduct.objects.filter(pk=pk)
+        obj = get_object_or_404(BarrowProduct, pk=pk)
         if accept == 'yes':
             obj.is_accepted = True
         elif accept == 'no':
@@ -388,7 +388,6 @@ class SearchProduct(APIView):
 
 class CreatePayment(APIView):
     def post(self, request, pk): #빌리기 정보 저장
-        print(request.data['user']['username'])
         obj = BarrowProduct.objects.get(pk=pk)
         username = request.GET.get('username', None)
         user  = User.objects.get(username=username)
@@ -400,5 +399,8 @@ class CreatePayment(APIView):
         if user == obj.user:
             if paymentserializer.is_valid():
                 paymentserializer.save(barrow_product = obj, deposit=deposit)
+                obj.is_payed = True
+                obj.save()
                 return Response(paymentserializer.data, status=status.HTTP_201_CREATED)
-        return Response(paymentserializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            return Response(paymentserializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        return Response(status=status.HTTP_404_NOT_FOUND)

@@ -104,6 +104,7 @@ function Message() {
       .then((res) => {
         setMessageFullData(res.data);
         setMessageData(res.data);
+        console.log(res);
       })
       .catch((err) => console.log(err));
   }, []);

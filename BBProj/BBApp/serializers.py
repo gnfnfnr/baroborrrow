@@ -63,12 +63,12 @@ class DepositSerializer(ModelSerializer):
 
 class PaymentSerializer(ModelSerializer):
     barrow_product = BarrowProductSerializer(required=False, read_only=True)
+    deposit = DepositSerializer()
     class Meta:
         model = Payment
         fields = [
             'barrow_product', 'deposit', 'cid', 'total_amount', 'var_amount', 'tax_free_amount', 'tid', 'aid', 'created_at', 'approved_at'
         ]
-
 class CustomerServiceSerializer(ModelSerializer):
     user = UserBasicSerializer(required=False, read_only=True)
     class Meta:

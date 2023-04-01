@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import style from "styled-components";
 import Deal from "./Deal.json";
 import LenderState from "./LenderState";
+import axios from "axios";
+import { useParams } from "react-router-dom";
 
 const LenderDetailBox = style.section`
   background: #D9D9D9;
@@ -35,34 +37,56 @@ const PageNumber = style.li`
   cursor: pointer;
   padding: 3px;
   margin-right: 5px;
-  ${(props) => (props.active ? "color: inherit; border-bottom: 1px solid;" : "color: #a4a4a4")}
+  ${(props) =>
+    props.active
+      ? "color: inherit; border-bottom: 1px solid;"
+      : "color: #a4a4a4"}
 `;
 
 export default function LenderDetail() {
   const [lenderList, setLenderList] = useState([]);
+  const { id } = useParams();
+
   useEffect(() => {
-    const dividePages = Array.from({ length: Math.ceil(Deal.length / 5) }, () => []);
-    Deal.map((content, index) => dividePages[Math.ceil((index + 1) / 5) - 1].push(content));
-    setLenderList(dividePages);
+    axios
+      .get(`http://127.0.0.1:8000/barrowedinfo/${id}/?level=m`)
+      .then((res) => {
+        // console.log(res);
+        // const dividePages = Array.from(
+        //   { length: Math.ceil(Deal.length / 5) },
+        //   () => []
+        // );
+        // res.data.map((content, index) =>
+        //   dividePages[Math.ceil((index + 1) / 5) - 1].push(content)
+        // );
+        setLenderList(res.data);
+      });
   }, []);
   const matchLenderState = new LenderState();
   const [page, setPage] = useState(0);
-  const fullPageNumber = Array.from({ length: lenderList.length }, (_, index) => index + 1);
+  const fullPageNumber = Array.from(
+    { length: lenderList.length },
+    (_, index) => index + 1
+  );
 
   return (
     <LenderDetailBox>
       <LenderDetailTable>
         <tbody>
           {lenderList.length ? (
-            lenderList[page].map((detail, index) => {
+            lenderList.map((detail, index) => {
               return (
-                <tr key={`${detail.user}${index}`}>
-                  <td>{detail.user}</td>
-                  <td>
-                    {detail.barrowStart} ~ {detail.barrowEnd}
-                  </td>
-                  <td>{matchLenderState.getValue(detail)[0][1]()}</td>
-                </tr>
+                <>
+                  {detail.user.username && (
+                    <tr key={`${detail.user.username}${index}`}>
+                      <td>{detail.user.username}</td>
+                      <td>
+                        {detail.barrowStart} ~ {detail.barrowEnd}
+                      </td>
+                      <td>{matchLenderState.getValue(detail)[0][1]()}</td>
+                    </tr>
+                  )}
+                </>
               );
             })
           ) : (
